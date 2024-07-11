@@ -1,0 +1,6 @@
+[submodule "Mile.Project.Windows"]
+	path = Mile.Project.Windows
+	url = https://github.com/ProjectMile/Mile.Project.Windows.git
+[submodule "Boost.Math"]
+	path = Boost.Math
+	url = https://github.com/Boostorg/math.git

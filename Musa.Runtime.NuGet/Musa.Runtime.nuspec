@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>Musa.Runtime</id>
+    <version>$version$</version>
+    <title>Musa.Runtime</title>
+    <authors>MeeSong</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <readme>build\native\README.md</readme>
+    <description>Musa.Runtime - 是以 Musa.Core 作为底层支持的微软 MSVC 运行时库。
+   * 它可以让内核开发者拥有和应用开发者近似的 C++ 开发体验。
+
+Musa.Runtime - Musa.Runtime is a Microsoft MSVC runtime library based on Musa.Core.
+   * It allows kernel developers to have a C++ development experience similar to that of application developers.
+    </description>
+    <releaseNotes>$releaseNotes$</releaseNotes>
+    <copyright>Copyright© MeeSong</copyright>
+    <tags>Musa.Runtime ucxxrt Native WDK KMDF Kernel Driver STL SEH Exception</tags>
+    <projectUrl>https://github.com/MiroKaku/Musa.Runtime</projectUrl>
+    <repository type="git" url="https://github.com/MiroKaku/Musa.Runtime.git" branch="main" commit="$commit$" />
+    <dependencies>
+      <dependency id="Musa.Core" version="0.1.5" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Musa.Runtime.props" target="build\native" />
+    <file src="..\Publish\**" target="build\native" exclude="**\*.lastcodeanalysissucceeded;"/>
+  </files>
+</package>

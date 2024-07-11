@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="Musa_Runtime_PlatformPrepareForBuild">
+
+  <PropertyGroup Condition="'$(MusaRuntimeOnlyHeader)'=='true'">
+    <MusaCoreOnlyHeader Condition="'$(MusaCoreOnlyHeader)'==''">true</MusaCoreOnlyHeader>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsKernelModeToolset)'==''">
+    <IsKernelModeToolset Condition="'$(PlatformToolset.Contains(`KernelMode`))' == 'true'">true</IsKernelModeToolset>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- \Musa.Runtime\config\..\ -->
+    <Musa_Runtime_Root>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..'))</Musa_Runtime_Root>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Musa_Runtime_Include>$(Musa_Runtime_Root)\include</Musa_Runtime_Include>
+    <Musa_Runtime_Library>$(Musa_Runtime_Root)\lib\$(PlatformShortName)\$(Configuration)</Musa_Runtime_Library>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludePath>$(Musa_Runtime_Include);$(IncludePath)</IncludePath>
+    <LibraryPath>$(Musa_Runtime_Library);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsKernelModeToolset)'=='true'">
+    <!-- Enable Kernel C++ Support -->
+    <DisableKernelFlag>true</DisableKernelFlag>
+    <!-- Include STL -->
+    <IncludePath>$(VC_IncludePath);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup Condition="'$(IsKernelModeToolset)'=='true'">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PreprocessorDefinitions>_NO_CRT_STDIO_INLINE;_HAS_EXCEPTIONS;_KERNEL_MODE;NTOS_KERNEL_RUNTIME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!-- C++ Exception Mode, /EHa -->
+      <ExceptionHandling>Async</ExceptionHandling>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <Target Name="Musa_Runtime_PlatformPrepareForBuild">
+    <Message Text="
+  **************************************************
+  *             Musa.Runtime (UCXXRT)              *
+  **************************************************
+
+  Musa.Runtime Path : $(Musa_Runtime_Root)
+  Kernel Mode       : $(IsKernelModeToolset)
+  Tools  Version    : $(VCToolsVersion)
+  Target Version    : $(TargetPlatformVersion)
+  Configuration     : $(PlatformShortName)\$(Configuration)
+  " Importance="high" />
+  </Target>
+</Project>

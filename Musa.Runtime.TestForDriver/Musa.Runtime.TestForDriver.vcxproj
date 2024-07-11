@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectTypeGuids>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</ProjectTypeGuids>
+    <ProjectGuid>{45B07071-5570-4570-821E-FB27B748785C}</ProjectGuid>
+    <RootNamespace>Musa.Runtime.TestForDriver</RootNamespace>
+    <MileProjectType>WDMDriver</MileProjectType>
+    <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
+    <MileProjectCompanyName>MeeSong</MileProjectCompanyName>
+    <MileProjectFileDescription>Musa.Runtime.TestForDriver</MileProjectFileDescription>
+    <MileProjectInternalName>Musa.Runtime.TestForDriver</MileProjectInternalName>
+    <MileProjectLegalCopyright>Copyright© MeeSong. All rights reserved.</MileProjectLegalCopyright>
+    <MileProjectOriginalFilename>Musa.Runtime.TestForDriver.sys</MileProjectOriginalFilename>
+    <MileProjectProductName>Musa.Runtime</MileProjectProductName>
+    <MileProjectVersion>1.0.0.0</MileProjectVersion>
+    <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
+  </PropertyGroup>
+  <!--
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x86.props" />
+  -->
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.ARM64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
+  <PropertyGroup Label="Globals">
+    <!--TODO: -->
+    <OutDir>$(MileProjectBinariesPath)$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(MileProjectObjectsPath)$(Configuration)\$(MSBuildProjectName)\$(Platform)\</IntDir>
+    <GeneratedFilesDir>$(IntDir)Generated Files\</GeneratedFilesDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <FilesToPackage Include="$(TargetPath)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="Musa.Runtime.TestForDriver.inf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Musa.Runtime.TestForDriver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Musa.Veil">
+      <Version>1.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Musa.Core">
+      <Version>0.1.5</Version>
+    </PackageReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <MusaRuntimeOnlyHeader>false</MusaRuntimeOnlyHeader>
+  </PropertyGroup>
+  <Import Project="..\Publish\config\Musa.Runtime.Config.props" />
+  <Import Project="..\Publish\config\Musa.Runtime.Config.targets" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
+</Project>
