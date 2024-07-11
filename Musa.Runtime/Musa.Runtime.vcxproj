@@ -54,7 +54,7 @@ xcopy /v /f /d /y "$(SolutionDir)\Musa.Runtime.NuGet\Musa.Runtime.Config.targets
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Musa.Veil">
-      <Version>1.0.0</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />

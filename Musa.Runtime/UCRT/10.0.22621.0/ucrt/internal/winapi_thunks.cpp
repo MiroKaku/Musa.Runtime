@@ -29,9 +29,23 @@ extern "C" PVOID WINAPI __acrt_FlsGetValue(DWORD const fls_index)
     return FlsGetValue(fls_index);
 }
 
+extern "C" PVOID WINAPI __acrt_FlsGetValue2(DWORD const fls_index)
+{
+#if (NTDDI_VERSION >= NTDDI_WIN11_GE)
+    return FlsGetValue2(fls_index);
+#else
+    return FlsGetValue(fls_index);
+#endif
+}
+
 extern "C" BOOL WINAPI __acrt_FlsSetValue(DWORD const fls_index, PVOID const fls_data)
 {
     return FlsSetValue(fls_index, fls_data);
+}
+
+extern "C" BOOL WINAPI __acrt_IsThreadAFiber()
+{
+    return false;
 }
 
 extern "C" BOOL WINAPI __acrt_InitializeCriticalSectionEx(

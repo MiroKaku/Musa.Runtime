@@ -108,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Musa.Veil">
-      <Version>1.0.0</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <ImportGroup Label="ExtensionTargets">

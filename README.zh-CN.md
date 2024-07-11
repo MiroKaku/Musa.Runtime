@@ -140,5 +140,6 @@ IDE：Visual Studio 2022 最新版
 * [Microsoft's C++ Standard Library](https://github.com/microsoft/stl)
 * [Chuyu-Team/VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
 * [RetrievAL](https://github.com/SpoilerScriptsGroup/RetrievAL)
+* [msvcr14x](https://github.com/sonyps5201314/msvcr14x)
 
 > 非常感谢这些优秀的项目，没有它们的存在，就不会有 Musa.Runtime。

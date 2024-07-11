@@ -100,9 +100,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\i386\sse2_initializer.cpp">
       <Filter>ucrt\initializers</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\per_thread_data.cpp">
-      <Filter>ucrt\internal</Filter>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\report_runtime_error.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
@@ -215,6 +212,9 @@
       <Filter>ucrt\internal</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\OutputDebugStringA.cpp">
+      <Filter>ucrt\internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\per_thread_data.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\locale_update.cpp">

@@ -67,7 +67,6 @@
       <ExcludedFromBuild Condition="'$(Platform)'=='ARM64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Platform)'=='x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\per_thread_data.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\report_runtime_error.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\shared_initialization.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\dbgrpt.cpp">
@@ -114,6 +113,7 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\initialization.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\locks.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\OutputDebugStringA.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\per_thread_data.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\winapi_thunks.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\locale_update.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\nlsdata.cpp" />
@@ -128,7 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Musa.Veil">
-      <Version>1.0.0</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <ImportGroup Label="ExtensionTargets">

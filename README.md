@@ -138,5 +138,6 @@ Thanks to [JetBrains](https://www.jetbrains.com/?from=meesong) for providing fre
 * [Microsoft's C++ Standard Library](https://github.com/microsoft/stl)
 * [Chuyu-Team/VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
 * [RetrievAL](https://github.com/SpoilerScriptsGroup/RetrievAL)
+* [msvcr14x](https://github.com/sonyps5201314/msvcr14x)
 
 > Great thanks to these excellent projects. Without their existence, there would be no Musa.Runtime then.

@@ -13,7 +13,7 @@
 
 #include "primitives.hpp"
 
-_EXTERN_C
+extern "C" {
 
 [[noreturn]] _CRTIMP2_PURE void __cdecl _Thrd_abort(const char* msg) { // abort on precondition failure
 #if !defined NTOS_KERNEL_RUNTIME
@@ -203,7 +203,7 @@ _CRTIMP2_PURE void __cdecl _Mtx_reset_owner(_Mtx_t mtx) { // set owner to curren
     ++mtx->_Count;
 }
 
-_END_EXTERN_C
+} // extern "C"
 
 /*
  * This file is derived from software bearing the following

@@ -9,13 +9,13 @@ extern "C++"
     {
         const size_t state_index_count = 2;
 
-        [[maybe_unused]] static bool initialize_global_state_isolation()
+        inline bool initialize_global_state_isolation()
         {
             __crt_global_state_mode_flsindex = __acrt_FlsAlloc(nullptr);
             return __crt_global_state_mode_flsindex != FLS_OUT_OF_INDEXES;
         }
 
-        [[maybe_unused]] static void uninitialize_global_state_isolation(const bool)
+        inline void uninitialize_global_state_isolation(const bool)
         {
             if (__crt_global_state_mode_flsindex != FLS_OUT_OF_INDEXES)
             {
@@ -24,7 +24,7 @@ extern "C++"
             }
         }
 
-        [[maybe_unused]] static size_t get_current_state_index()
+        inline size_t get_current_state_index()
         {
             DWORD dwLastError;
             size_t current_state_index;
@@ -35,32 +35,37 @@ extern "C++"
             return current_state_index;
         }
 
-        [[maybe_unused]] static size_t get_current_state_index(const __crt_scoped_get_last_error_reset&)
+        inline size_t get_current_state_index(const __crt_scoped_get_last_error_reset&)
         {
             return (size_t)__acrt_FlsGetValue(__crt_global_state_mode_flsindex);
         }
 
-        [[maybe_unused]] static bool is_os_call()
+        inline size_t get_current_state_index2()
+        {
+            return (size_t)__acrt_FlsGetValue2(__crt_global_state_mode_flsindex);
+        }
+
+        inline bool is_os_call()
         {
             return get_current_state_index() == 1;
         }
 
-        [[maybe_unused]] static void enter_os_call_inline()
+        inline void enter_os_call_inline()
         {
             __acrt_FlsSetValue(__crt_global_state_mode_flsindex, (PVOID)1);
         }
 
-        [[maybe_unused]] static void enter_os_call()
+        inline void enter_os_call()
         {
             enter_os_call_inline();
         }
 
-        [[maybe_unused]] static void leave_os_call_inline()
+        inline void leave_os_call_inline()
         {
             __acrt_FlsSetValue(__crt_global_state_mode_flsindex, (PVOID)0);
         }
 
-        [[maybe_unused]] static void leave_os_call()
+        inline void leave_os_call()
         {
             leave_os_call_inline();
         }
@@ -128,7 +133,7 @@ extern "C++"
         };
     }
 
-    [[maybe_unused]] static __acrt_lock_id __acrt_select_exit_lock()
+    inline __acrt_lock_id __acrt_select_exit_lock()
     {
         __acrt_lock_id lock_id;
 
