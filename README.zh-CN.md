@@ -17,13 +17,13 @@ Musa.Runtime 是以 [Musa.Core](https://github.com/MiroKaku/Musa.Core) 作为底
 
 ### 1.1 特性
 
-- [x] 支持 x64、ARM64（实验性）
-- [x] 支持 thread_local
+- [x] 支持 x64、~~ARM64（实验性）~~
 - [x] 支持 New/Delete
-- [x] 支持 C++ Exception (/EHa、/EHsc)
+- [x] 支持 C++ Exception (~~/EHa~~、/EHsc)
 - [x] 支持 Static Objects
 - [x] 支持 SAFESEH、GS (Buffer Security Check)
-- [x] 支持 STL (CoreCRT)
+- [x] 支持 STL (OneCore、CoreCRT)
+- [ ] 支持 thread_local
 
 ### 1.2 例子
 

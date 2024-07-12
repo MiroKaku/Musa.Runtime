@@ -16,13 +16,13 @@ It allows kernel developers to have a C++ development experience similar to that
 
 ### 1.1 Features
 
-- [x] support x64、ARM64 (Experimental)
-- [x] support thread_local
+- [x] support x64、~~ARM64 (Experimental)~~
 - [x] support New/Delete
-- [x] support C++ Exception (/EHa、/EHsc)
+- [x] support C++ Exception (~~/EHa~~、/EHsc)
 - [x] support Static Objects
 - [x] support SAFESEH、GS (Buffer Security Check)
-- [x] support STL (CoreCRT)
+- [x] support STL (OneCore、CoreCRT)
+- [ ] support thread_local
 
 ### 1.2 Example
 
