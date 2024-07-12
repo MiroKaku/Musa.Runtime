@@ -18,7 +18,7 @@ It allows kernel developers to have a C++ development experience similar to that
 
 - [x] support x64、~~ARM64 (Experimental)~~
 - [x] support New/Delete
-- [x] support C++ Exception (~~/EHa~~、/EHsc)
+- [x] support C++ Exception (/EHa、~~/EHsc~~) (IRQL <= APC_LEVEL)
 - [x] support Static Objects
 - [x] support SAFESEH、GS (Buffer Security Check)
 - [x] support STL (OneCore、CoreCRT)
