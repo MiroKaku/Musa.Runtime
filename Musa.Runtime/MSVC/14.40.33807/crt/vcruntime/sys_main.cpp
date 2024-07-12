@@ -12,6 +12,8 @@
 
 _CRT_BEGIN_C_HEADER
 
+NTSTATUS NTAPI DriverMain(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath);
+
 _ACRTIMP int __cdecl _seh_filter_sys(
     _In_ unsigned long       ExceptionNum,
     _In_ PEXCEPTION_POINTERS ExceptionPtr
@@ -21,7 +23,7 @@ _CRT_END_C_HEADER
 
 static PDRIVER_UNLOAD __scrt_drv_unload = nullptr;
 
-static VOID DriverUnload(_In_ PDRIVER_OBJECT DriverObject)
+static VOID NTAPI DriverUnload(_In_ PDRIVER_OBJECT DriverObject)
 {
     if (__scrt_drv_unload) {
         __scrt_drv_unload(DriverObject);
@@ -33,8 +35,6 @@ static VOID DriverUnload(_In_ PDRIVER_OBJECT DriverObject)
 
     (void)MusaCoreShutdown();
 }
-
-extern"C" NTSTATUS NTAPI DriverMain(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath);
 
 extern"C" NTSTATUS NTAPI DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 {

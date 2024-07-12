@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemDefinitionGroup Condition="('$(MusaRuntimeOnlyHeader)'=='') Or ('$(MusaRuntimeOnlyHeader)'=='false')">
     <Link>
-      <AdditionalDependencies>Musa.Runtime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sys_main.obj;Musa.Runtime.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 </Project>

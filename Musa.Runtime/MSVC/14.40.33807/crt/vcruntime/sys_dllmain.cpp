@@ -12,11 +12,12 @@
 //
 
 #include "sys_common.inl"
+#include <Musa.Core.h>
 
 _CRT_BEGIN_C_HEADER
 
-NTSTATUS DriverMainForDllAttach(_In_ PUNICODE_STRING RegistryPath);
-NTSTATUS DriverMainForDllDetach();
+NTSTATUS NTAPI DriverMainForDllAttach(_In_ PUNICODE_STRING RegistryPath);
+NTSTATUS NTAPI DriverMainForDllDetach();
 
 _ACRTIMP int __cdecl _seh_filter_sys(
     _In_ unsigned long       ExceptionNum,
@@ -26,8 +27,13 @@ _ACRTIMP int __cdecl _seh_filter_sys(
 _CRT_END_C_HEADER
 
 
-extern"C" NTSTATUS DllInitialize(_In_ PUNICODE_STRING RegistryPath)
+extern"C" NTSTATUS NTAPI DllInitialize(_In_ PUNICODE_STRING RegistryPath)
 {
+    auto main_status = MusaCoreStartup(nullptr, RegistryPath);
+    if (!NT_SUCCESS(main_status)) {
+        return main_status;
+    }
+
     if (!__scrt_initialize_crt(__scrt_module_type_sys))
         __scrt_fastfail(FAST_FAIL_FATAL_APP_EXIT);
 
@@ -74,13 +80,16 @@ extern"C" NTSTATUS DllInitialize(_In_ PUNICODE_STRING RegistryPath)
     }
 }
 
-extern"C" NTSTATUS DllUnload()
+extern"C" NTSTATUS NTAPI DllUnload()
 {
     auto const result = DriverMainForDllDetach();
+    if (!NT_SUCCESS(result)) {
+        return result;
+    }
 
     _cexit();
 
     __scrt_uninitialize_crt(true, true);
 
-    return result;
+    return MusaCoreShutdown();
 }
