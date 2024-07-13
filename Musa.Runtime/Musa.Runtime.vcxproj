@@ -40,7 +40,6 @@ xcopy /v /f /d /y "$(SolutionDir)\Musa.Runtime.NuGet\Musa.Runtime.Config.props" 
 xcopy /v /f /d /y "$(SolutionDir)\Musa.Runtime.NuGet\Musa.Runtime.Config.targets" "$(SolutionDir)\Publish\config\"
 xcopy /v /f /d /y "$(MSBuildThisFileDirectory)\kext\*.h" "$(SolutionDir)\Publish\include\kext\"
 xcopy /v /f /d /y "$(TargetDir)$(TargetName).lib" "$(SolutionDir)\Publish\lib\$(PlatformShortName)\$(Configuration)\"
-xcopy /v /f /d /y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)\Publish\lib\$(PlatformShortName)\$(Configuration)\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
