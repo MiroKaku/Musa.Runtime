@@ -51,9 +51,12 @@ xcopy /v /f /d /y "$(TargetDir)$(TargetName).lib" "$(SolutionDir)\Publish\lib\$(
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <PropertyGroup>
+    <MusaCoreOnlyHeader>true</MusaCoreOnlyHeader>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Musa.Veil">
-      <Version>1.1.1</Version>
+    <PackageReference Include="Musa.Core">
+      <Version>0.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />

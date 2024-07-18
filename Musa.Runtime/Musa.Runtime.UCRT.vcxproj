@@ -126,9 +126,12 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\startup\thread.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\stdio\output.cpp" />
   </ItemGroup>
+  <PropertyGroup>
+    <MusaCoreOnlyHeader>true</MusaCoreOnlyHeader>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Musa.Veil">
-      <Version>1.1.1</Version>
+    <PackageReference Include="Musa.Core">
+      <Version>0.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <ImportGroup Label="ExtensionTargets">

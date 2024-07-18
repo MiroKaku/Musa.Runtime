@@ -106,9 +106,12 @@
       <ExcludedFromBuild Condition="'$(Platform)'=='Win32'">true</ExcludedFromBuild>
     </MASM>
   </ItemGroup>
+  <PropertyGroup>
+    <MusaCoreOnlyHeader>true</MusaCoreOnlyHeader>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Musa.Veil">
-      <Version>1.1.1</Version>
+    <PackageReference Include="Musa.Core">
+      <Version>0.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <ImportGroup Label="ExtensionTargets">
