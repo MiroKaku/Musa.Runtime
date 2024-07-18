@@ -11,8 +11,43 @@
     </Inf>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Musa.Runtime.TestForDriver.cpp">
+    <ClCompile Include="TestForDriver.Main.cpp">
       <Filter>Test</Filter>
     </ClCompile>
+    <ClCompile Include="Test.Exceptions.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.Float2Int.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.SEH.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.StaticObject.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.Std.InitializerList.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.Std.Map.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.Std.ReAlloc.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.Std.Thread.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Universal.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Test.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Universal.h">
+      <Filter>Test</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

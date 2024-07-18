@@ -28,6 +28,13 @@
     <IntDir>$(MileProjectObjectsPath)$(Configuration)\$(MSBuildProjectName)\$(Platform)\</IntDir>
     <GeneratedFilesDir>$(IntDir)Generated Files\</GeneratedFilesDir>
   </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Universal.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>%(PrecompiledHeaderFile);%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
@@ -35,7 +42,18 @@
     <Inf Include="Musa.Runtime.TestForDriver.inf" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Musa.Runtime.TestForDriver.cpp" />
+    <ClCompile Include="Universal.cpp" >
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Test.Exceptions.cpp" />
+    <ClCompile Include="Test.Float2Int.cpp" />
+    <ClCompile Include="Test.SEH.cpp" />
+    <ClCompile Include="Test.StaticObject.cpp" />
+    <ClCompile Include="Test.Std.InitializerList.cpp" />
+    <ClCompile Include="Test.Std.Map.cpp" />
+    <ClCompile Include="Test.Std.ReAlloc.cpp" />
+    <ClCompile Include="Test.Std.Thread.cpp" />
+    <ClCompile Include="TestForDriver.Main.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <MusaCoreOnlyHeader>false</MusaCoreOnlyHeader>
@@ -44,6 +62,10 @@
     <PackageReference Include="Musa.Core">
       <Version>0.3.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="Universal.h" />
   </ItemGroup>
   <PropertyGroup>
     <MusaRuntimeOnlyHeader>false</MusaRuntimeOnlyHeader>
