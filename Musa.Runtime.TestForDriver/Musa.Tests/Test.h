@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <kext/kallocator.h>
 
 #include <vector>
@@ -6,8 +6,8 @@
 
 /////////////////////////////////////////////////////////////
 
-#ifndef ASSERT
-#  define ASSERT assert
+#ifndef VERIFY
+#define VERIFY ASSERT
 #endif
 
 // Logging
@@ -36,6 +36,14 @@
 #define _MAYBE_UNUSED
 #endif // _HAS_MAYBE_UNUSED
 
+#ifndef NOTHROW
+#if __cplusplus >= 201103L
+# define NOTHROW noexcept
+#else
+# define NOTHROW
+#endif
+#endif
+
 /////////////////////////////////////////////////////////////
 
 namespace UnitTest
@@ -43,15 +51,18 @@ namespace UnitTest
     template<typename T>
     using  Vector = std::vector<T, std::kallocator<T, PagedPool, 'TSET'>>;
 
-#if _MSVC_LANG < 201703L
+#if __cplusplus < 201703L
     __declspec(selectany) extern Vector<std::function<void()>> TestVec;
-#define TEST(name) TEST_ ## name
-#define TEST_PUSH(name) static auto _VEIL_CONCATENATE(TEST_Push_, __COUNTER__) = ::UnitTest::TestVec.emplace(::UnitTest::TestVec.end(), TEST(name))
-
+#define TEST_PUSH(name) static auto _VEIL_CONCATENATE(TEST_Push_, __COUNTER__) = ::UnitTest::TestVec.emplace(::UnitTest::TestVec.end(), name)
 #else
     inline Vector<std::function<void()>> TestVec;
-#define TEST(name) TEST_ ## name
-#define TEST_PUSH(name) static auto _VEIL_CONCATENATE(TEST_Push_, __COUNTER__) = ::UnitTest::TestVec.emplace_back(TEST(name))
+#define TEST_PUSH(name) static auto _VEIL_CONCATENATE(TEST_Push_, __COUNTER__) = ::UnitTest::TestVec.emplace_back(name)
 #endif
 
+#define _TEST(name, counter) \
+    static void _VEIL_CONCATENATE(name, counter)(); \
+    TEST_PUSH(_VEIL_CONCATENATE(name, counter)); \
+    static void _VEIL_CONCATENATE(name, counter)()
+
+#define TEST(name) _TEST(_VEIL_CONCATENATE(TEST_, name), __COUNTER__)
 }

@@ -1,53 +1,183 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Test">
-      <UniqueIdentifier>{2085d320-a853-45c9-a979-83997f73564c}</UniqueIdentifier>
+    <ClCompile Include="Universal.cpp" />
+    <ClCompile Include="TestForDriver.Main.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.CharConv.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Chrono.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.ConditionVariable.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.Array.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.Deque.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.ForwardList.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.List.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.Map.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.Set.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Container.Vector.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.CoRoutine.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.FileSystem.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Format.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Future.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.codecvt.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.collate.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.ctype.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.has_facet.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.locale.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.message.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.money_get.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.money_put.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.moneypunct.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.num_get.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.num_put.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.numpunct.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.time_get.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.time_put.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Locale.use_facet.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Math.cmath.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Math.complex.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Math.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Math.random.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Math.special_math.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Math.valarray.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Mutex.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Regex.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Semaphore.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Stream.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Stream.fstream.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Stream.iostream.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Stream.sstream.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Stream.streambuf.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Stream.syncstream.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Strings.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Thread.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Thread.jthread.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Thread.thread.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Utility.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Utility.thread_local.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Utility.type_info.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Universal.h" />
+    <ClInclude Include="Musa.Tests\Test.h">
+      <Filter>Musa.Tests</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="Musa.Runtime.TestForDriver.inf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Musa.Tests">
+      <UniqueIdentifier>{3ade1fb0-2a9d-467c-8eff-a89bea510e66}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Inf Include="Musa.Runtime.TestForDriver.inf">
-      <Filter>Test</Filter>
-    </Inf>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="TestForDriver.Main.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.Exceptions.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.Float2Int.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.SEH.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.StaticObject.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.Std.InitializerList.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.Std.Map.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.Std.ReAlloc.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.Std.Thread.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Universal.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Test.h">
-      <Filter>Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Universal.h">
-      <Filter>Test</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

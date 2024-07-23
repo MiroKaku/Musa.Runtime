@@ -44,6 +44,7 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\asan_noop.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\atomic.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\atomic_wait.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\charconv.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\cond.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\cthread.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\excptptr.cpp" />

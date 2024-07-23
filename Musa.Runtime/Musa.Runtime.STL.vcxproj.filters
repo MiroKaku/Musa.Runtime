@@ -22,6 +22,9 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\atomic_wait.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\charconv.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\cond.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>

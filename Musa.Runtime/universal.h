@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #pragma warning(disable: 4005 4189 4245 4457 4499 4838)
 
 // System Header
@@ -10,6 +10,8 @@ typedef __time32_t time_t;
 #else
 typedef __time64_t time_t;
 #endif
+
+#define _ATOMIC_WAIT_ON_ADDRESS_STATICALLY_AVAILABLE 0
 
 #define NOMINMAX
 #include <Veil.h>
