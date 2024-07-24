@@ -1,6 +1,7 @@
 ﻿#include <Veil.h>
 #include "Musa.Tests/Test.h"
 
+
 namespace Main
 {
     EXTERN_C VOID DriverExit(const PDRIVER_OBJECT DriverObject)
@@ -18,9 +19,15 @@ namespace Main
         MusaLOG("Entry.");
         DriverObject->DriverUnload = DriverExit;
 
-        for (const auto& Test : TestVec) {
-            Test();
-        }
+        IoRegisterDriverReinitialization(DriverObject, [](auto, auto, auto)
+        {
+            MusaLOG("Start testing ...");
+            for (const auto& Test : TestVec) {
+                Test();
+            }
+            MusaLOG("Complete test.");
+
+        }, nullptr);
 
         return 0l;
     }

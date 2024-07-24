@@ -46,6 +46,8 @@
 
 /////////////////////////////////////////////////////////////
 
+#pragma warning(disable: 4003 4100 4310)
+
 namespace UnitTest
 {
     template<typename T>
@@ -66,3 +68,10 @@ namespace UnitTest
 
 #define TEST(name) _TEST(_VEIL_CONCATENATE(TEST_, name), __COUNTER__)
 }
+
+/////////////////////////////////////////////////////////////
+
+#define TEST_HAS_NO_THREADS
+
+//#define TEST_HAS_ATOMIC
+//#define TEST_HAS_ALG_RANDOM

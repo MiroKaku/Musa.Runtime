@@ -33,7 +33,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Universal.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>%(PrecompiledHeaderFile);%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -43,60 +43,17 @@
     <Inf Include="Musa.Runtime.TestForDriver.inf" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Musa.Tests\Test.Atomic.cpp" />
-    <ClCompile Include="Musa.Tests\Test.CharConv.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Chrono.cpp" />
-    <ClCompile Include="Musa.Tests\Test.ConditionVariable.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.Array.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.Deque.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.ForwardList.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.List.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.Map.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.Set.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Container.Vector.cpp" />
-    <ClCompile Include="Musa.Tests\Test.CoRoutine.cpp" />
-    <ClCompile Include="Musa.Tests\Test.FileSystem.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Format.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Future.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.codecvt.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.collate.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.ctype.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.has_facet.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.locale.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.message.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.moneypunct.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.money_get.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.money_put.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.numpunct.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.num_get.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.num_put.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.time_get.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.time_put.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Locale.use_facet.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Math.cmath.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Math.complex.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Math.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Math.random.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Math.special_math.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Math.valarray.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Mutex.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Regex.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Semaphore.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Stream.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Stream.fstream.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Stream.iostream.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Stream.sstream.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Stream.streambuf.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Stream.syncstream.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Strings.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Thread.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Thread.jthread.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Thread.thread.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Utility.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Utility.thread_local.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Utility.type_info.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Ranges.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Stable.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.Fences.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.Flag.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.LockFree.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.Order.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.Ref.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Float.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Generic.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Operations.cpp" />
     <ClCompile Include="Universal.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

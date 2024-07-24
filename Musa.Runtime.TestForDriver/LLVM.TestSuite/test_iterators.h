@@ -1,4 +1,4 @@
-//===----------------------------------------------------------------------===//
+﻿//===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -1083,9 +1083,9 @@ rvalue_iterator(T*) -> rvalue_iterator<T>;
 
 static_assert(std::random_access_iterator<rvalue_iterator<int*>>);
 
-// Proxy
+// ProxyT
 // ======================================================================
-// Proxy that can wrap a value or a reference. It simulates C++23's tuple
+// ProxyT that can wrap a value or a reference. It simulates C++23's tuple
 // but simplified to just hold one argument.
 // Note that unlike tuple, this class deliberately doesn't have special handling
 // of swap to cause a compilation error if it's used in an algorithm that relies
@@ -1094,16 +1094,16 @@ static_assert(std::random_access_iterator<rvalue_iterator<int*>>);
 // properly, i.e. calling ranges::iter_swap and ranges::iter_move instead of
 // plain swap and std::move.
 template <class T>
-struct Proxy;
+struct ProxyT;
 
 template <class T>
 inline constexpr bool IsProxy = false;
 
 template <class T>
-inline constexpr bool IsProxy<Proxy<T>> = true;
+inline constexpr bool IsProxy<ProxyT<T>> = true;
 
 template <class T>
-struct Proxy {
+struct ProxyT {
   T data;
 
   constexpr T& getData() & { return data; }
@@ -1116,16 +1116,16 @@ struct Proxy {
 
   template <class U>
     requires std::constructible_from<T, U&&>
-  constexpr Proxy(U&& u) : data{std::forward<U>(u)} {}
+  constexpr ProxyT(U&& u) : data{std::forward<U>(u)} {}
 
-  // This constructor covers conversion from cvref of Proxy<U>, including non-const/const versions of copy/move constructor
+  // This constructor covers conversion from cvref of ProxyT<U>, including non-const/const versions of copy/move constructor
   template <class Other>
     requires(IsProxy<std::decay_t<Other>> && std::constructible_from<T, decltype(std::declval<Other>().getData())>)
-  constexpr Proxy(Other&& other) : data{std::forward<Other>(other).getData()} {}
+  constexpr ProxyT(Other&& other) : data{std::forward<Other>(other).getData()} {}
 
   template <class Other>
     requires(IsProxy<std::decay_t<Other>> && std::assignable_from<T&, decltype(std::declval<Other>().getData())>)
-  constexpr Proxy& operator=(Other&& other) {
+  constexpr ProxyT& operator=(Other&& other) {
     data = std::forward<Other>(other).getData();
     return *this;
   }
@@ -1133,42 +1133,42 @@ struct Proxy {
   // const assignment required to make ProxyIterator model std::indirectly_writable
   template <class Other>
     requires(IsProxy<std::decay_t<Other>> && std::assignable_from<const T&, decltype(std::declval<Other>().getData())>)
-  constexpr const Proxy& operator=(Other&& other) const {
+  constexpr const ProxyT& operator=(Other&& other) const {
     data = std::forward<Other>(other).getData();
     return *this;
   }
 
   // If `T` is a reference type, the implicitly-generated assignment operator will be deleted (and would take precedence
   // over the templated `operator=` above because it's a better match).
-  constexpr Proxy& operator=(const Proxy& rhs) {
+  constexpr ProxyT& operator=(const ProxyT& rhs) {
     data = rhs.data;
     return *this;
   }
 
-  // no specialised swap function that takes const Proxy& and no specialised const member swap
-  // Calling swap(Proxy<T>{}, Proxy<T>{}) would fail (pass prvalues)
+  // no specialised swap function that takes const ProxyT& and no specialised const member swap
+  // Calling swap(ProxyT<T>{}, ProxyT<T>{}) would fail (pass prvalues)
 
   // Compare operators are defined for the convenience of the tests
-  friend constexpr bool operator==(const Proxy&, const Proxy&)
+  friend constexpr bool operator==(const ProxyT&, const ProxyT&)
     requires (std::equality_comparable<T> && !std::is_reference_v<T>)
   = default;
 
-  // Helps compare e.g. `Proxy<int>` and `Proxy<int&>`. Note that the default equality comparison operator is deleted
+  // Helps compare e.g. `ProxyT<int>` and `ProxyT<int&>`. Note that the default equality comparison operator is deleted
   // when `T` is a reference type.
   template <class U>
-  friend constexpr bool operator==(const Proxy& lhs, const Proxy<U>& rhs)
+  friend constexpr bool operator==(const ProxyT& lhs, const ProxyT<U>& rhs)
     requires std::equality_comparable_with<std::decay_t<T>, std::decay_t<U>> {
     return lhs.data == rhs.data;
   }
 
-  friend constexpr auto operator<=>(const Proxy&, const Proxy&)
+  friend constexpr auto operator<=>(const ProxyT&, const ProxyT&)
     requires (std::three_way_comparable<T> && !std::is_reference_v<T>)
   = default;
 
-  // Helps compare e.g. `Proxy<int>` and `Proxy<int&>`. Note that the default 3-way comparison operator is deleted when
+  // Helps compare e.g. `ProxyT<int>` and `ProxyT<int&>`. Note that the default 3-way comparison operator is deleted when
   // `T` is a reference type.
   template <class U>
-  friend constexpr auto operator<=>(const Proxy& lhs, const Proxy<U>& rhs)
+  friend constexpr auto operator<=>(const ProxyT& lhs, const ProxyT<U>& rhs)
     requires std::three_way_comparable_with<std::decay_t<T>, std::decay_t<U>> {
     return lhs.data <=> rhs.data;
   }
@@ -1177,26 +1177,26 @@ struct Proxy {
 // This is to make ProxyIterator model `std::indirectly_readable`
 template <class T, class U, template <class> class TQual, template <class> class UQual>
   requires requires { typename std::common_reference_t<TQual<T>, UQual<U>>; }
-struct std::basic_common_reference<Proxy<T>, Proxy<U>, TQual, UQual> {
-  using type = Proxy<std::common_reference_t<TQual<T>, UQual<U>>>;
+struct std::basic_common_reference<ProxyT<T>, ProxyT<U>, TQual, UQual> {
+  using type = ProxyT<std::common_reference_t<TQual<T>, UQual<U>>>;
 };
 
 template <class T, class U>
   requires requires { typename std::common_type_t<T, U>; }
-struct std::common_type<Proxy<T>, Proxy<U>> {
-  using type = Proxy<std::common_type_t<T, U>>;
+struct std::common_type<ProxyT<T>, ProxyT<U>> {
+  using type = ProxyT<std::common_type_t<T, U>>;
 };
 
 // ProxyIterator
 // ======================================================================
-// It wraps `Base` iterator and when dereferenced it returns a Proxy<ref>
+// It wraps `Base` iterator and when dereferenced it returns a ProxyT<ref>
 // It simulates C++23's zip_view::iterator but simplified to just wrap
 // one base iterator.
 // Note it forwards value_type, iter_move, iter_swap. e.g if the base
 // iterator is int*,
-// operator*    -> Proxy<int&>
-// iter_value_t -> Proxy<int>
-// iter_move    -> Proxy<int&&>
+// operator*    -> ProxyT<int&>
+// iter_value_t -> ProxyT<int>
+// iter_move    -> ProxyT<int&&>
 template <class Base>
 struct ProxyIteratorBase {};
 
@@ -1226,7 +1226,7 @@ struct ProxyIterator : ProxyIteratorBase<Base> {
   Base base_;
 
   using iterator_concept = decltype(get_iterator_concept<Base>());
-  using value_type       = Proxy<std::iter_value_t<Base>>;
+  using value_type       = ProxyT<std::iter_value_t<Base>>;
   using difference_type  = std::iter_difference_t<Base>;
 
   ProxyIterator()
@@ -1242,10 +1242,10 @@ struct ProxyIterator : ProxyIteratorBase<Base> {
   friend constexpr decltype(auto) base(const ProxyIterator& p) { return base(p.base_); }
 
   // Specialization of iter_move
-  // If operator* returns Proxy<Foo&>, iter_move will return Proxy<Foo&&>
-  // Note std::move(*it) returns Proxy<Foo&>&&, which is not what we want as
+  // If operator* returns ProxyT<Foo&>, iter_move will return ProxyT<Foo&&>
+  // Note std::move(*it) returns ProxyT<Foo&>&&, which is not what we want as
   // it will likely result in a copy rather than a move
-  friend constexpr Proxy<std::iter_rvalue_reference_t<Base>> iter_move(const ProxyIterator& p) noexcept {
+  friend constexpr ProxyT<std::iter_rvalue_reference_t<Base>> iter_move(const ProxyIterator& p) noexcept {
     return {std::ranges::iter_move(p.base_)};
   }
 
@@ -1257,7 +1257,7 @@ struct ProxyIterator : ProxyIteratorBase<Base> {
   }
 
   // to satisfy input_iterator
-  constexpr Proxy<std::iter_reference_t<Base>> operator*() const { return {*base_}; }
+  constexpr ProxyT<std::iter_reference_t<Base>> operator*() const { return {*base_}; }
 
   constexpr ProxyIterator& operator++() {
     ++base_;
@@ -1306,7 +1306,7 @@ struct ProxyIterator : ProxyIteratorBase<Base> {
     return *this;
   }
 
-  constexpr Proxy<std::iter_reference_t<Base>> operator[](difference_type n) const
+  constexpr ProxyT<std::iter_reference_t<Base>> operator[](difference_type n) const
     requires std::random_access_iterator<Base> {
     return {base_[n]};
   }
@@ -1360,8 +1360,8 @@ template <class Base>
 ProxyIterator(Base) -> ProxyIterator<Base>;
 
 static_assert(std::indirectly_readable<ProxyIterator<int*>>);
-static_assert(std::indirectly_writable<ProxyIterator<int*>, Proxy<int>>);
-static_assert(std::indirectly_writable<ProxyIterator<int*>, Proxy<int&>>);
+static_assert(std::indirectly_writable<ProxyIterator<int*>, ProxyT<int>>);
+static_assert(std::indirectly_writable<ProxyIterator<int*>, ProxyT<int&>>);
 
 template <class Iter>
 using Cpp20InputProxyIterator = ProxyIterator<cpp20_input_iterator<Iter>>;

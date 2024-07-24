@@ -129,6 +129,7 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\std_type_info_static.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\thread_safe_statics.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\throw_bad_alloc.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\tncleanup.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\undname.cxx">

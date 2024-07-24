@@ -3,168 +3,37 @@
   <ItemGroup>
     <ClCompile Include="Universal.cpp" />
     <ClCompile Include="TestForDriver.Main.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.cpp">
+    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.CharConv.cpp">
+    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Ranges.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Chrono.cpp">
+    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Stable.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.ConditionVariable.cpp">
+    <ClCompile Include="Musa.Tests\Test.Atomic.Fences.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.Array.cpp">
+    <ClCompile Include="Musa.Tests\Test.Atomic.Flag.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.cpp">
+    <ClCompile Include="Musa.Tests\Test.Atomic.LockFree.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.Deque.cpp">
+    <ClCompile Include="Musa.Tests\Test.Atomic.Order.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.ForwardList.cpp">
+    <ClCompile Include="Musa.Tests\Test.Atomic.Ref.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.List.cpp">
+    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Generic.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.Map.cpp">
+    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Operations.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.Set.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Container.Vector.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.CoRoutine.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.FileSystem.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Format.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Future.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.codecvt.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.collate.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.ctype.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.has_facet.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.locale.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.message.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.money_get.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.money_put.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.moneypunct.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.num_get.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.num_put.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.numpunct.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.time_get.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.time_put.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Locale.use_facet.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Math.cmath.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Math.complex.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Math.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Math.random.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Math.special_math.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Math.valarray.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Mutex.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Regex.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Semaphore.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Stream.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Stream.fstream.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Stream.iostream.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Stream.sstream.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Stream.streambuf.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Stream.syncstream.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Strings.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Thread.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Thread.jthread.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Thread.thread.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Utility.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Utility.thread_local.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Utility.type_info.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Float.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Universal.h" />

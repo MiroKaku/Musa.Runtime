@@ -1,4 +1,12 @@
 ﻿#pragma once
+
+//
+// libcmt[d].lib        -> Musa.Runtime.CRT
+// libcpmt[d].lib       -> Musa.Runtime.STL
+// libvcruntime[d].lib  -> Musa.Runtime.VCRT
+// libucrt[d].lib       -> Musa.Runtime.UCRT
+//
+
 #pragma warning(disable: 4005 4189 4245 4457 4499 4838)
 
 // System Header
