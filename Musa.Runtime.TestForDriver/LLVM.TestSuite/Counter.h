@@ -1,4 +1,4 @@
-//===----------------------------------------------------------------------===//
+﻿//===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -38,7 +38,7 @@ private:
     T data_;
 };
 
-int Counter_base::gConstructed = 0;
+inline int Counter_base::gConstructed = 0;
 
 namespace std {
 

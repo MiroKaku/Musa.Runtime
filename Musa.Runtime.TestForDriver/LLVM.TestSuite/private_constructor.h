@@ -1,4 +1,4 @@
-//===----------------------------------------------------------------------===//
+﻿//===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -18,9 +18,9 @@ private:
     int val;
     };
 
-bool operator < ( const PrivateConstructor &lhs, const PrivateConstructor &rhs ) { return lhs.get() < rhs.get(); }
+inline bool operator < ( const PrivateConstructor &lhs, const PrivateConstructor &rhs ) { return lhs.get() < rhs.get(); }
 
-bool operator < ( const PrivateConstructor &lhs, int rhs ) { return lhs.get() < rhs; }
-bool operator < ( int lhs, const PrivateConstructor &rhs ) { return lhs < rhs.get(); }
+inline bool operator < ( const PrivateConstructor &lhs, int rhs ) { return lhs.get() < rhs; }
+inline bool operator < ( int lhs, const PrivateConstructor &rhs ) { return lhs < rhs.get(); }
 
 #endif // TEST_SUPPORT_PRIVATE_CONSTRUCTOR_H

@@ -1,4 +1,6 @@
-﻿#include <atomic>
+﻿#ifdef TEST_HAS_ATOMIC
+
+#include <atomic>
 
 #include "LLVM.TestSuite/test_macros.h"
 #include "LLVM.TestSuite/atomic_helpers.h"
@@ -1851,3 +1853,5 @@ TEST(wait)
     test_wait<float>();
     test_wait<double>();
 }
+
+#endif

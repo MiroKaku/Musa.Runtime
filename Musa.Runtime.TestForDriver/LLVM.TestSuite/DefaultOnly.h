@@ -1,4 +1,4 @@
-//===----------------------------------------------------------------------===//
+﻿//===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -29,6 +29,6 @@ public:
         {return x.data_ < y.data_;}
 };
 
-int DefaultOnly::count = 0;
+inline int DefaultOnly::count = 0;
 
 #endif // DEFAULTONLY_H

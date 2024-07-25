@@ -33,7 +33,63 @@
     <ClCompile Include="Musa.Tests\Test.Atomic.Types.Operations.cpp">
       <Filter>Musa.Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Float.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.PriorityQueue.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Queue.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Stack.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Node.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Array.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Deque.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.ForwardList.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.List.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Vector.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Float.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Map.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiMap.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiSet.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Set.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.View.Span.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Map.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiMap.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiSet.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Set.cpp">
+      <Filter>Musa.Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Universal.h" />

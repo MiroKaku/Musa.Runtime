@@ -1,4 +1,4 @@
-//===----------------------------------------------------------------------===//
+﻿//===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -104,10 +104,10 @@ struct malloc_allocator_base {
     }
 };
 
-size_t malloc_allocator_base::outstanding_bytes = 0;
-size_t malloc_allocator_base::alloc_count = 0;
-size_t malloc_allocator_base::dealloc_count = 0;
-bool malloc_allocator_base::disable_default_constructor = false;
+inline size_t malloc_allocator_base::outstanding_bytes = 0;
+inline size_t malloc_allocator_base::alloc_count = 0;
+inline size_t malloc_allocator_base::dealloc_count = 0;
+inline bool malloc_allocator_base::disable_default_constructor = false;
 
 
 template <class T>

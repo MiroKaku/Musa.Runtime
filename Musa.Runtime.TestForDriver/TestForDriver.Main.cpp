@@ -4,6 +4,8 @@
 
 namespace Main
 {
+    using namespace UnitTest;
+
     EXTERN_C VOID DriverExit(const PDRIVER_OBJECT DriverObject)
     {
         UNREFERENCED_PARAMETER(DriverObject);
@@ -13,13 +15,12 @@ namespace Main
 
     EXTERN_C NTSTATUS DriverMain(const PDRIVER_OBJECT DriverObject, const PUNICODE_STRING Registry)
     {
-        using namespace UnitTest;
         UNREFERENCED_PARAMETER(Registry);
 
         MusaLOG("Entry.");
         DriverObject->DriverUnload = DriverExit;
 
-        IoRegisterDriverReinitialization(DriverObject, [](auto, auto, auto)
+        return KeExpandKernelStackAndCalloutEx([](auto)
         {
             MusaLOG("Start testing ...");
             for (const auto& Test : TestVec) {
@@ -27,9 +28,7 @@ namespace Main
             }
             MusaLOG("Complete test.");
 
-        }, nullptr);
-
-        return 0l;
+        }, nullptr, MAXIMUM_EXPANSION_SIZE, TRUE, nullptr);
     }
 
 }

@@ -54,6 +54,24 @@
     <ClCompile Include="Musa.Tests\Test.Atomic.Types.Float.cpp" />
     <ClCompile Include="Musa.Tests\Test.Atomic.Types.Generic.cpp" />
     <ClCompile Include="Musa.Tests\Test.Atomic.Types.Operations.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.PriorityQueue.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Queue.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Stack.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Map.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiMap.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiSet.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Set.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Node.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Array.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Deque.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.ForwardList.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.List.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Vector.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Map.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiMap.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiSet.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Set.cpp" />
+    <ClCompile Include="Musa.Tests\Test.Containers.View.Span.cpp" />
     <ClCompile Include="Universal.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
