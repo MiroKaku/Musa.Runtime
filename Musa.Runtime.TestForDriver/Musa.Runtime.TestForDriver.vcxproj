@@ -82,7 +82,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Musa.Core">
-      <Version>0.3.1</Version>
+      <Version>0.3.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
