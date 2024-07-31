@@ -190,9 +190,6 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ucrt_detection.c">
       <Filter>crt\vcstartup</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\undname.cxx">
-      <Filter>crt\vcstartup</Filter>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\x86_exception_filter.cpp">
       <Filter>crt\vcstartup</Filter>
     </ClCompile>

@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //
 //
@@ -550,6 +550,8 @@
 #define TC_template_type_parameter_pack 'T'
 #define TC_generic_class_parameter      'U'
 #define TC_generic_method_parameter     'V'
+
+#define TC_dependent_expr               TC_nontype_dummy
 
 //
 // Encoding for special help function

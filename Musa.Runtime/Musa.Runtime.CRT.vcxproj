@@ -130,9 +130,6 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ucrt_stubs.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\undname.cxx">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\x86_exception_filter.cpp">
       <ExcludedFromBuild Condition="'$(Platform)'=='ARM64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Platform)'=='x64'">true</ExcludedFromBuild>

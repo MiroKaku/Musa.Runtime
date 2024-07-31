@@ -10,6 +10,9 @@
 #pragma warning(disable: 4005 4189 4245 4457 4499 4838)
 
 // System Header
+#define _NO_CRT_STDIO_INLINE    // TODO: NLS
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <corecrt.h>
 
 #undef _CRT_NO_TIME_T

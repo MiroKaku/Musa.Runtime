@@ -66,6 +66,7 @@
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\rtti.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\std_exception.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\std_type_info.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\throw.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\uncaught_exception.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\uncaught_exceptions.cpp" />
@@ -76,7 +77,7 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\jbcxrval.c">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\std_type_info.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\undname.cxx" />
   </ItemGroup>
   <ItemGroup>
     <MARMASM Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\arm64\handlers.asm">
