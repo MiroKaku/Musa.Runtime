@@ -108,23 +108,34 @@ static __declspec(noinline) VOID NTAPI __scrt_common_exit(_In_ PDRIVER_OBJECT dr
     (void)MusaCoreShutdown();
 }
 
+extern"C" extern ULONG _tls_index;
+
 static __declspec(noinline) int __cdecl __scrt_common_main_seh(
     _In_opt_ PDRIVER_OBJECT     driver_object,
     _In_     PUNICODE_STRING    registry_path,
     _In_     PDRIVER_INITIALIZE driver_main
     )
 {
-    auto main_status = MusaCoreStartup(driver_object, registry_path);
-    if (!NT_SUCCESS(main_status)) {
-        return main_status;
+    long status = MusaCoreStartup(driver_object, registry_path);
+    if (!NT_SUCCESS(status)) {
+        return status;
     }
 
-    if (!__scrt_initialize_crt(__scrt_module_type_sys))
+    _tls_index = TlsAlloc();
+    if (_tls_index == TLS_OUT_OF_INDEXES) {
         __scrt_fastfail(FAST_FAIL_FATAL_APP_EXIT);
+    }
+
+    if (!__scrt_initialize_crt(__scrt_module_type_sys)) {
+        __scrt_fastfail(FAST_FAIL_FATAL_APP_EXIT);
+    }
 
     __try {
-        if (_initterm_e(__xi_a, __xi_z) != 0)
+        if (_initterm_e(__xi_a, __xi_z) != 0) {
+            (void)MusaCoreShutdown();
+
             return STATUS_DRIVER_INTERNAL_ERROR;
+        }
 
         _initterm(__xc_a, __xc_z);
 

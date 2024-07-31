@@ -51,6 +51,7 @@
       <ObjectFileName>$(IntDir)anyname\%(RelativeDir)%(FileName).obj</ObjectFileName>
       -->
       <AdditionalIncludeDirectories>$(Musa_Runtime_VC_IncludePath_Overlay);$(Musa_Runtime_UCRT_IncludePath_Overlay);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus /Zc:threadSafeInit- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <MASM Condition="'$(Platform)'=='Win32'">
       <IncludePaths>$(Musa_Runtime_VC_ToolsInstallDir)\crt\i386;$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\inc\i386;%(IncludePaths)</IncludePaths>

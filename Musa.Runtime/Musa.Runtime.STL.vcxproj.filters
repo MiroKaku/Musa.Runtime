@@ -34,6 +34,9 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\excptptr.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\future.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\memory_resource.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
@@ -74,6 +77,15 @@
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xalloc.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xcharconv_ryu_tables.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xcharconv_tables_double.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xcharconv_tables_float.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xcosh.cpp">
@@ -193,9 +205,6 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xprec.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xrngabort.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xrngdev.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
@@ -215,6 +224,9 @@
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\syserror_import_lib.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\xrngabort.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
   </ItemGroup>

@@ -42,6 +42,7 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
     <ClInclude Include="universal.h" />
     <ClInclude Include="kext\kallocator.h" />
     <ClInclude Include="kext\knew.h" />
+    <ClInclude Include="kext\thread_local.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="universal.cpp">
@@ -49,18 +50,6 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
     </ClCompile>
     <ClCompile Include="kext\delete_km.cpp" />
     <ClCompile Include="kext\new_km.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\denormal_control.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\dyn_tls_init.c">
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\invalid_parameter_handler.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\tlsdtor.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\tlsdyn.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\tlssup.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ucrt_detection.c">
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ucrt_stubs.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\arm64\gshandlereh.cpp">
       <ExcludedFromBuild Condition="'$(Platform)'=='Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Platform)'=='x64'">true</ExcludedFromBuild>
@@ -97,6 +86,10 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\delete_scalar_nothrow.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\delete_scalar_size.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\delete_scalar_size_align.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\denormal_control.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\dyn_tls_init.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ehvccctr.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ehvcccvb.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ehvecctr.cpp" />
@@ -112,6 +105,7 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\huge.c">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\invalid_parameter_handler.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\loadcfg.c">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -129,9 +123,13 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\std_type_info_static.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\thread_safe_statics.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\throw_bad_alloc.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\tlssup.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\tncleanup.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ucrt_detection.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\ucrt_stubs.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime\undname.cxx">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -158,6 +156,9 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\initializers.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\thread_safe_statics.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\tlsdtor.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\tlsdyn.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\sys_dllmain.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\sys_main.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\utility.cpp" />

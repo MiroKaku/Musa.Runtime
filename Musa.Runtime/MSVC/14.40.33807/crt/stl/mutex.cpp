@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include <cstdio>
@@ -19,7 +19,8 @@ extern "C" {
     fputs(msg, stderr);
     fputc('\n', stderr);
 #else
-    DbgPrintEx(DPFLTR_DEFAULT_ID, DPFLTR_ERROR_LEVEL, msg);
+    OutputDebugStringA(msg);
+    OutputDebugStringA("\n");
 #endif
     abort();
 }

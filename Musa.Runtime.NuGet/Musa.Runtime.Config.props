@@ -54,6 +54,7 @@
     <ClCompile>
       <!-- C++ Exception Mode, /EHa -->
       <ExceptionHandling>Async</ExceptionHandling>
+      <AdditionalOptions>/Zc:threadSafeInit- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
 
