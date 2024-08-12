@@ -112,7 +112,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Musa.Core">
-      <Version>0.3.3</Version>
+      <Version>0.3.4</Version>
     </PackageReference>
   </ItemGroup>
   <ImportGroup Label="ExtensionTargets">
