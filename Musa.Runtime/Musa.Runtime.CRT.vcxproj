@@ -153,9 +153,13 @@ echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publi
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\initializers.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\thread_safe_statics.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\thread_safe_statics.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\tlsdtor.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\tlsdyn.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\tlsdyn.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\sys_dllmain.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\sys_main.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime\utility.cpp" />

@@ -325,6 +325,8 @@ unsigned __int64 _rdpru(unsigned int);
   
 #if defined (_M_X64)
 // Secure Nested Paging
+#if _MSC_VER <= 1942
+
 typedef struct rmp_seg {
     unsigned __int64 rmp_gpa;
     __int8           rmp_entry;
@@ -334,11 +336,40 @@ typedef struct rmp_seg {
     __int32          rmp_ASID;
 } rmp_seg;
 
-unsigned int __rmpupdate(unsigned __int64, rmp_seg *, int);
-unsigned int __pvalidate(unsigned __int64, int, int, int *);
+unsigned int __rmpupdate(unsigned __int64, rmp_seg*, int);
+unsigned int __pvalidate(unsigned __int64, int, int, int*);
 unsigned int __psmash(unsigned __int64);
 unsigned int __rmpadjust(unsigned __int64, int, int);
 unsigned int __rmpquery(unsigned __int64, int, int);
+
+#else
+
+// Secure Nested Paging
+typedef struct rmp_entry {
+    unsigned __int64 guest_pa;
+    unsigned __int8  assigned;
+    unsigned __int8  page_size : 1;
+    unsigned __int8  rmp_2mb_region_status : 1;
+    unsigned __int8  reserved1 : 6;
+    unsigned __int8  immutable;
+    unsigned __int8  reserved2;
+    unsigned __int32 asid;
+} rmp_entry;
+
+typedef struct rmpquery_result {
+    unsigned __int8  target_perm_mask;
+    unsigned __int8  vmsa;
+    unsigned __int8  page_size;
+} rmpquery_result;
+
+unsigned int __rmpupdate(unsigned __int64, rmp_entry*);
+unsigned int __pvalidate(unsigned __int64, unsigned __int8, unsigned __int8, unsigned __int8*);
+unsigned int __psmash(unsigned __int64);
+unsigned int __rmpadjust(unsigned __int64, unsigned __int8, unsigned __int8, unsigned __int8);
+unsigned int __rmpquery(unsigned __int64, unsigned __int8, rmpquery_result*);
+unsigned int __rmpread(unsigned __int64, rmp_entry*);
+
+#endif /* _MSC_VER */
 #endif  /* defined (_M_X64) */
 
 

@@ -33,6 +33,7 @@ extern "C" {
 ** __MACHINEX86           : x86 only
 ** __MACHINEX64           : x64 only
 ** __MACHINEX86_X64       : x86 and x64 only
+** __MACHINEX86_X64_ARM64 : x86, x64, and ARM64 only
 ** __MACHINEARM           : ARM only
 ** __MACHINEARM64         : ARM64 only
 ** __MACHINEARM_ARM64     : ARM and ARM64 only
@@ -46,12 +47,14 @@ extern "C" {
 #define __MACHINEX86           __MACHINE
 #define __MACHINEX64           __MACHINE
 #define __MACHINEX86_X64       __MACHINE
+#define __MACHINEX86_X64_ARM64 __MACHINE
 #define __MACHINEARM           __MACHINE
 #define __MACHINEARM64         __MACHINE
 #define __MACHINEARM_ARM64     __MACHINE
 #define __MACHINEARM_ARM64_X64 __MACHINE
 #define __MACHINEARM64_X64     __MACHINE
 #define __MACHINECHPEX86ARM64  __MACHINE
+#define __MACHINEARM64EC       __MACHINE
 
 /* Most intrinsics not available to pure managed code */
 #if defined(_M_CEE_PURE)
@@ -111,9 +114,19 @@ extern "C" {
 #define __MACHINEARM64_X64     __MACHINEZ
 #endif
 
+#if !(defined(_M_IX86) || defined(_M_X64) || defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || defined(_M_ARM64EC)) || defined(_CHPE_ONLY_) 
+#undef __MACHINEX86_ARM64_X64
+#define __MACHINEX86_ARM64_X64     __MACHINEZ
+#endif
+
 #if !defined(_M_HYBRID_X86_ARM64)
 #undef __MACHINECHPEX86ARM64
 #define __MACHINECHPEX86ARM64 __MACHINEZ
+#endif
+
+#if !defined(_M_ARM64EC)
+#undef __MACHINEARM64EC
+#define __MACHINEARM64EC __MACHINEZ
 #endif
 
 /*******************************************************************
@@ -268,9 +281,9 @@ __MACHINEX86_X64(void _mm_pause(void))
 __MACHINEX86_X64(unsigned int __lzcnt(unsigned int))
 __MACHINEX86_X64(unsigned short __lzcnt16(unsigned short))
 __MACHINEX64(unsigned __int64 __lzcnt64(unsigned __int64))
-__MACHINEX86_X64(unsigned int __popcnt(unsigned int))
-__MACHINEX86_X64(unsigned short __popcnt16(unsigned short))
-__MACHINEX64(unsigned __int64 __popcnt64(unsigned __int64))
+__MACHINEX86_X64_ARM64(unsigned int __popcnt(unsigned int))
+__MACHINEX86_X64_ARM64(unsigned short __popcnt16(unsigned short))
+__MACHINEARM64_X64(unsigned __int64 __popcnt64(unsigned __int64))
 __MACHINE(unsigned int __cdecl _rotl(_In_ unsigned int _Value, _In_ int _Shift))
 __MACHINE(unsigned short __cdecl _rotl16(unsigned short _Value, unsigned char _Shift))
 __MACHINE(unsigned __int64 __cdecl _rotl64(_In_ unsigned __int64 _Value, _In_ int _Shift))
