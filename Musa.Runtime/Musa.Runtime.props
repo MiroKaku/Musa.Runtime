@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Musa_Runtime_VC_Version_Overlay>14.40.33807</Musa_Runtime_VC_Version_Overlay>
+    <Musa_Runtime_VC_Version_Overlay>14.43.34808</Musa_Runtime_VC_Version_Overlay>
     <Musa_Runtime_VC_ToolsInstallDir_Overlay>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\MSVC\$(Musa_Runtime_VC_Version_Overlay)'))</Musa_Runtime_VC_ToolsInstallDir_Overlay>
     <Musa_Runtime_VC_IncludePath_Overlay>$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\include;$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\vcruntime</Musa_Runtime_VC_IncludePath_Overlay>
   </PropertyGroup>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Musa_Runtime_VC_Version>14.40.33807</Musa_Runtime_VC_Version>
+    <Musa_Runtime_VC_Version>14.43.34808</Musa_Runtime_VC_Version>
     <Musa_Runtime_VC_ToolsInstallDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\Microsoft.VisualC.Runtime\MSVC\$(Musa_Runtime_VC_Version)'))</Musa_Runtime_VC_ToolsInstallDir>
     <Musa_Runtime_VC_IncludePath>$(Musa_Runtime_VC_ToolsInstallDir)\include;$(Musa_Runtime_VC_ToolsInstallDir)\crt\vcruntime;$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl</Musa_Runtime_VC_IncludePath>
   </PropertyGroup>
