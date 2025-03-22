@@ -1,6 +1,6 @@
 # [Musa.Runtime](https://github.com/MiroKaku/Musa.Runtime) - 通用 C++ 运行时库
 
-[![Actions Status](https://github.com/MiroKaku/Musa.Runtime/workflows/Build/badge.svg)](https://github.com/MiroKaku/Musa.Runtime/actions)
+[![Actions Status](https://github.com/MiroKaku/Musa.Runtime/workflows/CI/badge.svg)](https://github.com/MiroKaku/Musa.Runtime/actions)
 [![Downloads](https://img.shields.io/nuget/dt/Musa.Runtime?logo=NuGet&logoColor=blue)](https://www.nuget.org/packages/Musa.Runtime/)
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/MiroKaku/Musa.Runtime/blob/main/LICENSE)
 ![Visual Studio](https://img.shields.io/badge/Visual%20Studio-2022-purple.svg)

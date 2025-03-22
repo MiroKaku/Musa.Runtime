@@ -1,22 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
-    <ProjectTypeGuids>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</ProjectTypeGuids>
     <ProjectGuid>{5DD90C4B-FD2F-47B3-A991-AAA7D279CDB8}</ProjectGuid>
-    <RootNamespace>Musa.Runtime</RootNamespace>
+    <ProjectName>Musa.Runtime</ProjectName>
+    <RootNamespace>Musa</RootNamespace>
     <MileProjectType>StaticLibrary</MileProjectType>
     <MileProjectUseKernelMode>true</MileProjectUseKernelMode>
     <MileProjectUseWindowsDriverKit>true</MileProjectUseWindowsDriverKit>
   </PropertyGroup>
   <!--
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x86.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x86.props" />
   -->
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x64.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.ARM64.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
-  <PropertyGroup Label="Globals">
-    <!--TODO: -->
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x64.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.ARM64.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.Default.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.props" />
+  <PropertyGroup Label="Configuration">
     <OutDir>$(MileProjectBinariesPath)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(MileProjectObjectsPath)$(Configuration)\$(MSBuildProjectName)\$(Platform)\</IntDir>
     <GeneratedFilesDir>$(IntDir)Generated Files\</GeneratedFilesDir>
@@ -39,8 +38,7 @@ xcopy /v /f /d /y "$(SolutionDir)\README.md" "$(SolutionDir)\Publish\"
 xcopy /v /f /d /y "$(SolutionDir)\Musa.Runtime.NuGet\Musa.Runtime.Config.props" "$(SolutionDir)\Publish\config\"
 xcopy /v /f /d /y "$(SolutionDir)\Musa.Runtime.NuGet\Musa.Runtime.Config.targets" "$(SolutionDir)\Publish\config\"
 xcopy /v /f /d /y "$(MSBuildThisFileDirectory)\kext\*.h" "$(SolutionDir)\Publish\include\kext\"
-xcopy /v /f /d /y "$(TargetDir)$(TargetName).lib" "$(SolutionDir)\Publish\lib\$(PlatformShortName)\$(Configuration)\"
-</Command>
+xcopy /v /f /d /y "$(TargetDir)$(TargetName).lib" "$(SolutionDir)\Publish\lib\$(PlatformShortName)\$(Configuration)\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -54,10 +52,5 @@ xcopy /v /f /d /y "$(TargetDir)$(TargetName).lib" "$(SolutionDir)\Publish\lib\$(
   <PropertyGroup>
     <MusaCoreOnlyHeader>true</MusaCoreOnlyHeader>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Musa.Core">
-      <Version>0.3.4</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.targets" />
 </Project>

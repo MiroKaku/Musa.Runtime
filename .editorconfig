@@ -43,7 +43,7 @@ charset = utf-16le
 charset = utf-16le
 
 [*.bat]
-charset = utf-8
+charset = utf-16le
 insert_final_newline = true
 
 [*.sh]

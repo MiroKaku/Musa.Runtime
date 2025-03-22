@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
-    <ProjectTypeGuids>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</ProjectTypeGuids>
     <ProjectGuid>{45B07071-5570-4570-821E-FB27B748785C}</ProjectGuid>
-    <RootNamespace>Musa.Runtime.TestForDriver</RootNamespace>
+    <ProjectName>Musa.Runtime.TestForDriver</ProjectName>
+    <RootNamespace>Musa.Test</RootNamespace>
     <MileProjectType>WDMDriver</MileProjectType>
     <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
     <MileProjectCompanyName>MeeSong</MileProjectCompanyName>
@@ -16,14 +16,13 @@
     <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
   </PropertyGroup>
   <!--
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x86.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x86.props" />
   -->
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x64.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.ARM64.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
-  <PropertyGroup Label="Globals">
-    <!--TODO: -->
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x64.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.ARM64.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.Default.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.props" />
+  <PropertyGroup Label="Configuration">
     <OutDir>$(MileProjectBinariesPath)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(MileProjectObjectsPath)$(Configuration)\$(MSBuildProjectName)\$(Platform)\</IntDir>
     <GeneratedFilesDir>$(IntDir)Generated Files\</GeneratedFilesDir>
@@ -41,6 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Inf Include="Musa.Runtime.TestForDriver.inf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Musa.Tests\Test.h" />
+    <ClInclude Include="Universal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.cpp" />
@@ -79,20 +82,9 @@
   </ItemGroup>
   <PropertyGroup>
     <MusaCoreOnlyHeader>false</MusaCoreOnlyHeader>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Musa.Core">
-      <Version>0.3.4</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Musa.Tests\Test.h" />
-    <ClInclude Include="Universal.h" />
-  </ItemGroup>
-  <PropertyGroup>
     <MusaRuntimeOnlyHeader>false</MusaRuntimeOnlyHeader>
   </PropertyGroup>
   <Import Project="..\Publish\config\Musa.Runtime.Config.props" />
   <Import Project="..\Publish\config\Musa.Runtime.Config.targets" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.targets" />
 </Project>

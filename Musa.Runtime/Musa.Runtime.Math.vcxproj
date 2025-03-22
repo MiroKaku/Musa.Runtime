@@ -1,22 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
-    <ProjectTypeGuids>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</ProjectTypeGuids>
     <ProjectGuid>{73F0572D-CC8D-4C33-BA1A-60E3C7A3ED14}</ProjectGuid>
-    <RootNamespace>Musa.Runtime.Math</RootNamespace>
+    <ProjectName>Musa.Runtime.Math</ProjectName>
+    <RootNamespace>Musa</RootNamespace>
     <MileProjectType>StaticLibrary</MileProjectType>
     <MileProjectUseKernelMode>true</MileProjectUseKernelMode>
     <MileProjectUseWindowsDriverKit>true</MileProjectUseWindowsDriverKit>
   </PropertyGroup>
   <!--
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x86.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x86.props" />
   -->
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x64.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.ARM64.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
-  <PropertyGroup Label="Globals">
-    <!--TODO: -->
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x64.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.ARM64.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.Default.props" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.props" />
+  <PropertyGroup Label="Configuration">
     <OutDir>$(MileProjectBinariesPath)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(MileProjectObjectsPath)$(Configuration)\$(MSBuildProjectName)\$(Platform)\</IntDir>
     <GeneratedFilesDir>$(IntDir)Generated Files\</GeneratedFilesDir>
@@ -30,5 +29,5 @@
       <Command >$(MSBuildProjectDirectory)\Build.Microsoft.VisualC.Library.bat $(PlatformTarget) -lib=$(TargetLibraryName) -out=$(TargetPath) -exclusion_list=$(MSBuildProjectDirectory)\Musa.Runtime.Math.Exclusion.txt</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
+  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.targets" />
 </Project>
