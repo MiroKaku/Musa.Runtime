@@ -43,6 +43,13 @@ BEGIN_PRAGMA_OPTIMIZE_ENABLE("t", MSFT:4499497, "This file is performance-critic
 #endif
 
 
+// Used when building x64 versions of a function for use in Arm64 (to avoid Arm64EC transitions)
+#if !defined(_CRT_ARM64X_X64_BUILD)
+#define CRT_ARM64X_X64_NAME(name) name
+#else
+#define CRT_ARM64X_X64_NAME(name) name##_x64
+#endif
+
 
 // Swaps the objects of size 'width' that are pointed to by 'a' and 'b'
 #ifndef _QSORT_SWAP_DEFINED
@@ -140,6 +147,13 @@ static void __fileDECL shortsort(
 #define STKSIZ (8 * sizeof(void*) - 2)
 
 
+extern "C"
+#ifdef __USE_CONTEXT
+void __fileDECL qsort_s_x64(
+    void* const base, size_t const num, size_t const width, int(__fileDECL* const comp)(void*, void const*, void const*), void* const context);
+#else
+    void __fileDECL qsort_x64(void* const base, size_t const num, size_t const width, int (__fileDECL* const comp)(void const*, void const*));
+#endif
 
 // QuickSort function for sorting arrays.  The array is sorted in place.
 // Parameters:
@@ -156,7 +170,7 @@ DECLSPEC_GUARDNOCF
 #endif
 _CRT_SECURITYSAFECRITICAL_ATTRIBUTE
 #ifdef __USE_CONTEXT
-void __fileDECL qsort_s(
+void __fileDECL CRT_ARM64X_X64_NAME(qsort_s) (
     void*  const base,
     size_t const num,
     size_t const width,
@@ -164,7 +178,7 @@ void __fileDECL qsort_s(
     void*  const context
     )
 #else // __USE_CONTEXT
-void __fileDECL qsort(
+void __fileDECL CRT_ARM64X_X64_NAME(qsort) (
     void*  const base,
     size_t const num,
     size_t const width,
@@ -172,6 +186,22 @@ void __fileDECL qsort(
     )
 #endif // __USE_CONTEXT
 {
+#if defined(_M_ARM64EC) && _UCRT_DLL
+    // When ucrtbase.dll is Arm64EC and the caller is passing an x64 compare
+    // function, making an Arm64EC->x64 transition for each comparison incurs
+    // non-trivial overhead.  It is much more efficient to just call the pure
+    // x64 implementation instead.
+
+    if (!RtlIsEcCode((ULONG_PTR)comp))
+    {
+#ifdef __USE_CONTEXT
+        return qsort_s_x64(base, num, width, comp, context);
+#else
+        return qsort_x64(base, num, width, comp);
+#endif
+    }
+#endif // defined(_M_ARM64EC) && _UCRT_DLL
+
     _VALIDATE_RETURN_VOID(base != nullptr || num == 0, EINVAL);
     _VALIDATE_RETURN_VOID(width > 0, EINVAL);
     _VALIDATE_RETURN_VOID(comp != nullptr, EINVAL);

@@ -31,11 +31,10 @@
       <ForcedIncludeFiles>%(PrecompiledHeaderFile);%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <PreprocessorDefinitions>PROCESSOR_FAST_FAIL_AVAILABLE;_CRTBLD;_VCRT_BUILD;_VCRT_ENCLAVE_BUILD;_STATIC_CPPLIB;_ONECORE;_ASSERT_OK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <PostBuildEvent>
-      <Command>@echo off
-echo F | xcopy /v /f /d /y "$(IntDirFullPath)sys_main.obj" "$(SolutionDir)\Publish\lib\$(PlatformShortName)\$(Configuration)\sys_main.obj"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
+  <Target Name="CustomPublish" AfterTargets="Build">
+    <Copy SourceFiles="$(IntDirFullPath)sys_main.obj" DestinationFiles="$(PublishDirectory)Library\$(Configuration)\$(Platform)\Musa.Runtime.DriverEntry.obj" />
+  </Target>
   <ItemGroup>
     <ClInclude Include="universal.h" />
     <ClInclude Include="kext\kallocator.h" />

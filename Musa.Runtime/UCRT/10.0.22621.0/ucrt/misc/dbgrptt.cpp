@@ -1,4 +1,4 @@
-/***
+﻿/***
 *dbgrptt.c - Debug CRT Reporting Functions
 *
 *       Copyright (c) Microsoft Corporation. All rights reserved.

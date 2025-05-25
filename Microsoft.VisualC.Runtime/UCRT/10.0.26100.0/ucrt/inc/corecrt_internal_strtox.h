@@ -1751,6 +1751,7 @@ SLD_STATUS __cdecl parse_floating_point_write_result(
 }
 
 template <typename CharacterSource, typename FloatingType>
+DECLSPEC_NOINITALL
 SLD_STATUS __cdecl parse_floating_point(
     _locale_t       const locale,
     CharacterSource       source,

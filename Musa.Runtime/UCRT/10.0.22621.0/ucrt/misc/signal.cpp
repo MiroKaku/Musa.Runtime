@@ -15,6 +15,7 @@
 #include <string.h>
 
 
+
 // Variables holding action codes (and code pointers) for SIGINT, SIGBRK,
 // SIGABRT and SIGTERM.
 //
@@ -403,7 +404,7 @@ extern "C" __crt_signal_handler_t __cdecl signal(int signum, __crt_signal_handle
     }
 
     return old_action;
-#endif
+#endif // defined NTOS_KERNEL_RUNTIME
 }
 
 
@@ -566,7 +567,7 @@ extern "C" int __cdecl raise(int const signum)
         if (signum == SIGFPE)
             _fpecode = old_fpecode;
     }
-#endif
+#endif // defined NTOS_KERNEL_RUNTIME
 
     return 0;
 }

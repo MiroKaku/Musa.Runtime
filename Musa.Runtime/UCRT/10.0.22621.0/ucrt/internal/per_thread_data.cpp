@@ -1,4 +1,4 @@
-//
+﻿//
 // per_thread_data.cpp
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.
@@ -24,6 +24,7 @@ static void WINAPI destroy_fls(void*) throw();
 static unsigned long __acrt_flsindex = FLS_OUT_OF_INDEXES;
 
 
+bool __acrt_use_tls2_apis = false;
 
 extern "C" bool __cdecl __acrt_initialize_ptd()
 {
@@ -209,7 +210,11 @@ static void WINAPI destroy_fls(void* const pfd) throw()
     _free_crt(pfd);
 }
 
-static __forceinline __acrt_ptd* try_get_ptd_head() throw()
+template<typename flsgetvalue_type>
+__forceinline
+__acrt_ptd* try_get_ptd_head(
+    flsgetvalue_type flsgetvalue
+    ) throw()
 {
     // If we haven't allocated per-thread data for this module, return failure:
     if (__acrt_flsindex == FLS_OUT_OF_INDEXES)
@@ -217,7 +222,7 @@ static __forceinline __acrt_ptd* try_get_ptd_head() throw()
         return nullptr;
     }
 
-    __acrt_ptd* const ptd_head = static_cast<__acrt_ptd*>(__acrt_FlsGetValue(__acrt_flsindex));
+    __acrt_ptd* const ptd_head = static_cast<__acrt_ptd*>(flsgetvalue(__acrt_flsindex));
     if (!ptd_head)
     {
         return nullptr;
@@ -226,28 +231,20 @@ static __forceinline __acrt_ptd* try_get_ptd_head() throw()
     return ptd_head;
 }
 
+// We use the CRT heap to allocate the PTD.  If the CRT heap fails to
+// allocate the requested memory, it will attempt to set errno to ENOMEM,
+// which will in turn attempt to acquire the PTD, resulting in infinite
+// recursion that causes a stack overflow.
+//
+// We set the PTD to this sentinel value for the duration of the allocation
+// in order to detect this case.
+static void* const reentrancy_sentinel = reinterpret_cast<void*>(SIZE_MAX);
+
 _Success_(return != nullptr)
-static __forceinline __acrt_ptd* internal_get_ptd_head() throw()
+DECLSPEC_NOINLINE
+__acrt_ptd* internal_get_ptd_head_slow() throw()
 {
-    // We use the CRT heap to allocate the PTD.  If the CRT heap fails to
-    // allocate the requested memory, it will attempt to set errno to ENOMEM,
-    // which will in turn attempt to acquire the PTD, resulting in infinite
-    // recursion that causes a stack overflow.
-    //
-    // We set the PTD to this sentinel value for the duration of the allocation
-    // in order to detect this case.
-    static void* const reentrancy_sentinel = reinterpret_cast<void*>(SIZE_MAX);
-
-    __acrt_ptd* const existing_ptd_head = try_get_ptd_head();
-    if (existing_ptd_head == reentrancy_sentinel)
-    {
-        return nullptr;
-    }
-    else if (existing_ptd_head != nullptr)
-    {
-        return existing_ptd_head;
-    }
-
+    __crt_scoped_get_last_error_reset const last_error_reset;
     if (!__acrt_FlsSetValue(__acrt_flsindex, reentrancy_sentinel))
     {
         return nullptr;
@@ -270,6 +267,26 @@ static __forceinline __acrt_ptd* internal_get_ptd_head() throw()
     return new_ptd_head.detach();
 }
 
+template<typename flsgetvalue_type>
+_Success_(return != nullptr)
+__forceinline
+__acrt_ptd* internal_get_ptd_head(
+    flsgetvalue_type flsgetvalue
+    ) throw()
+{
+    __acrt_ptd* const existing_ptd_head = try_get_ptd_head(flsgetvalue);
+    if (existing_ptd_head == reentrancy_sentinel)
+    {
+        return nullptr;
+    }
+    else if (existing_ptd_head != nullptr)
+    {
+        return existing_ptd_head;
+    }
+
+    return internal_get_ptd_head_slow();
+}
+
 // This functionality has been split out of __acrt_getptd_noexit so that we can
 // force it to be inlined into both __acrt_getptd_noexit and __acrt_getptd.  These
 // functions are performance critical and this change has substantially improved
@@ -280,7 +297,7 @@ static __forceinline __acrt_ptd* __cdecl internal_getptd_noexit(
     ) throw()
 {
     UNREFERENCED_PARAMETER(last_error_reset);
-    __acrt_ptd* const ptd_head = internal_get_ptd_head();
+    __acrt_ptd* const ptd_head = internal_get_ptd_head(__acrt_FlsGetValue);
     if (!ptd_head)
     {
         return nullptr;
@@ -295,6 +312,17 @@ static __forceinline __acrt_ptd* __cdecl internal_getptd_noexit() throw()
     return internal_getptd_noexit(last_error_reset, __crt_state_management::get_current_state_index(last_error_reset));
 }
 
+static __forceinline __acrt_ptd* __cdecl internal_getptd_noexit2() throw()
+{
+    __acrt_ptd* const ptd_head = internal_get_ptd_head(__acrt_FlsGetValue2);
+    if (!ptd_head)
+    {
+        return nullptr;
+    }
+
+    return ptd_head + __crt_state_management::get_current_state_index2();
+}
+
 __acrt_ptd* __cdecl __acrt_getptd_noexit_explicit(__crt_scoped_get_last_error_reset const& last_error_reset, size_t const global_state_index)
 {   // An extra function to grab the PTD while a GetLastError() reset guard is already in place
     // and the global state index is already known.
@@ -304,12 +332,29 @@ __acrt_ptd* __cdecl __acrt_getptd_noexit_explicit(__crt_scoped_get_last_error_re
 
 extern "C" __acrt_ptd* __cdecl __acrt_getptd_noexit()
 {
-    return internal_getptd_noexit();
+    __acrt_ptd* ptd;
+
+#if (defined(_M_ARM64_) || defined(_M_ARM64EC) || defined(_UCRT_ENCLAVE_BUILD)) && _UCRT_DLL
+    ptd = internal_getptd_noexit2();
+#elif defined(_M_ARM64EC)
+    ptd = internal_getptd_noexit();
+#else
+    if (__acrt_use_tls2_apis)
+    {
+        ptd = internal_getptd_noexit2();
+    }
+    else
+    {
+        ptd = internal_getptd_noexit();
+    }
+#endif
+
+    return ptd;
 }
 
 extern "C" __acrt_ptd* __cdecl __acrt_getptd()
 {
-    __acrt_ptd* const ptd = internal_getptd_noexit();
+    __acrt_ptd* const ptd = __acrt_getptd_noexit();
     if (!ptd)
     {
         abort();
@@ -320,7 +365,7 @@ extern "C" __acrt_ptd* __cdecl __acrt_getptd()
 
 extern "C" __acrt_ptd* __cdecl __acrt_getptd_head()
 {
-    __acrt_ptd* const ptd_head = internal_get_ptd_head();
+    __acrt_ptd* const ptd_head = internal_get_ptd_head(__acrt_FlsGetValue);
     if (!ptd_head)
     {
         abort();
@@ -333,7 +378,7 @@ extern "C" __acrt_ptd* __cdecl __acrt_getptd_head()
 
 extern "C" void __cdecl __acrt_freeptd()
 {
-    __acrt_ptd* const ptd_head = try_get_ptd_head();
+    __acrt_ptd* const ptd_head = try_get_ptd_head(__acrt_FlsGetValue);
     if (!ptd_head)
     {
         return;

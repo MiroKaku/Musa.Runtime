@@ -13,6 +13,8 @@
 #include <corecrt_internal_securecrt.h>
 #include <locale.h>
 #include <string.h>
+#define BOUNDED_CMP
+#include "strcompare.h"
 
 /***
 *int _wcsnicmp(lhs, rhs, count) - compares count wchar_t of strings,
@@ -41,7 +43,7 @@
 *
 *******************************************************************************/
 
-extern "C" int __cdecl _wcsnicmp_l (
+extern "C" DECLSPEC_NOINLINE int __cdecl _wcsnicmp_l (
         wchar_t const * const lhs,
         wchar_t const * const rhs,
         size_t          const count,
@@ -90,6 +92,9 @@ extern "C" int __cdecl __ascii_wcsnicmp(
         size_t          const count
         )
 {
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+    return __ascii_wcsicmp_neon(lhs, rhs, count);
+#else
     if (count == 0)
     {
         return 0;
@@ -104,13 +109,36 @@ extern "C" int __cdecl __ascii_wcsnicmp(
     size_t remaining = count;
     do
     {
-        lhs_value = __ascii_towlower(*lhs_ptr++);
-        rhs_value = __ascii_towlower(*rhs_ptr++);
+        lhs_value = *lhs_ptr++;
+        rhs_value = *rhs_ptr++;
+
+        if (lhs_value != rhs_value)
+        {
+            lhs_value = __ascii_towlower(lhs_value);
+            rhs_value = __ascii_towlower(rhs_value);
+        }
+
         result = lhs_value - rhs_value;
     }
     while (result == 0 && lhs_value != 0 && --remaining != 0);
 
     return result;
+#endif
+}
+
+//
+// Mark _wcsnicmp_validate_param DECLSPEC_NOINLINE to make
+// _wcsnicmp a leaf function for better performance.
+//
+static DECLSPEC_NOINLINE int _wcsnicmp_validate_param (
+        wchar_t const * const lhs,
+        wchar_t const * const rhs
+        )
+{
+    /* validation section */
+    _VALIDATE_RETURN(lhs != nullptr, EINVAL, _NLSCMPERROR);
+    _VALIDATE_RETURN(rhs != nullptr, EINVAL, _NLSCMPERROR);
+    return _NLSCMPERROR;
 }
 
 extern "C" int __cdecl _wcsnicmp (
@@ -121,9 +149,10 @@ extern "C" int __cdecl _wcsnicmp (
 {
     if (!__acrt_locale_changed())
     {
-        /* validation section */
-        _VALIDATE_RETURN(lhs != nullptr, EINVAL, _NLSCMPERROR);
-        _VALIDATE_RETURN(rhs != nullptr, EINVAL, _NLSCMPERROR);
+        if (lhs == nullptr || rhs == nullptr)
+        {
+            return _wcsnicmp_validate_param(lhs, rhs);
+        }
 
         return __ascii_wcsnicmp(lhs, rhs, count);
     }

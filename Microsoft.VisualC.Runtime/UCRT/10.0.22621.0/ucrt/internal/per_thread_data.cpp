@@ -55,7 +55,6 @@ extern "C" bool __cdecl __acrt_uninitialize_ptd(bool)
 
 
 
-#if !defined NTOS_KERNEL_RUNTIME
 static void __cdecl replace_current_thread_locale_nolock(
     __acrt_ptd*        const ptd,
     __crt_locale_data* const new_locale_info
@@ -78,7 +77,6 @@ static void __cdecl replace_current_thread_locale_nolock(
         __acrt_add_locale_ref(ptd->_locale_info);
     }
 }
-#endif
 
 
 
@@ -89,9 +87,7 @@ static void __cdecl construct_ptd(
     ) throw()
 {
     ptd->_rand_state  = 1;
-#if !defined NTOS_KERNEL_RUNTIME
     ptd->_pxcptacttab = const_cast<__crt_signal_action_t*>(__acrt_exception_action_table);
-#endif
 
     // It is necessary to always have GLOBAL_LOCALE_BIT set in perthread data
     // because when doing bitwise or, we won't get __UPDATE_LOCALE to work when
@@ -99,7 +95,6 @@ static void __cdecl construct_ptd(
     // See _configthreadlocale() and __acrt_should_sync_with_global_locale().
     ptd->_own_locale = _GLOBAL_LOCALE_BIT;
 
-#if !defined NTOS_KERNEL_RUNTIME
     ptd->_multibyte_info = &__acrt_initial_multibyte_data;
 
     // Initialize _setloc_data. These are the only valuse that need to be
@@ -121,9 +116,6 @@ static void __cdecl construct_ptd(
     {
         replace_current_thread_locale_nolock(ptd, *locale_data);
     });
-#else
-    UNREFERENCED_PARAMETER(locale_data);
-#endif
 }
 
 // Constructs each of the 'state_index_count' PTD objects in the array of PTD
@@ -140,12 +132,10 @@ static void __cdecl construct_ptd_array(__acrt_ptd* const ptd) throw()
 // itself.
 static void __cdecl destroy_ptd(__acrt_ptd* const ptd) throw()
 {
-#if !defined NTOS_KERNEL_RUNTIME
     if (ptd->_pxcptacttab != __acrt_exception_action_table)
     {
         _free_crt(ptd->_pxcptacttab);
     }
-#endif
 
     _free_crt(ptd->_cvtbuf);
     _free_crt(ptd->_asctime_buffer);
@@ -157,7 +147,6 @@ static void __cdecl destroy_ptd(__acrt_ptd* const ptd) throw()
     _free_crt(ptd->_wcserror_buffer);
     _free_crt(ptd->_beginthread_context);
 
-#if !defined NTOS_KERNEL_RUNTIME
     __acrt_lock_and_call(__acrt_multibyte_cp_lock, [&]
     {
         __crt_multibyte_data* const multibyte_data = ptd->_multibyte_info;
@@ -183,7 +172,6 @@ static void __cdecl destroy_ptd(__acrt_ptd* const ptd) throw()
     {
         replace_current_thread_locale_nolock(ptd, nullptr);
     });
-#endif
 }
 
 // Destroys each of the 'state_index_count' PTD objects in the array of PTD

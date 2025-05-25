@@ -259,8 +259,8 @@ __acrt_ptd* internal_get_ptd_head_slow() throw()
     return new_ptd_head.detach();
 }
 
-_Success_(return != nullptr)
 template<typename flsgetvalue_type>
+_Success_(return != nullptr)
 __forceinline
 __acrt_ptd* internal_get_ptd_head(
     flsgetvalue_type flsgetvalue

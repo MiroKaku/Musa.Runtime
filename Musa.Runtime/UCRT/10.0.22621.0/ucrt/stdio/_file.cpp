@@ -178,4 +178,4 @@ extern "C" errno_t __cdecl _get_stream_buffer_pointers(
 
     return 0;
 }
-#endif
+#endif // !defined NTOS_KERNEL_RUNTIME

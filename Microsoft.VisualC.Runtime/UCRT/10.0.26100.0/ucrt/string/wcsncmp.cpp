@@ -15,15 +15,17 @@
 //  * zero             if a == b
 //  * a positive value if a  > b
 //
+#include <corecrt_internal.h>
+#include <ctype.h>
 #include <string.h>
-
+#define CASE_SENSITIVE_CMP
+#define BOUNDED_CMP
+#include "strcompare.h"
 
 
 #ifdef _M_ARM
     #pragma function(wcsncmp)
 #endif
-
-
 
 extern "C" int __cdecl wcsncmp(
     wchar_t const* a,
@@ -31,6 +33,9 @@ extern "C" int __cdecl wcsncmp(
     size_t         count
     )
 {
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+    return __ascii_wcsicmp_neon(a, b, count);
+#else
     if (count == 0)
         return 0;
 
@@ -41,4 +46,5 @@ extern "C" int __cdecl wcsncmp(
     }
 
     return static_cast<int>(*a - *b);
+#endif
 }

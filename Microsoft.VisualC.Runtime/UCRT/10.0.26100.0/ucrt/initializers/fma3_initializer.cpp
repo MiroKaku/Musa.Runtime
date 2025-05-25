@@ -1,4 +1,4 @@
-//
+﻿//
 // fma3_initializer.cpp
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.

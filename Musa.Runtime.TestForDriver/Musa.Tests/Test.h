@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <kext/kallocator.h>
+#include <kallocator.h>
 
 #include <vector>
 #include <functional>
@@ -51,7 +51,7 @@
 namespace UnitTest
 {
     template<typename T>
-    using  Vector = std::vector<T, std::kallocator<T, PagedPool, 'TSET'>>;
+    using  Vector = std::vector<T, std::kallocator<T, PagedPool>>;
 
 #if __cplusplus < 201703L
     __declspec(selectany) extern Vector<std::function<void()>> TestVec;

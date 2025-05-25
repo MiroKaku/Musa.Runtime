@@ -97,6 +97,9 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\heap\recalloc.cpp">
       <Filter>ucrt\heap</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\fma3_initializer.cpp">
+      <Filter>ucrt\initializers</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\i386\sse2_initializer.cpp">
       <Filter>ucrt\initializers</Filter>
     </ClCompile>

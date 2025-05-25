@@ -13,6 +13,6 @@
   This would typically list all NuGet packages used within this solution.
   -->
   <ItemGroup>
-    <PackageReference Include="Musa.Core" Version="0.3.6" />
+    <PackageReference Include="Musa.Core" Version="0.4.0" />
   </ItemGroup>
 </Project>

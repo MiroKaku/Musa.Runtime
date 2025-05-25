@@ -12,6 +12,8 @@
 #include <ctype.h>
 #include <locale.h>
 #include <string.h>
+#define BOUNDED_CMP
+#include "strcompare.h"
 
 /***
 *int _strnicmp(lhs, rhs, count) - compares count char of strings, ignore case
@@ -38,7 +40,7 @@
 *
 *******************************************************************************/
 
-extern "C" int __cdecl _strnicmp_l (
+extern "C" DECLSPEC_NOINLINE int __cdecl _strnicmp_l (
         char const * const lhs,
         char const * const rhs,
         size_t       const count,
@@ -75,7 +77,6 @@ extern "C" int __cdecl _strnicmp_l (
     return result;
 }
 
-
 #if !defined(_M_IX86) || defined(_M_HYBRID_X86_ARM64)
 
 extern "C" int __cdecl __ascii_strnicmp (
@@ -84,6 +85,9 @@ extern "C" int __cdecl __ascii_strnicmp (
         size_t       const count
         )
 {
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+    return __ascii_stricmp_neon(lhs, rhs, count);
+#else
     if (count == 0)
     {
         return 0;
@@ -98,16 +102,39 @@ extern "C" int __cdecl __ascii_strnicmp (
     size_t remaining = count;
     do
     {
-        lhs_value = __ascii_tolower(*lhs_ptr++);
-        rhs_value = __ascii_tolower(*rhs_ptr++);
+        lhs_value = *lhs_ptr++;
+        rhs_value = *rhs_ptr++;
+        if (lhs_value != rhs_value)
+        {
+            lhs_value = __ascii_tolower(lhs_value);
+            rhs_value = __ascii_tolower(rhs_value);
+        }
         result = lhs_value - rhs_value;
     }
     while (result == 0 && lhs_value != 0 && --remaining != 0);
 
     return result;
+#endif
 }
 
 #endif  /* !_M_IX86 || _M_HYBRID_X86_ARM64 */
+
+//
+// Mark _strnicmp_validate_param DECLSPEC_NOINLINE to make
+// _strnicmp a leaf function for better performance.
+//
+static DECLSPEC_NOINLINE int _strnicmp_validate_param (
+        char const * const lhs,
+        char const * const rhs,
+        size_t       const count
+        )
+{
+    /* validation section */
+    _VALIDATE_RETURN(lhs != nullptr, EINVAL, _NLSCMPERROR);
+    _VALIDATE_RETURN(rhs != nullptr, EINVAL, _NLSCMPERROR);
+    _VALIDATE_RETURN(count <= INT_MAX, EINVAL, _NLSCMPERROR);
+    return _NLSCMPERROR;
+}
 
 extern "C" int __cdecl _strnicmp (
         char const * const lhs,
@@ -117,10 +144,10 @@ extern "C" int __cdecl _strnicmp (
 {
     if (!__acrt_locale_changed())
     {
-        /* validation section */
-        _VALIDATE_RETURN(lhs != nullptr, EINVAL, _NLSCMPERROR);
-        _VALIDATE_RETURN(rhs != nullptr, EINVAL, _NLSCMPERROR);
-        _VALIDATE_RETURN(count <= INT_MAX, EINVAL, _NLSCMPERROR);
+        if (lhs == nullptr || rhs == nullptr || count > INT_MAX)
+        {
+            return _strnicmp_validate_param(lhs, rhs, count);
+        }
 
         return __ascii_strnicmp(lhs, rhs, count);
     }

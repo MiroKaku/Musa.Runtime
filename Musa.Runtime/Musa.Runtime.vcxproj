@@ -31,16 +31,18 @@
       <AdditionalLibraryDirectories>$(OutDirFullPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Musa.Runtime.CRT.lib;Musa.Runtime.STL.lib;Musa.Runtime.VCRT.lib;Musa.Runtime.UCRT.lib;Musa.Runtime.Math.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PostBuildEvent>
-      <Command>@echo off
-xcopy /v /f /d /y "$(SolutionDir)\LICENSE" "$(SolutionDir)\Publish\"
-xcopy /v /f /d /y "$(SolutionDir)\README.md" "$(SolutionDir)\Publish\"
-xcopy /v /f /d /y "$(SolutionDir)\Musa.Runtime.NuGet\Musa.Runtime.Config.props" "$(SolutionDir)\Publish\config\"
-xcopy /v /f /d /y "$(SolutionDir)\Musa.Runtime.NuGet\Musa.Runtime.Config.targets" "$(SolutionDir)\Publish\config\"
-xcopy /v /f /d /y "$(MSBuildThisFileDirectory)\kext\*.h" "$(SolutionDir)\Publish\include\kext\"
-xcopy /v /f /d /y "$(TargetDir)$(TargetName).lib" "$(SolutionDir)\Publish\lib\$(PlatformShortName)\$(Configuration)\"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
+  <Target Name="CustomPublish" AfterTargets="Build">
+    <ItemGroup>
+      <MusaRuntimeLicense Include="$(SolutionDir)LICENSE" />
+      <MusaRuntimeLicense Include="$(SolutionDir)README.md" />
+      <MusaRuntimeHeaders Include="$(SourcesDirectory)kext\*.h" />
+      <MusaRuntimeProduct Include="$(OutDir)$(TargetName).lib" />
+    </ItemGroup>
+    <Copy SourceFiles="@(MusaRuntimeLicense)" DestinationFolder="$(PublishDirectory)" />
+    <Copy SourceFiles="@(MusaRuntimeHeaders)" DestinationFolder="$(PublishDirectory)Include" />
+    <Copy SourceFiles="@(MusaRuntimeProduct)" DestinationFolder="$(PublishDirectory)Library\$(Configuration)\$(Platform)" />
+  </Target>
   <ItemGroup>
     <ClInclude Include="universal.h" />
   </ItemGroup>

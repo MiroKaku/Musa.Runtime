@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <locale.h>
 #include <string.h>
+#include "strcompare.h"
 
 #pragma warning(disable:__WARNING_POTENTIAL_BUFFER_OVERFLOW_NULLTERMINATED) // 26018 Prefast can't see that we are checking for terminal nul.
 
@@ -36,7 +37,7 @@
 *
 *******************************************************************************/
 
-extern "C" int __cdecl _wcsicmp_l (
+extern "C" DECLSPEC_NOINLINE int __cdecl _wcsicmp_l (
         wchar_t const * const lhs,
         wchar_t const * const rhs,
         _locale_t       const plocinfo
@@ -86,6 +87,9 @@ extern "C" int __cdecl __ascii_wcsicmp(
         wchar_t const * const rhs
         )
 {
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+    return __ascii_wcsicmp_neon(lhs, rhs);
+#else
     unsigned short const * lhs_ptr = reinterpret_cast<unsigned short const *>(lhs);
     unsigned short const * rhs_ptr = reinterpret_cast<unsigned short const *>(rhs);
 
@@ -108,6 +112,22 @@ extern "C" int __cdecl __ascii_wcsicmp(
     while (result == 0 && lhs_value != 0);
 
     return result;
+#endif
+}
+
+//
+// Mark _wcsicmp_validate_param DECLSPEC_NOINLINE to make
+// _wcsicmp a leaf function for better performance.
+//
+static DECLSPEC_NOINLINE int _wcsicmp_validate_param (
+        wchar_t const * const lhs,
+        wchar_t const * const rhs
+        )
+{
+    /* validation section */
+    _VALIDATE_RETURN(lhs != nullptr, EINVAL, _NLSCMPERROR);
+    _VALIDATE_RETURN(rhs != nullptr, EINVAL, _NLSCMPERROR);
+    return _NLSCMPERROR;
 }
 
 extern "C" int __cdecl _wcsicmp(
@@ -117,9 +137,10 @@ extern "C" int __cdecl _wcsicmp(
 {
     if (!__acrt_locale_changed())
     {
-        /* validation section */
-        _VALIDATE_RETURN(lhs != nullptr, EINVAL, _NLSCMPERROR);
-        _VALIDATE_RETURN(rhs != nullptr, EINVAL, _NLSCMPERROR);
+        if (lhs == nullptr || rhs == nullptr)
+        {
+            return _wcsicmp_validate_param(lhs, rhs);
+        }
 
         return __ascii_wcsicmp(lhs, rhs);
     }

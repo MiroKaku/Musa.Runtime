@@ -169,6 +169,12 @@ __forceinline uint32_t __cdecl bit_scan_reverse(uint32_t const value) throw()
 
 __forceinline uint32_t __cdecl bit_scan_reverse(uint64_t const value) throw()
 {
+#if defined(_M_X64) || defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+    unsigned long index = 0;
+    if (_BitScanReverse64(&index, value))
+        return index + 1;
+    return 0;
+#else
     if (value > UINT32_MAX)
     {
         return bit_scan_reverse(reinterpret_cast<uint32_t const*>(&value)[1]) + 32;
@@ -177,6 +183,7 @@ __forceinline uint32_t __cdecl bit_scan_reverse(uint64_t const value) throw()
     {
         return bit_scan_reverse(reinterpret_cast<uint32_t const*>(&value)[0]);
     }
+#endif
 }
 
 __forceinline uint32_t __cdecl bit_scan_reverse(big_integer const& x) throw()
@@ -669,8 +676,12 @@ void generate_table()
 // Computes the number of zeroes higher than the most significant set bit in 'u'
 __forceinline uint32_t __cdecl count_sequential_high_zeroes(uint32_t const u) throw()
 {
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+    return _CountLeadingZeros(u);
+#else
     unsigned long result;
     return _BitScanReverse(&result, u) ? 31 - result : 32;
+#endif
 }
 
 // PERFORMANCE NOTE:  On x86, for multiplication of a 64-bit unsigned integer by

@@ -17,16 +17,16 @@ namespace Main
     {
         UNREFERENCED_PARAMETER(Registry);
 
-        MusaLOG("Entry.");
+        MusaLOG("Enter.");
         DriverObject->DriverUnload = DriverExit;
 
         return KeExpandKernelStackAndCalloutEx([](auto)
         {
-            MusaLOG("Start testing ...");
+            MusaLOG("Test started...");
             for (const auto& Test : TestVec) {
                 Test();
             }
-            MusaLOG("Complete test.");
+            MusaLOG("Test complete.");
 
         }, nullptr, MAXIMUM_EXPANSION_SIZE, TRUE, nullptr);
     }

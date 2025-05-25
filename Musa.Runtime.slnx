@@ -1,0 +1,32 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/NuGet/">
+    <File Path="Musa.Runtime.NuGet/Musa.Runtime.nuspec" />
+    <File Path="Musa.Runtime.NuGet/Musa.Runtime.props" />
+  </Folder>
+  <Folder Name="/Projects/">
+    <Project Path="Musa.Runtime.TestForDriver/Musa.Runtime.TestForDriver.vcxproj" Id="45b07071-5570-4570-821e-fb27b748785c">
+      <BuildDependency Project="Musa.Runtime/Musa.Runtime.vcxproj" />
+    </Project>
+    <Project Path="Musa.Runtime/Musa.Runtime.CRT.vcxproj" Id="1bac8553-4f9a-4b9e-86bd-58b577966b84" />
+    <Project Path="Musa.Runtime/Musa.Runtime.Math.vcxproj" Id="73f0572d-cc8d-4c33-ba1a-60e3c7a3ed14" />
+    <Project Path="Musa.Runtime/Musa.Runtime.STL.vcxproj" Id="412f6026-516b-4be6-b77a-46bd39685d8c" />
+    <Project Path="Musa.Runtime/Musa.Runtime.UCRT.vcxproj" Id="5a753c92-8786-401a-9bfc-da7c0333b1ca" />
+    <Project Path="Musa.Runtime/Musa.Runtime.VCRT.vcxproj" Id="007c1e48-5587-4120-8505-0aff2c6bca02" />
+    <Project Path="Musa.Runtime/Musa.Runtime.vcxproj" Id="5dd90c4b-fd2f-47b3-a991-aaa7d279cdb8">
+      <BuildDependency Project="Musa.Runtime/Musa.Runtime.CRT.vcxproj" />
+      <BuildDependency Project="Musa.Runtime/Musa.Runtime.Math.vcxproj" />
+      <BuildDependency Project="Musa.Runtime/Musa.Runtime.STL.vcxproj" />
+      <BuildDependency Project="Musa.Runtime/Musa.Runtime.UCRT.vcxproj" />
+      <BuildDependency Project="Musa.Runtime/Musa.Runtime.VCRT.vcxproj" />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/ReadMe/">
+    <File Path="README.md" />
+    <File Path="README.zh-CN.md" />
+  </Folder>
+</Solution>

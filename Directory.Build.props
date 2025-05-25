@@ -10,6 +10,8 @@ See: https://learn.microsoft.com/visualstudio/msbuild/customize-your-build
   -->
 
   <PropertyGroup>
+    <SourcesDirectory>$(MSBuildThisFileDirectory)Musa.Runtime\</SourcesDirectory>
+    <PublishDirectory>$(MSBuildThisFileDirectory)Publish\</PublishDirectory>
     <MileProjectOutputPath>$(MSBuildThisFileDirectory)Output\</MileProjectOutputPath>
   </PropertyGroup>
 

@@ -240,4 +240,4 @@ extern "C" int __cdecl _seh_filter_sys(
 
     return EXCEPTION_CONTINUE_SEARCH;
 }
-#endif
+#endif // !defined NTOS_KERNEL_RUNTIME
