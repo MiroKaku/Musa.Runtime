@@ -251,7 +251,7 @@ Return Value:
     //
 
     if (_guard_icall_checks_enforced()) {
-        IoGetStackLimits((PULONG_PTR)&StackBase, (PULONG_PTR)&StackLimit);
+        IoGetStackLimits((PULONG_PTR)&StackLimit, (PULONG_PTR)&StackBase);
 
         StackPointer = ExceptGetJbSpRoutine(JumpBuffer);
         if ((StackPointer < StackLimit) ||

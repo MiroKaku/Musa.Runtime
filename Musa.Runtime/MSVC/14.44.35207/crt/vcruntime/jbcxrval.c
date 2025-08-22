@@ -1,4 +1,4 @@
-/*++
+﻿/*++
 
 Copyright (c) Microsoft Corporation
 
@@ -202,7 +202,7 @@ Return Value:
     // return.
     //
     if (_guard_icall_checks_enforced()) {
-        IoGetStackLimits((PULONG_PTR)&StackBase, (PULONG_PTR)&StackLimit);
+        IoGetStackLimits((PULONG_PTR)&StackLimit, (PULONG_PTR)&StackBase);
 
         StackPointer = (PVOID)CONTEXT_TO_STACK_POINTER(ContextRecord);
         if ((StackPointer < StackLimit) ||
