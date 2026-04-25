@@ -14,6 +14,12 @@ on:
     # The branches below must be a subset of the branches above
     branches:
       - main
+    paths:
+      - 'Musa.Runtime/**'
+      - 'Microsoft.VisualC.Runtime/**'
+      - 'BuildAllTargets.*'
+      - '*.props'
+      - '*.targets'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -74,6 +80,15 @@ jobs:
               NuGet pack .\Musa.Runtime.NuGet\Musa.Runtime-New.nuspec -Properties version=${{env.BuildVersion}};commit=%GITHUB_SHA%
           )
           if %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
+
+      - name: Verify NuGet package exists
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: cmd
+        run: |
+          if not exist Musa.Runtime.${{env.BuildVersion}}.nupkg (
+              echo ERROR: NuGet package Musa.Runtime.${{env.BuildVersion}}.nupkg was not produced by the Package step.
+              exit /B 1
+          )
 
       - name: Package a zip
         if: startsWith(github.ref, 'refs/tags/v')

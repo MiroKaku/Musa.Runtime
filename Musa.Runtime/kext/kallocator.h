@@ -29,6 +29,10 @@ _STD_BEGIN
 // Musa.Core    Tag == 'MusC'
 // Musa.Runtime Tag == 'MusR'
 
+// NOTE: The default pool type is PagedPool. Do not use kallocator<T> at DISPATCH_LEVEL
+// or above without explicitly specifying NonPagedPool as the _Pool template parameter.
+// Accessing paged memory at elevated IRQL will cause a PAGE_FAULT_IN_NONPAGED_AREA BSOD.
+
 _EXPORT_STD template <class _Ty, pool_t _Pool = PagedPool, unsigned long _Tag = 'RsuM'>
 class kallocator {
 public:
@@ -59,7 +63,7 @@ public:
 
     template <class _Other>
     struct _CXX17_DEPRECATE_OLD_ALLOCATOR_MEMBERS rebind {
-        using other = kallocator<_Other>;
+        using other = kallocator<_Other, _Pool, _Tag>;
     };
 
 #if _HAS_DEPRECATED_ALLOCATOR_MEMBERS
@@ -77,6 +81,8 @@ public:
     constexpr kallocator(const kallocator&) noexcept = default;
     template <class _Other>
     constexpr kallocator(const kallocator<_Other>&) noexcept {}
+    template <class _Other, pool_t _OtherPool, unsigned long _OtherTag>
+    constexpr kallocator(const kallocator<_Other, _OtherPool, _OtherTag>&) noexcept {}
     _CONSTEXPR20 ~kallocator()                           = default;
     _CONSTEXPR20 kallocator& operator=(const kallocator&) = default;
 

@@ -407,3 +407,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Agent
+.omc
+.claude

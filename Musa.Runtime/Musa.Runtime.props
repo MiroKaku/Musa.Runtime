@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Musa_Runtime_UCRT_Version_Overlay>10.0.22621.0</Musa_Runtime_UCRT_Version_Overlay>
+    <Musa_Runtime_UCRT_Version_Overlay>10.0.26100.0</Musa_Runtime_UCRT_Version_Overlay>
     <Musa_Runtime_UCRT_ToolsInstallDir_Overlay>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\UCRT\$(Musa_Runtime_UCRT_Version_Overlay)'))</Musa_Runtime_UCRT_ToolsInstallDir_Overlay>
     <Musa_Runtime_UCRT_IncludePath_Overlay>$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\include;$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt;$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\inc</Musa_Runtime_UCRT_IncludePath_Overlay>
   </PropertyGroup>
@@ -28,6 +28,13 @@
     <Musa_Runtime_UCRT_ToolsInstallDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\Microsoft.VisualC.Runtime\UCRT\$(Musa_Runtime_UCRT_Version)'))</Musa_Runtime_UCRT_ToolsInstallDir>
     <Musa_Runtime_UCRT_IncludePath>$(Musa_Runtime_UCRT_ToolsInstallDir)\include;$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt;$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\inc</Musa_Runtime_UCRT_IncludePath>
   </PropertyGroup>
+
+  <!-- Version consistency validation (M-004) -->
+  <!-- Overlay and base UCRT versions must match exactly to avoid ABI mismatches -->
+  <Target Name="ValidateMusaRuntimeVersions" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(Musa_Runtime_UCRT_Version_Overlay)' != '$(Musa_Runtime_UCRT_Version)'"
+           Text="UCRT version mismatch: overlay is $(Musa_Runtime_UCRT_Version_Overlay) but base is $(Musa_Runtime_UCRT_Version). Overlay and base SDK versions must match." />
+  </Target>
 
   <PropertyGroup>
     <!-- Include STL -->

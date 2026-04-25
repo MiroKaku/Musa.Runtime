@@ -75,6 +75,7 @@
     <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiSet.cpp" />
     <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Set.cpp" />
     <ClCompile Include="Musa.Tests\Test.Containers.View.Span.cpp" />
+    <ClCompile Include="Musa.Tests\Test.CRT.Runtime.cpp" />
     <ClCompile Include="Universal.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
