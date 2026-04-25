@@ -85,8 +85,8 @@ If your project template uses [Mile.Project.Windows](https://github.com/ProjectM
 ```XML
   <ItemGroup>
     <PackageReference Include="Musa.Runtime">
-      <!-- Expected version -->
-      <Version>0.1.0</Version>
+      <!-- Optional: Expected version -->
+      <Version>0.5.1</Version>
     </PackageReference>
   </ItemGroup>
 ```

@@ -85,8 +85,8 @@ void Test$HashMap()
 ```XML
   <ItemGroup>
     <PackageReference Include="Musa.Runtime">
-      <!-- 期望的版本 -->
-      <Version>0.1.0</Version>
+      <!-- 可选: 期望的版本 -->
+      <Version>0.5.1</Version>
     </PackageReference>
   </ItemGroup>
 ```
