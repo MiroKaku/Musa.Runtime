@@ -7,137 +7,111 @@
 ![Windows](https://img.shields.io/badge/Windows-10+-orange.svg)
 ![Platform](https://img.shields.io/badge/Windows-X64%7CARM64-%23FFBCD9)
 
-* [简体中文](https://github.com/MiroKaku/Musa.Runtime/blob/main/README.zh-CN.md)
+* [English](README.md) · [简体中文](README.zh-CN.md)
+* 📖 [Architecture](docs/ARCHITECTURE.md) · [Developer Guide](docs/DEVELOPER-GUIDE.md) · [Build System](docs/BUILD-SYSTEM.md) · [Overlay Diff Report](docs/OVERLAY-DIFF-REPORT.md)
 
-## 1. About
-Musa.Runtime is a Microsoft MSVC runtime library based on [Musa.Core](https://github.com/MiroKaku/Musa.Core) and is an implementation of the new architecture of [ucxxrt](https://github.com/MiroKaku/ucxxrt).
+---
 
-It allows kernel developers to have a C++ development experience similar to that of application developers.
+## Overview
 
-### 1.1 Features
+Musa.Runtime is a Microsoft MSVC runtime library adapted for Windows kernel-mode development. Built on [Musa.Core](https://github.com/MiroKaku/Musa.Core), it carries forward the architecture pioneered by [ucxxrt](https://github.com/MiroKaku/ucxxrt).
 
-- [x] support x64、~~ARM64 (Experimental)~~
-- [x] support New/Delete
-- [x] support C++ Exception (/EHa、~~/EHsc~~) (IRQL <= APC_LEVEL)
-- [x] support Static Objects
-- [x] support SAFESEH、GS (Buffer Security Check)
-- [x] support STL (OneCore、CoreCRT)
-- [ ] support thread_local
+**Core goal:** Give kernel developers the same C++ experience that application developers enjoy.
 
-### 1.2 Example
+**Design highlight:** Inspired by Docker's layered filesystem, Musa.Runtime uses an overlay mechanism to selectively replace files on top of the original MSVC SDK source — no fork, no independent copy to maintain. See [Architecture](docs/ARCHITECTURE.md) for details.
 
-<details>
+## Quick Start
 
-<summary>See Musa.Runtime.TestForDriver for more information...</summary>
+### 1. Install
 
-<pre><code>
-void Test$ThrowUnknow()
+**NuGet (recommended):**
+
+```xml
+<ItemGroup>
+  <PackageReference Include="Musa.Runtime">
+    <Version>0.5.1</Version>
+  </PackageReference>
+</ItemGroup>
+```
+
+Or right-click your project → **Manage NuGet Packages** → search `Musa.Runtime` → Install.
+
+**Manual import:** Download from [Releases](https://github.com/MiroKaku/Musa.Runtime/releases) and unzip:
+
+```xml
+<PropertyGroup>
+  <MusaRuntimeOnlyHeader>false</MusaRuntimeOnlyHeader>
+</PropertyGroup>
+<Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.props" />
+<Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.targets" />
+<!-- place above Microsoft.Cpp.targets -->
+```
+
+### 2. Rename `DriverEntry` → `DriverMain`
+
+Musa.Runtime provides its own `DriverEntry` (which handles CRT initialization). Your driver entry point must be renamed to `DriverMain`:
+
+```cpp
+EXTERN_C NTSTATUS DriverMain(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
 {
-    try {
-        try {
-            try {
-                throw std::wstring();
-            }
-            catch (int& e) {
-                ASSERT(false);
-                MusaLOG("Catch Exception: %d\n", e);
-            }
-        }
-        catch (std::string& e) {
-            ASSERT(false);
-            MusaLOG("Catch Exception: %s\n", e.c_str());
-        }
-    }
-    catch (...) {
-        MusaLOG("Catch Exception: ...\n");
-    }
+    DriverObject->DriverUnload = [](auto obj) { MusaLOG("Unload."); };
+    // Your code here
+    return STATUS_SUCCESS;
 }
+```
 
-void Test$HashMap()
+### 3. Use C++ in Kernel
+
+```cpp
+#include <vector>
+#include <string>
+#include "kext/kallocator.h"
+
+void Example()
 {
-    auto Rand = std::mt19937_64(::rand());
-    auto Map  = std::unordered_map<uint32_t, std::string>();
-    for (auto i = 0u; i < 10; ++i) {
-        Map[i] = std::to_string(Rand());
-    }
-
-    for (const auto& Item : Map) {
-        MusaLOG("map[%ld] = %s\n", Item.first, Item.second.c_str());
-    }
+    std::vector<std::string, kallocator<std::string>> vec;
+    vec.push_back("hello from kernel");
 }
-</code></pre>
-
-</details>
-
-## 2. How to use
-
-**First, rename `DriverEntry` to `DriverMain`.**
-
-### 2.1 Method 1 (recommended)
-
-Right click on the project, select "Manage NuGet Packages".
-Search for `Musa.Runtime`, choose the version that suits you, and then click "Install".
-
-Or
-
-If your project template uses [Mile.Project.Windows](https://github.com/ProjectMile/Mile.Project.Windows), you can add the following code directly to your `.vcxproj` file:
-
-```XML
-  <ItemGroup>
-    <PackageReference Include="Musa.Runtime">
-      <!-- Optional: Expected version -->
-      <Version>0.5.1</Version>
-    </PackageReference>
-  </ItemGroup>
 ```
 
-### 2.2 Method 2
+> ⚠️ `kallocator` defaults to `PagedPool`. When used at `DISPATCH_LEVEL` or above, specify `NonPagedPool` explicitly.
 
-1. Download the latest package from [Releases](https://github.com/MiroKaku/Musa.Runtime/releases) and unzip it.
-2. Edit your `.vcxproj` file and add the following code:
+## Features
 
-```XML
-  <PropertyGroup>
-    <MusaRuntimeOnlyHeader>false</MusaRuntimeOnlyHeader>
-  </PropertyGroup>
-  <Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.props" />
-  <Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.targets" />
-  <!-- above this row -->
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-```
+| Feature | Status | Notes |
+|---|---|---|
+| x64 | ✅ | Primary platform |
+| ARM64 | ⚠️ | Experimental |
+| New / Delete | ✅ | Backed by `ExAllocatePoolWithTag` |
+| C++ Exception (`/EHa`, `/EHsc`) | ✅ | IRQL ≤ APC_LEVEL |
+| Static Object Construction | ✅ | Runs at driver load time |
+| SAFESEH / GS | ✅ | Buffer security check |
+| STL (OneCore / CoreCRT) | ✅ | Full container / algorithm support |
+| `thread_local` | ❌ | Compiler-level limitation (fs/gs register access) |
 
-### 2.3 Header-only mode
+## Documentation
 
-Add the following code to your `.vcxproj` file:
+| Document | Content |
+|---|---|
+| [📐 Architecture](docs/ARCHITECTURE.md) | Design philosophy (overlay pattern), component architecture, kernel-mode adaptations |
+| [📝 Developer Guide](docs/DEVELOPER-GUIDE.md) | Installation, STL usage, exception handling, kallocator, troubleshooting |
+| [🔧 Build System](docs/BUILD-SYSTEM.md) | Project structure, build process, version management, publish pipeline |
+| [🔬 Overlay Diff Report](docs/OVERLAY-DIFF-REPORT.md) | Per-file differential analysis of all overlay files |
 
-```XML
-  <PropertyGroup>
-    <MusaRuntimeOnlyHeader>true</MusaRuntimeOnlyHeader>
-  </PropertyGroup>
-```
-
-This mode will not automatically import lib files.
-
-## 3. How to build
-
-IDE：Visual Studio 2022 latest version
+## Build from Source
 
 ```cmd
 > git clone --recurse-submodules https://github.com/MiroKaku/Musa.Runtime.git
+> cd Musa.Runtime
 > .\BuildAllTargets.cmd
 ```
 
-## 4. Acknowledgements
+Prerequisites: Visual Studio 2026 (latest) + WDK
 
-Thanks to [JetBrains](https://www.jetbrains.com/?from=meesong) for providing free licenses such as [Resharper C++](https://www.jetbrains.com/resharper-cpp/?from=meesong) for my open-source projects.
+## References
 
-[<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/ReSharperCPP_icon.png" alt="ReSharper C++ logo." width=200>](https://www.jetbrains.com/?from=meesong)
-
-## 5. References
-
-* [Microsoft's C++ Standard Library](https://github.com/microsoft/stl)
-* [Chuyu-Team/VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
-* [RetrievAL](https://github.com/SpoilerScriptsGroup/RetrievAL)
-* [msvcr14x](https://github.com/sonyps5201314/msvcr14x)
-
-> Great thanks to these excellent projects. Without their existence, there would be no Musa.Runtime then.
+- [Microsoft's C++ Standard Library](https://github.com/microsoft/stl)
+- [Chuyu-Team/VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
+- [RetrievAL](https://github.com/SpoilerScriptsGroup/RetrievAL)
+- [msvcr14x](https://github.com/sonyps5201314/msvcr14x)
+- [Boost.Math](https://www.boost.org/doc/libs/release/libs/math/)

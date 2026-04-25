@@ -7,139 +7,111 @@
 ![Windows](https://img.shields.io/badge/Windows-10+-orange.svg)
 ![Platform](https://img.shields.io/badge/Windows-X64%7CARM64-%23FFBCD9)
 
-* [English](https://github.com/MiroKaku/Musa.Runtime/blob/main/README.md)
+* [English](README.md) · [简体中文](README.zh-CN.md)
+* 📖 [架构文档](docs/ARCHITECTURE.zh-CN.md) · [开发指南](docs/DEVELOPER-GUIDE.zh-CN.md) · [构建系统](docs/BUILD-SYSTEM.zh-CN.md) · [Overlay 差异报告](docs/OVERLAY-DIFF-REPORT.zh-CN.md)
 
-## 1. 关于
+---
 
-Musa.Runtime 是以 [Musa.Core](https://github.com/MiroKaku/Musa.Core) 作为底层支持的微软 MSVC 运行时库，是 [ucxxrt](https://github.com/MiroKaku/ucxxrt) 的新架构的实现。
+## 概述
 
-它可以让内核开发者拥有和应用开发者近似的 C++ 开发体验。
+Musa.Runtime 是一个面向 Windows 内核模式开发的 MSVC 运行时库，基于 [Musa.Core](https://github.com/MiroKaku/Musa.Core) 构建，继承并发展了 [ucxxrt](https://github.com/MiroKaku/ucxxrt) 的架构设计。
 
-### 1.1 特性
+**核心目标：** 让内核开发者获得与应用程序开发者一致的 C++ 开发体验。
 
-- [x] 支持 x64、~~ARM64（实验性）~~
-- [x] 支持 New/Delete
-- [x] 支持 C++ Exception (/EHa、~~/EHsc~~) (IRQL <= APC_LEVEL)
-- [x] 支持 Static Objects
-- [x] 支持 SAFESEH、GS (Buffer Security Check)
-- [x] 支持 STL (OneCore、CoreCRT)
-- [ ] 支持 thread_local
+**设计亮点：** 借鉴 Docker 分层文件系统思想，通过 overlay 机制在原版 MSVC SDK 源码之上进行选择性替换，避免 fork 维护独立副本。详见 [架构文档](docs/ARCHITECTURE.zh-CN.md)。
 
-### 1.2 例子
+## 快速开始
 
-<details>
+### 1. 安装
 
-<summary>在 Musa.Runtime.TestForDriver 查看更多 ...</summary>
+**NuGet（推荐）：**
 
-<pre><code>
-void Test$ThrowUnknow()
+```xml
+<ItemGroup>
+  <PackageReference Include="Musa.Runtime">
+    <Version>0.5.1</Version>
+  </PackageReference>
+</ItemGroup>
+```
+
+或右键项目 → **管理 NuGet 程序包** → 搜索 `Musa.Runtime` → 安装。
+
+**手动导入：** 从 [Releases](https://github.com/MiroKaku/Musa.Runtime/releases) 下载后解压：
+
+```xml
+<PropertyGroup>
+  <MusaRuntimeOnlyHeader>false</MusaRuntimeOnlyHeader>
+</PropertyGroup>
+<Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.props" />
+<Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.targets" />
+<!-- 放在 Microsoft.Cpp.targets 之前 -->
+```
+
+### 2. 将 `DriverEntry` 重命名为 `DriverMain`
+
+Musa.Runtime 自带 `DriverEntry` 入口点（负责 CRT 初始化），你需要将驱动入口重命名为 `DriverMain`：
+
+```cpp
+EXTERN_C NTSTATUS DriverMain(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
 {
-    try {
-        try {
-            try {
-                throw std::wstring();
-            }
-            catch (int& e) {
-                ASSERT(false);
-                MusaLOG("Catch Exception: %d\n", e);
-            }
-        }
-        catch (std::string& e) {
-            ASSERT(false);
-            MusaLOG("Catch Exception: %s\n", e.c_str());
-        }
-    }
-    catch (...) {
-        MusaLOG("Catch Exception: ...\n");
-    }
+    DriverObject->DriverUnload = [](auto obj) { MusaLOG("Unload."); };
+    // 你的代码
+    return STATUS_SUCCESS;
 }
+```
 
-void Test$HashMap()
+### 3. 在内核中使用 C++
+
+```cpp
+#include <vector>
+#include <string>
+#include "kext/kallocator.h"
+
+void Example()
 {
-    auto Rand = std::mt19937_64(::rand());
-    auto Map  = std::unordered_map<uint32_t, std::string>();
-    for (auto i = 0u; i < 10; ++i) {
-        Map[i] = std::to_string(Rand());
-    }
-
-    for (const auto& Item : Map) {
-        MusaLOG("map[%ld] = %s\n", Item.first, Item.second.c_str());
-    }
+    std::vector<std::string, kallocator<std::string>> vec;
+    vec.push_back("hello from kernel");
 }
-</code></pre>
-
-</details>
-
-## 2. 使用方法
-
-** 首先 `DriverEntry` 需要改为 `DriverMain`。**
-
-### 2.1 方法一（推荐）
-
-右键单击该项目并选择“管理 NuGet 包”，然后搜索`Musa.Runtime`并选择适合你的版本，最后单击“安装”。
-
-或者
-
-如果你的项目模板用的是 [Mile.Project.Windows](https://github.com/ProjectMile/Mile.Project.Windows)，那么可以直接在你的 `.vcxproj` 文件里面添加下面代码：
-
-```XML
-  <ItemGroup>
-    <PackageReference Include="Musa.Runtime">
-      <!-- 可选: 期望的版本 -->
-      <Version>0.5.1</Version>
-    </PackageReference>
-  </ItemGroup>
 ```
 
-### 2.2 方法二
+> ⚠️ `kallocator` 默认使用 `PagedPool`。在 `DISPATCH_LEVEL` 及以上 IRQL 使用时需指定 `NonPagedPool`。
 
-1. 从 [release](https://github.com/MiroKaku/Musa.Runtime/releases) 下载最新包并解压。
-2. 编辑你的 `.vcxproj` 文件，在里面添加下面代码：
+## 功能特性
 
-```XML
-  <PropertyGroup>
-    <MusaRuntimeOnlyHeader>false</MusaRuntimeOnlyHeader>
-  </PropertyGroup>
-  <Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.props" />
-  <Import Project="..\Musa.Runtime\config\Musa.Runtime.Config.targets" />
-  <!-- 在这一行上面 -->
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-```
+| 特性 | 状态 | 备注 |
+|---|---|---|
+| x64 | ✅ | 主力平台 |
+| ARM64 | ⚠️ | 实验性支持 |
+| New / Delete | ✅ | 基于 `ExAllocatePoolWithTag` |
+| C++ 异常（`/EHa`、`/EHsc`） | ✅ | IRQL ≤ APC_LEVEL |
+| 静态对象构造/析构 | ✅ | 驱动加载时自动执行 |
+| SAFESEH / GS | ✅ | 缓冲区安全检查 |
+| STL（OneCore / CoreCRT） | ✅ | 完整容器/算法支持 |
+| `thread_local` | ❌ | 编译器层面限制（fs/gs 寄存器访问） |
 
-### 2.3 仅头文件模式
+## 文档索引
 
-在你的 `.vcxproj` 文件里面添加下面代码：
+| 文档 | 内容 |
+|---|---|
+| [📐 架构文档](docs/ARCHITECTURE.zh-CN.md) | 设计理念（Overlay 模式）、组件架构、内核适配机制 |
+| [📝 开发指南](docs/DEVELOPER-GUIDE.zh-CN.md) | 安装使用、STL 容器、异常处理、kallocator、故障排查 |
+| [🔧 构建系统](docs/BUILD-SYSTEM.zh-CN.md) | 项目结构、构建流程、版本管理、发布管道 |
+| [🔬 Overlay 差异报告](docs/OVERLAY-DIFF-REPORT.zh-CN.md) | 所有 overlay 文件的逐文件差异分析与归类 |
 
-```XML
-  <PropertyGroup>
-    <MusaRuntimeOnlyHeader>true</MusaRuntimeOnlyHeader>
-  </PropertyGroup>
-```
-
-这个模式不会自动引入lib文件。
-
-## 3. 编译方法
-
-IDE：Visual Studio 2022 最新版
+## 从源码构建
 
 ```cmd
 > git clone --recurse-submodules https://github.com/MiroKaku/Musa.Runtime.git
+> cd Musa.Runtime
 > .\BuildAllTargets.cmd
 ```
 
-## 4. 鸣谢
+前置要求：Visual Studio 2026（最新版）+ WDK
 
-> [IntelliJ IDEA](https://zh.wikipedia.org/zh-hans/IntelliJ_IDEA) 是一个在各个方面都最大程度地提高开发人员的生产力的 IDE。
+## 参考项目
 
-特别感谢 [JetBrains](https://www.jetbrains.com/?from=meesong) 为开源项目提供免费的 [Resharper C++](https://www.jetbrains.com/resharper-cpp/?from=meesong) 等 IDE 的授权
-
-[<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/ReSharperCPP_icon.png" alt="ReSharper C++ logo." width=200>](https://www.jetbrains.com/?from=meesong)
-
-## 5. 引用参考
-
-* [Microsoft's C++ Standard Library](https://github.com/microsoft/stl)
-* [Chuyu-Team/VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
-* [RetrievAL](https://github.com/SpoilerScriptsGroup/RetrievAL)
-* [msvcr14x](https://github.com/sonyps5201314/msvcr14x)
-
-> 非常感谢这些优秀的项目，没有它们的存在，就不会有 Musa.Runtime。
+- [Microsoft's C++ Standard Library](https://github.com/microsoft/stl)
+- [Chuyu-Team/VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
+- [RetrievAL](https://github.com/SpoilerScriptsGroup/RetrievAL)
+- [msvcr14x](https://github.com/sonyps5201314/msvcr14x)
+- [Boost.Math](https://www.boost.org/doc/libs/release/libs/math/)
