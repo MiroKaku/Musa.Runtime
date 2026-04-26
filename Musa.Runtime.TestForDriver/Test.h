@@ -1,8 +1,5 @@
 #pragma once
 
-#include <kallocator.h>
-
-using std::kallocator;
 
 // Logging
 #ifdef _DEBUG
