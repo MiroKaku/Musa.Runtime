@@ -1,108 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Universal.cpp" />
     <ClCompile Include="TestForDriver.Main.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Ranges.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Stable.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Fences.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Flag.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.LockFree.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Order.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Ref.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Generic.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Operations.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.PriorityQueue.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Queue.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Stack.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Node.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Array.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Deque.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.ForwardList.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.List.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Vector.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Float.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Map.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiMap.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiSet.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Set.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.View.Span.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Map.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiMap.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiSet.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Set.cpp">
-      <Filter>Musa.Tests</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Universal.h" />
-    <ClInclude Include="Musa.Tests\Test.h">
-      <Filter>Musa.Tests</Filter>
-    </ClInclude>
+    <ClInclude Include="Test.h" />
   </ItemGroup>
   <ItemGroup>
     <Inf Include="Musa.Runtime.TestForDriver.inf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Musa.Tests">
-      <UniqueIdentifier>{3ade1fb0-2a9d-467c-8eff-a89bea510e66}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

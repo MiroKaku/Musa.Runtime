@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <ProjectGuid>{45B07071-5570-4570-821E-FB27B748785C}</ProjectGuid>
@@ -42,40 +42,10 @@
     <Inf Include="Musa.Runtime.TestForDriver.inf" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Musa.Tests\Test.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="Universal.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Ranges.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Algorithms.Random.Sample.Stable.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.Fences.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.Flag.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.LockFree.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.Order.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.Ref.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Float.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Generic.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Atomic.Types.Operations.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.PriorityQueue.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Queue.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Adaptors.Stack.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Map.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiMap.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.MultiSet.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Associative.Set.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Node.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Array.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Deque.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.ForwardList.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.List.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Sequences.Vector.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Map.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiMap.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.MultiSet.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.Unorder.Set.cpp" />
-    <ClCompile Include="Musa.Tests\Test.Containers.View.Span.cpp" />
-    <ClCompile Include="Musa.Tests\Test.CRT.Runtime.cpp" />
     <ClCompile Include="Universal.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
