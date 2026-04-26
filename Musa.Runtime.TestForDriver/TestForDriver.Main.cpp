@@ -725,7 +725,7 @@ namespace Main
         {
             std::tuple<int, std::string, double> t1(1, "a", 3.14), t2(1, "a", 3.14);
             KTEST_EXPECT(t1 == t2, "Tuple_Equality");
-            KTEST_EXPECT(std::tuple_size<decltype(t1)>::value == 3, "Tuple_Size");
+            static_assert(std::tuple_size<decltype(t1)>::value == 3, "tuple size should be 3");
         }
         {
             std::pair<int, int> p = {3, 4};
@@ -847,7 +847,7 @@ namespace Main
             KTEST_EXPECT(std::numeric_limits<int>::min() < std::numeric_limits<int>::max(), "NumericLimits_Int");
             KTEST_EXPECT(std::numeric_limits<unsigned int>::max() > 0, "NumericLimits_UInt");
             KTEST_EXPECT(std::numeric_limits<double>::is_iec559, "NumericLimits_Float");
-            KTEST_EXPECT(std::numeric_limits<int>::digits > 0, "NumericLimits_Digits");
+            static_assert(std::numeric_limits<int>::digits > 0, "int digits should be positive");
         }
 
         // Bit manipulation
