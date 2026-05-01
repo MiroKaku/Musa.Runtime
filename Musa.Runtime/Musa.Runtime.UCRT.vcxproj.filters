@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="ucrt">
@@ -115,9 +115,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\debug_fill_threshold.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\errno.cpp">
-      <Filter>ucrt\misc</Filter>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\invalid_parameter.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
@@ -228,6 +225,9 @@
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\wsetlocale.cpp">
       <Filter>ucrt\locale</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\errno.cpp">
+      <Filter>ucrt\misc</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\exception_filter.cpp">
       <Filter>ucrt\misc</Filter>

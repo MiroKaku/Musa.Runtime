@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup Condition="'$(IsKernelModeToolset)'==''">
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Musa_Runtime_UCRT_Version_Overlay>10.0.26100.0</Musa_Runtime_UCRT_Version_Overlay>
+    <Musa_Runtime_UCRT_Version_Overlay>10.0.28000.0</Musa_Runtime_UCRT_Version_Overlay>
     <Musa_Runtime_UCRT_ToolsInstallDir_Overlay>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\UCRT\$(Musa_Runtime_UCRT_Version_Overlay)'))</Musa_Runtime_UCRT_ToolsInstallDir_Overlay>
     <Musa_Runtime_UCRT_IncludePath_Overlay>$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\include;$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt;$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\inc</Musa_Runtime_UCRT_IncludePath_Overlay>
   </PropertyGroup>
@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Musa_Runtime_UCRT_Version>10.0.26100.0</Musa_Runtime_UCRT_Version>
+    <Musa_Runtime_UCRT_Version>10.0.28000.0</Musa_Runtime_UCRT_Version>
     <Musa_Runtime_UCRT_ToolsInstallDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\Microsoft.VisualC.Runtime\UCRT\$(Musa_Runtime_UCRT_Version)'))</Musa_Runtime_UCRT_ToolsInstallDir>
     <Musa_Runtime_UCRT_IncludePath>$(Musa_Runtime_UCRT_ToolsInstallDir)\include;$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt;$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\inc</Musa_Runtime_UCRT_IncludePath>
   </PropertyGroup>
