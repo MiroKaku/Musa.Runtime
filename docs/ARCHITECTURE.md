@@ -272,7 +272,7 @@ The NuGet package (`Musa.Runtime.nuspec`) distributes:
 - `build/native/Include/` — Public headers from `kext/`
 - `build/native/Library/{Configuration}/{Platform}/` — Compiled `.lib` files
 
-**Dependency:** `Musa.Core` (version >= 0.5.0)
+**Dependency:** `Musa.Core` (version >= 0.5.1)
 
 ### Header-Only Mode
 

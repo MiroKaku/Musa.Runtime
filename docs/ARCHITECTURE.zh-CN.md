@@ -272,7 +272,7 @@ NuGet 包（`Musa.Runtime.nuspec`）分发：
 - `build/native/Include/` —— 来自 `kext/` 的公共头文件
 - `build/native/Library/{Configuration}/{Platform}/` —— 编译的 `.lib` 文件
 
-**依赖：** `Musa.Core`（版本 >= 0.5.0）
+**依赖：** `Musa.Core`（版本 >= 0.5.1）
 
 ### 纯头文件模式
 
