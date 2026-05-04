@@ -34,6 +34,18 @@
     <Filter Include="ucrt\initializers">
       <UniqueIdentifier>{ced3ebde-ad0c-4c7a-afa2-edd8ea3de077}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ucrt\lowio">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-7890-abcd-ef1234567890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ucrt\filesystem">
+      <UniqueIdentifier>{b2c3d4e5-f6a7-8901-bcde-f12345678901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ucrt\time">
+      <UniqueIdentifier>{c3d4e5f6-a7b8-9012-cdef-123456789012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ucrt\env">
+      <UniqueIdentifier>{d4e5f6a7-b8c9-0123-defa-234567890123}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="universal.h" />
@@ -198,6 +210,342 @@
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\startup\onexit.cpp">
       <Filter>ucrt\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\chsize.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\close.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\commit.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\creat.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\dup.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\dup2.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\eof.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\filelength.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\ioinit.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\isatty.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\locking.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\lseek.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\mktemp.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\open.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\osfinfo.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\read.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\setmode.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\tell.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\telli64.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\txtmode.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\umask.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\write.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\_filbuf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\_file.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\_flsbuf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\_freebuf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\_getbuf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\_sftbuf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\clearerr.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\closeall.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fclose.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fdopen.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\feoferr.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fflush.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fgetc.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fgetpos.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fgets.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fgetwc.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fileno.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fopen.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fputc.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fputs.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fputwc.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fputws.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fread.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\freopen.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fseek.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fsetpos.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\ftell.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\fwrite.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\gets.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\gettemppath.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\getw.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\input.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\ncommode.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\openfile.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\printf_count_output.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\puts.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\putw.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\putws.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\rewind.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\rmtmp.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\setbuf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\setmaxf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\setvbuf.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\stream.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\tempnam.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\tmpfile.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\ungetc.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\ungetwc.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\access.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\chmod.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\findfile.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\fullpath.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\makepath.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\mkdir.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\rename.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\rmdir.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\splitpath.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\stat.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\unlink.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\waccess.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\wchmod.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\wmkdir.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\wrename.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\wrmdir.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\filesystem\wunlink.cpp">
+      <Filter>ucrt\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\asctime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\clock.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\ctime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\days.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\difftime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\ftime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\gmtime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\localtime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\loctotime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\mktime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\strdate.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\strftime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\strtime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\time.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\timeset.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\tzset.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\utime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\time\wcsftime.cpp">
+      <Filter>ucrt\time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\env\environment_initialization.cpp">
+      <Filter>ucrt\env</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\env\getenv.cpp">
+      <Filter>ucrt\env</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\env\get_environment_from_os.cpp">
+      <Filter>ucrt\env</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\env\getpath.cpp">
+      <Filter>ucrt\env</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\env\putenv.cpp">
+      <Filter>ucrt\env</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\env\searchenv.cpp">
+      <Filter>ucrt\env</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\env\setenv.cpp">
+      <Filter>ucrt\env</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\heap\debug_heap.cpp">
       <Filter>ucrt\heap</Filter>

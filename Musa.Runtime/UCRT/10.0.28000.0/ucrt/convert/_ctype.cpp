@@ -181,3 +181,42 @@ extern "C" int (__cdecl __iscsym)(int const c)
 {
     return (isalnum(c) || ((c) == '_'));
 }
+
+extern "C" int __cdecl _isctype(int const c, int const mask)
+{
+    if (c >= -1 && c <= 255)
+    {
+        int result = 0;
+        if (mask & _UPPER)   result |= (c >= 'A' && c <= 'Z');
+        if (mask & _LOWER)   result |= (c >= 'a' && c <= 'z');
+        if (mask & _DIGIT)   result |= (c >= '0' && c <= '9');
+        if (mask & _SPACE)   result |= (c == ' ' || (c >= 0x09 && c <= 0x0D));
+        if (mask & _PUNCT)   result |= ispunct(c);
+        if (mask & _CONTROL) result |= (c == 0x7F || (c >= 0x00 && c <= 0x1F));
+        if (mask & _BLANK)   result |= (c == ' ' || c == '\t');
+        if (mask & _HEX)     result |= isxdigit(c);
+        return result;
+    }
+    return 0;
+}
+
+extern "C" int __cdecl _isctype_l(int const c, int const mask, _locale_t const locale)
+{
+    UNREFERENCED_PARAMETER(locale);
+    return _isctype(c, mask);
+}
+
+#if defined _DEBUG
+extern "C" int __cdecl _chvalidator(int const c, int const mask)
+{
+    _ASSERTE(c >= -1 && c <= 255);
+    return _isctype_l(c, mask, nullptr);
+}
+
+extern "C" int __cdecl _chvalidator_l(_locale_t const locale, int const c, int const mask)
+{
+    UNREFERENCED_PARAMETER(locale);
+    _ASSERTE(c >= -1 && c <= 255);
+    return _isctype_l(c, mask, locale);
+}
+#endif

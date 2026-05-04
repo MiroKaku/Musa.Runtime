@@ -1,4 +1,4 @@
-#include <Veil.h>
+﻿#include <Veil.h>
 #include <new>
 #include <cstdlib>
 #include <exception>
@@ -26,6 +26,16 @@
 #include <iterator>
 #include <utility>
 #include <bit>
+#include <cstdio>
+#include <cstring>
+#include <ctime>
+#include <cctype>
+#include <cstdlib>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <io.h>
+#include <direct.h>
+#include <fcntl.h>
 #include <kmalloc.h>
 #include <kallocator.h>
 
@@ -946,6 +956,218 @@ namespace Main
             LeaveCriticalSection(&cs);
             LeaveCriticalSection(&cs);
             DeleteCriticalSection(&cs);
+        }
+
+        // ============================================================
+        // UCRT Unlocked: ctype — Character Classification
+        // ============================================================
+        {
+            KTEST_EXPECT(isalpha('A') != 0, "CType_isalpha_Upper");
+            KTEST_EXPECT(isalpha('z') != 0, "CType_isalpha_Lower");
+            KTEST_EXPECT(isalpha('0') == 0, "CType_isalpha_Digit");
+            KTEST_EXPECT(isalpha(' ') == 0, "CType_isalpha_Space");
+            KTEST_EXPECT(isdigit('0') != 0, "CType_isdigit_Zero");
+            KTEST_EXPECT(isdigit('9') != 0, "CType_isdigit_Nine");
+            KTEST_EXPECT(isdigit('A') == 0, "CType_isdigit_Alpha");
+            KTEST_EXPECT(isupper('A') != 0, "CType_isupper");
+            KTEST_EXPECT(isupper('z') == 0, "CType_isupper_Lower");
+            KTEST_EXPECT(islower('a') != 0, "CType_islower");
+            KTEST_EXPECT(islower('Z') == 0, "CType_islower_Upper");
+            KTEST_EXPECT(isspace(' ') != 0, "CType_isspace_Space");
+            KTEST_EXPECT(isspace('\t') != 0, "CType_isspace_Tab");
+            KTEST_EXPECT(isspace('\n') != 0, "CType_isspace_Newline");
+            KTEST_EXPECT(isspace('A') == 0, "CType_isspace_Alpha");
+            KTEST_EXPECT(ispunct('!') != 0, "CType_ispunct_Exclaim");
+            KTEST_EXPECT(ispunct(',') != 0, "CType_ispunct_Comma");
+            KTEST_EXPECT(ispunct('A') == 0, "CType_ispunct_Alpha");
+            KTEST_EXPECT(isalnum('A') != 0, "CType_isalnum_Alpha");
+            KTEST_EXPECT(isalnum('9') != 0, "CType_isalnum_Digit");
+            KTEST_EXPECT(isalnum(' ') == 0, "CType_isalnum_Space");
+            KTEST_EXPECT(isxdigit('0') != 0, "CType_isxdigit_0");
+            KTEST_EXPECT(isxdigit('9') != 0, "CType_isxdigit_9");
+            KTEST_EXPECT(isxdigit('A') != 0, "CType_isxdigit_A");
+            KTEST_EXPECT(isxdigit('f') != 0, "CType_isxdigit_f");
+            KTEST_EXPECT(isxdigit('g') == 0, "CType_isxdigit_g");
+            KTEST_EXPECT(isprint('A') != 0, "CType_isprint_Alpha");
+            KTEST_EXPECT(isprint(' ') != 0, "CType_isprint_Space");
+            KTEST_EXPECT(isgraph('A') != 0, "CType_isgraph_Alpha");
+            KTEST_EXPECT(isgraph(' ') == 0, "CType_isgraph_Space");
+            KTEST_EXPECT(iscntrl('\n') != 0, "CType_iscntrl_Newline");
+            KTEST_EXPECT(iscntrl('A') == 0, "CType_iscntrl_Alpha");
+            KTEST_EXPECT(isblank(' ') != 0, "CType_isblank_Space");
+            KTEST_EXPECT(isblank('\t') != 0, "CType_isblank_Tab");
+            KTEST_EXPECT(isblank('A') == 0, "CType_isblank_Alpha");
+            KTEST_EXPECT(toupper('a') == 'A', "CType_toupper");
+            KTEST_EXPECT(toupper('A') == 'A', "CType_toupper_Idempotent");
+            KTEST_EXPECT(tolower('Z') == 'z', "CType_tolower");
+            KTEST_EXPECT(tolower('z') == 'z', "CType_tolower_Idempotent");
+            KTEST_EXPECT(__isascii('A') != 0, "CType___isascii");
+            KTEST_EXPECT(__isascii(0x80) == 0, "CType___isascii_HighBit");
+            KTEST_EXPECT(__toascii(0x80) == 0, "CType___toascii");
+        }
+        // _isctype / _isctype_l
+        {
+            KTEST_EXPECT(_isctype('A', _UPPER) != 0, "IsCType_Upper");
+            KTEST_EXPECT(_isctype('z', _LOWER) != 0, "IsCType_Lower");
+            KTEST_EXPECT(_isctype('5', _DIGIT) != 0, "IsCType_Digit");
+            KTEST_EXPECT(_isctype(' ', _SPACE) != 0, "IsCType_Space");
+            KTEST_EXPECT(_isctype('!', _PUNCT) != 0, "IsCType_Punct");
+            KTEST_EXPECT(_isctype('\n', _CONTROL) != 0, "IsCType_Control");
+            KTEST_EXPECT(_isctype(' ', _BLANK) != 0, "IsCType_Blank");
+            KTEST_EXPECT(_isctype('\t', _BLANK) != 0, "IsCType_BlankTab");
+            KTEST_EXPECT(_isctype('F', _HEX) != 0, "IsCType_Hex");
+            KTEST_EXPECT(_isctype('A', _ALPHA) != 0, "IsCType_Alpha");
+            KTEST_EXPECT(_isctype('A', _DIGIT) == 0, "IsCType_Negative");
+            KTEST_EXPECT(_isctype_l('a', _LOWER, nullptr) != 0, "IsCType_L");
+        }
+#ifdef _DEBUG
+        {
+            KTEST_EXPECT(_chvalidator('A', _UPPER) != 0, "ChValidator");
+            KTEST_EXPECT(_chvalidator_l(nullptr, '9', _DIGIT) != 0, "ChValidator_L");
+        }
+#endif
+
+        // ============================================================
+        // UCRT Unlocked: String I/O (sprintf / sscanf)
+        // ============================================================
+        {
+            char buf[256] = {};
+            int n = sprintf(buf, "hello %s %d", "world", 42);
+            KTEST_EXPECT(n > 0 && strcmp(buf, "hello world 42") == 0, "Sprintf");
+        }
+        {
+            char buf[256] = {};
+            int n = snprintf(buf, 10, "%s-%d", "abcdefgh", 99);
+            KTEST_EXPECT(n > 9 && strcmp(buf, "abcdefgh-") == 0, "Snprintf_Trunc");
+        }
+        {
+            char buf[256] = {};
+            sprintf(buf, "%d %x %o", 255, 255, 255);
+            KTEST_EXPECT(strcmp(buf, "255 ff 377") == 0, "Sprintf_Formats");
+        }
+        {
+            int a = 0, b = 0;
+            int n = sscanf("42 99", "%d %d", &a, &b);
+            KTEST_EXPECT(n == 2 && a == 42 && b == 99, "Sscanf_Ints");
+        }
+        {
+            int a = 0; char s[64] = {};
+            int n = sscanf("123 hello", "%d %s", &a, s);
+            KTEST_EXPECT(n == 2 && a == 123 && strcmp(s, "hello") == 0, "Sscanf_IntStr");
+        }
+        {
+            unsigned int u = 0;
+            int n = sscanf("0xDEAD", "%x", &u);
+            KTEST_EXPECT(n == 1 && u == 0xDEAD, "Sscanf_Hex");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: String (strcpy/strcat/strlen/strchr/strstr)
+        // ============================================================
+        {
+            char buf[32] = {};
+            strcpy(buf, "kernel");
+            KTEST_EXPECT(strcmp(buf, "kernel") == 0 && strlen(buf) == 6, "StrCpy_Len");
+            strcat(buf, "_mode");
+            KTEST_EXPECT(strcmp(buf, "kernel_mode") == 0, "StrCat");
+            KTEST_EXPECT(strchr("abcde", 'c') != nullptr, "StrChr");
+            KTEST_EXPECT(strstr("hello world", "world") != nullptr, "StrStr");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: Time
+        // ============================================================
+        {
+            time_t t = time(nullptr);
+            KTEST_EXPECT(t > 0, "Time_Positive");
+            time_t t2 = time(nullptr);
+            KTEST_EXPECT(t2 >= t, "Time_Monotonic");
+        }
+        {
+            KTEST_EXPECT(difftime(200, 100) == 100.0, "DiffTime");
+            clock_t c = clock();
+            KTEST_EXPECT(c >= 0, "Clock_NonNeg");
+        }
+        {
+            time_t t = 1700000000;
+            struct tm* g = gmtime(&t);
+            KTEST_EXPECT(g != nullptr && g->tm_year >= 70, "GmTime");
+            struct tm* l = localtime(&t);
+            KTEST_EXPECT(l != nullptr, "LocalTime");
+        }
+        {
+            time_t t = time(nullptr);
+            KTEST_EXPECT(asctime(localtime(&t)) != nullptr, "AscTime");
+            KTEST_EXPECT(ctime(&t) != nullptr, "CTime");
+        }
+        {
+            struct tm tm = {};
+            tm.tm_year = 100; tm.tm_mon = 0; tm.tm_mday = 1;
+            tm.tm_hour = 0; tm.tm_min = 0; tm.tm_sec = 0;
+            tm.tm_isdst = -1;
+            KTEST_EXPECT(mktime(&tm) > 0, "MkTime");
+        }
+        {
+            char buf[64] = {};
+            time_t t = 1700000000;
+            strftime(buf, sizeof(buf), "%Y-%m-%d", gmtime(&t));
+            KTEST_EXPECT(strlen(buf) == 10 && buf[4] == '-', "StrFTime");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: Environment
+        // ============================================================
+        {
+            int r = _putenv_s("MUSA_TEST", "hello");
+            KTEST_EXPECT(r == 0, "PutEnvS");
+            char* v = getenv("MUSA_TEST");
+            KTEST_EXPECT(v != nullptr && strcmp(v, "hello") == 0, "GetEnv");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: Filesystem path utilities
+        // ============================================================
+        {
+            char drive[8] = {}, dir[256] = {}, fname[64] = {}, ext[32] = {};
+            _splitpath("C:\\Windows\\System32\\test.dll", drive, dir, fname, ext);
+            KTEST_EXPECT(strcmp(drive, "C:") == 0, "SplitPath_Drive");
+            KTEST_EXPECT(strcmp(fname, "test") == 0, "SplitPath_Fname");
+            KTEST_EXPECT(strcmp(ext, ".dll") == 0, "SplitPath_Ext");
+        }
+        {
+            char path[256] = {};
+            _makepath(path, "C:", "\\dir\\sub\\", "file", ".txt");
+            KTEST_EXPECT(strcmp(path, "C:\\dir\\sub\\file.txt") == 0, "MakePath");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: stdlib (atoi/atol/strtol/strtod/abs/div)
+        // ============================================================
+        {
+            KTEST_EXPECT(atoi("42") == 42, "Atoi");
+            KTEST_EXPECT(atoi("   -99") == -99, "Atoi_Neg");
+            KTEST_EXPECT(atol("1234567890") == 1234567890L, "Atol");
+            KTEST_EXPECT(strtol("0xFF", nullptr, 0) == 255L, "StrTol_Hex");
+            KTEST_EXPECT(strtoul("4294967295", nullptr, 10) == 4294967295UL, "StrToul");
+        }
+        {
+            double v = strtod("3.14159", nullptr);
+            KTEST_EXPECT(v > 3.0 && v < 3.2, "StrToD");
+        }
+        {
+            KTEST_EXPECT(abs(-42) == 42 && abs(0) == 0, "Abs");
+            KTEST_EXPECT(labs(-123456789L) == 123456789L, "LAbs");
+        }
+        {
+            div_t d = div(10, 3);
+            KTEST_EXPECT(d.quot == 3 && d.rem == 1, "Div");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: lowio — isatty
+        // ============================================================
+        {
+            KTEST_EXPECT(_isatty(-1) == 0, "IsATTY_Invalid");
         }
 
         // Results

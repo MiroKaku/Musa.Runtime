@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 //
 // libcmt[d].lib        -> Musa.Runtime.CRT
@@ -36,6 +36,7 @@ typedef __time64_t time_t;
 // Global Macro
 #define __WARNING_NOT_SATISFIED     28020
 #define __WARNING_UNUSED_ASSIGNMENT 28931
+
 
 // NOTE: Thread-safe static initialization (magic statics) is disabled for this runtime.
 // The /Zc:threadSafeInit- compiler flag is set, meaning static local variable initialization
