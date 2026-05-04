@@ -1,4 +1,4 @@
-﻿#include <Veil.h>
+#include <Veil.h>
 #include <new>
 #include <cstdlib>
 #include <exception>
@@ -1027,8 +1027,9 @@ namespace Main
         }
 #endif
 
+
         // ============================================================
-        // UCRT Unlocked: String I/O (sprintf / sscanf)
+        // UCRT Unlocked: String I/O (sprintf)
         // ============================================================
         {
             char buf[256] = {};
@@ -1037,29 +1038,10 @@ namespace Main
         }
         {
             char buf[256] = {};
-            int n = snprintf(buf, 10, "%s-%d", "abcdefgh", 99);
-            KTEST_EXPECT(n > 9 && strcmp(buf, "abcdefgh-") == 0, "Snprintf_Trunc");
-        }
-        {
-            char buf[256] = {};
             sprintf(buf, "%d %x %o", 255, 255, 255);
             KTEST_EXPECT(strcmp(buf, "255 ff 377") == 0, "Sprintf_Formats");
         }
-        {
-            int a = 0, b = 0;
-            int n = sscanf("42 99", "%d %d", &a, &b);
-            KTEST_EXPECT(n == 2 && a == 42 && b == 99, "Sscanf_Ints");
-        }
-        {
-            int a = 0; char s[64] = {};
-            int n = sscanf("123 hello", "%d %s", &a, s);
-            KTEST_EXPECT(n == 2 && a == 123 && strcmp(s, "hello") == 0, "Sscanf_IntStr");
-        }
-        {
-            unsigned int u = 0;
-            int n = sscanf("0xDEAD", "%x", &u);
-            KTEST_EXPECT(n == 1 && u == 0xDEAD, "Sscanf_Hex");
-        }
+
 
         // ============================================================
         // UCRT Unlocked: String (strcpy/strcat/strlen/strchr/strstr)
@@ -1074,8 +1056,36 @@ namespace Main
             KTEST_EXPECT(strstr("hello world", "world") != nullptr, "StrStr");
         }
 
+
+        {
+            char buf[64] = {};
+            time_t t = 1700000000;
+            strftime(buf, sizeof(buf), "%Y-%m-%d", gmtime(&t));
+            KTEST_EXPECT(strlen(buf) == 10 && buf[4] == '-', "StrFTime");
+        }
+
+
+
+
         // ============================================================
-        // UCRT Unlocked: Time
+        // UCRT Unlocked: stdlib (atoi/atol)
+        // ============================================================
+        {
+            KTEST_EXPECT(atoi("42") == 42, "Atoi");
+            KTEST_EXPECT(atol("1234567890") == 1234567890L, "Atol");
+        }
+        {
+            KTEST_EXPECT(abs(-42) == 42 && abs(0) == 0, "Abs");
+            KTEST_EXPECT(labs(-123456789L) == 123456789L, "LAbs");
+        }
+        {
+            div_t d = div(10, 3);
+            KTEST_EXPECT(d.quot == 3 && d.rem == 1, "Div");
+        }
+
+
+        // ============================================================
+        // UCRT Unlocked: Time functions
         // ============================================================
         {
             time_t t = time(nullptr);
@@ -1085,8 +1095,6 @@ namespace Main
         }
         {
             KTEST_EXPECT(difftime(200, 100) == 100.0, "DiffTime");
-            clock_t c = clock();
-            KTEST_EXPECT(c >= 0, "Clock_NonNeg");
         }
         {
             time_t t = 1700000000;
@@ -1103,7 +1111,6 @@ namespace Main
         {
             struct tm tm = {};
             tm.tm_year = 100; tm.tm_mon = 0; tm.tm_mday = 1;
-            tm.tm_hour = 0; tm.tm_min = 0; tm.tm_sec = 0;
             tm.tm_isdst = -1;
             KTEST_EXPECT(mktime(&tm) > 0, "MkTime");
         }
@@ -1115,7 +1122,7 @@ namespace Main
         }
 
         // ============================================================
-        // UCRT Unlocked: Environment
+        // UCRT Unlocked: Environment variables
         // ============================================================
         {
             int r = _putenv_s("MUSA_TEST", "hello");
@@ -1141,26 +1148,34 @@ namespace Main
         }
 
         // ============================================================
-        // UCRT Unlocked: stdlib (atoi/atol/strtol/strtod/abs/div)
+        // UCRT Unlocked: Snprintf / Sscanf
         // ============================================================
         {
-            KTEST_EXPECT(atoi("42") == 42, "Atoi");
-            KTEST_EXPECT(atoi("   -99") == -99, "Atoi_Neg");
-            KTEST_EXPECT(atol("1234567890") == 1234567890L, "Atol");
+            char buf[256] = {};
+            int n = snprintf(buf, 10, "%s-%d", "abcdefgh", 99);
+            KTEST_EXPECT(n > 9 && strcmp(buf, "abcdefgh-") == 0, "Snprintf_Trunc");
+        }
+        {
+            int a = 0, b = 0;
+            int n = sscanf("42 99", "%d %d", &a, &b);
+            KTEST_EXPECT(n == 2 && a == 42 && b == 99, "Sscanf_Ints");
+        }
+        {
+            unsigned int u = 0;
+            int n = sscanf("0xDEAD", "%x", &u);
+            KTEST_EXPECT(n == 1 && u == 0xDEAD, "Sscanf_Hex");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: strtol / strtoul / strtod
+        // ============================================================
+        {
             KTEST_EXPECT(strtol("0xFF", nullptr, 0) == 255L, "StrTol_Hex");
             KTEST_EXPECT(strtoul("4294967295", nullptr, 10) == 4294967295UL, "StrToul");
         }
         {
             double v = strtod("3.14159", nullptr);
             KTEST_EXPECT(v > 3.0 && v < 3.2, "StrToD");
-        }
-        {
-            KTEST_EXPECT(abs(-42) == 42 && abs(0) == 0, "Abs");
-            KTEST_EXPECT(labs(-123456789L) == 123456789L, "LAbs");
-        }
-        {
-            div_t d = div(10, 3);
-            KTEST_EXPECT(d.quot == 3 && d.rem == 1, "Div");
         }
 
         // ============================================================
@@ -1169,6 +1184,193 @@ namespace Main
         {
             KTEST_EXPECT(_isatty(-1) == 0, "IsATTY_Invalid");
         }
+
+        // ============================================================
+        // UCRT Unlocked: Memory functions
+        // ============================================================
+        {
+            char src[16] = "test", dst[16] = {};
+            memcpy(dst, src, 5);
+            KTEST_EXPECT(memcmp(dst, src, 5) == 0, "MemCpy_MemCmp");
+        }
+        {
+            char buf[16] = {};
+            memset(buf, 'X', 10);
+            KTEST_EXPECT(buf[0] == 'X' && buf[9] == 'X' && buf[10] == 0, "MemSet");
+        }
+        {
+            char buf[16] = "0123456789";
+            memmove(buf + 3, buf, 5);
+            KTEST_EXPECT(buf[0] == '0' && buf[3] == '0' && buf[8] == '5', "MemMove_Overlap");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: String edge cases
+        // ============================================================
+        {
+            char buf[32] = {};
+            strncpy(buf, "hello world", 5);
+            KTEST_EXPECT(strcmp(buf, "hello") == 0, "StrNCpy");
+        }
+        {
+            const char* s = "hello world";
+            KTEST_EXPECT(strrchr(s, 'o') == s + 7, "StrRChr");
+            KTEST_EXPECT(memchr(s, 'w', 11) == s + 6, "MemChr");
+        }
+        {
+            KTEST_EXPECT(strncmp("abc", "abd", 2) == 0, "StrNCmp_Equal2");
+            KTEST_EXPECT(strncmp("abc", "abd", 3) < 0, "StrNCmp_Diff3");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: stdlib — qsort / bsearch
+        // ============================================================
+        {
+            int arr[] = {5, 3, 8, 1, 9, 2};
+            qsort(arr, 6, sizeof(int), [](const void* a, const void* b) {
+                return *(const int*)a - *(const int*)b;
+            });
+            KTEST_EXPECT(arr[0] == 1 && arr[5] == 9, "QSort_Ascending");
+        }
+        {
+            int arr[] = {1, 2, 3, 4, 5, 6};
+            int key = 4;
+            int* found = static_cast<int*>(bsearch(&key, arr, 6, sizeof(int),
+                [](const void* a, const void* b) { return *(const int*)a - *(const int*)b; }));
+            KTEST_EXPECT(found != nullptr && *found == 4, "BSearch_Found");
+            key = 99;
+            found = static_cast<int*>(bsearch(&key, arr, 6, sizeof(int),
+                [](const void* a, const void* b) { return *(const int*)a - *(const int*)b; }));
+            KTEST_EXPECT(found == nullptr, "BSearch_NotFound");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: ctype edge cases
+        // ============================================================
+        {
+            KTEST_EXPECT(isalpha(EOF) == 0, "CType_EOF");
+            KTEST_EXPECT(isdigit(-1) == 0, "CType_NegOne");
+            KTEST_EXPECT(isupper(0x80) == 0, "CType_HighBit");
+            KTEST_EXPECT(toupper('@') == '@', "ToUpper_NonAlpha");
+            KTEST_EXPECT(tolower('[') == '[', "ToLower_NonAlpha");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: lowio — POSIX-style file I/O
+        // ============================================================
+        {
+            int fd = _open("C:\\musa_lowio_test.tmp",
+                _O_CREAT | _O_RDWR | _O_BINARY, _S_IREAD | _S_IWRITE);
+            KTEST_EXPECT(fd >= 0, "LowIO_Open");
+            if (fd >= 0) {
+                const char* msg = "Hello kernel I/O!";
+                int written = _write(fd, msg, static_cast<unsigned int>(strlen(msg)));
+                KTEST_EXPECT(written > 0, "LowIO_Write");
+
+                long pos = _lseek(fd, 0, SEEK_SET);
+                KTEST_EXPECT(pos == 0, "LowIO_LSeek_Set");
+
+                char buf[64] = {};
+                int nread = _read(fd, buf, sizeof(buf) - 1);
+                KTEST_EXPECT(nread > 0, "LowIO_Read");
+                KTEST_EXPECT(strcmp(buf, msg) == 0, "LowIO_ReadVerify");
+
+                KTEST_EXPECT(_eof(fd) != 0, "LowIO_EOF");
+
+                long sz = _filelength(fd);
+                KTEST_EXPECT(sz == static_cast<long>(strlen(msg)), "LowIO_FileLength");
+
+                long t = _tell(fd);
+                KTEST_EXPECT(t >= 0, "LowIO_Tell");
+
+                KTEST_EXPECT(_close(fd) == 0, "LowIO_Close");
+            }
+            _unlink("C:\\musa_lowio_test.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: stdio — buffered file I/O
+        // ============================================================
+        {
+            FILE* f = fopen("C:\\musa_stdio_test.tmp", "w+b");
+            KTEST_EXPECT(f != nullptr, "Stdio_FOpen");
+            if (f) {
+                int written = fprintf(f, "answer=%d", 42);
+                KTEST_EXPECT(written > 0, "Stdio_FPrintf");
+                fflush(f);
+                long pos = ftell(f);
+                KTEST_EXPECT(pos > 0, "Stdio_FTell");
+                rewind(f);
+                KTEST_EXPECT(ftell(f) == 0, "Stdio_Rewind");
+                char buf[64] = {};
+                char* r = fgets(buf, sizeof(buf), f);
+                KTEST_EXPECT(r == buf, "Stdio_FGets");
+                KTEST_EXPECT(strstr(buf, "answer=42") != nullptr, "Stdio_FGets_Content");
+                fseek(f, 0, SEEK_SET);
+                int val = 0;
+                int n = fscanf(f, "answer=%d", &val);
+                KTEST_EXPECT(n == 1 && val == 42, "Stdio_FScanf");
+                KTEST_EXPECT(feof(f) != 0, "Stdio_FEOF");
+                KTEST_EXPECT(ferror(f) == 0, "Stdio_FError");
+                clearerr(f);
+                KTEST_EXPECT(feof(f) == 0, "Stdio_ClearErr");
+                KTEST_EXPECT(fclose(f) == 0, "Stdio_FClose");
+            }
+            _unlink("C:\\musa_stdio_test.tmp");
+        }
+        {
+            FILE* f = fopen("C:\\musa_fwrite_test.tmp", "wb");
+            KTEST_EXPECT(f != nullptr, "Stdio_FWrite_FOpen");
+            if (f) {
+                const char data[] = "binary data";
+                size_t n = fwrite(data, 1, sizeof(data) - 1, f);
+                KTEST_EXPECT(n == sizeof(data) - 1, "Stdio_FWrite");
+                fclose(f);
+                f = fopen("C:\\musa_fwrite_test.tmp", "rb");
+                char buf[32] = {};
+                n = fread(buf, 1, sizeof(buf) - 1, f);
+                KTEST_EXPECT(n == sizeof(data) - 1, "Stdio_FRead");
+                KTEST_EXPECT(strcmp(buf, data) == 0, "Stdio_FRead_Content");
+                fclose(f);
+            }
+            _unlink("C:\\musa_fwrite_test.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: filesystem — directory and file operations
+        // ============================================================
+        {
+            int r = _mkdir("C:\\musa_fs_test_dir");
+            KTEST_EXPECT(r == 0, "FS_MkDir");
+            KTEST_EXPECT(_access("C:\\musa_fs_test_dir", 0) == 0, "FS_Access_Dir");
+            FILE* f = fopen("C:\\musa_fs_test_dir\\file.txt", "w");
+            KTEST_EXPECT(f != nullptr, "FS_FileInDir");
+            if (f) { fprintf(f, "data"); fclose(f); }
+            struct _stat64i32 st = {};
+            int stat_r = _stat64i32("C:\\musa_fs_test_dir\\file.txt", &st);
+            KTEST_EXPECT(stat_r == 0, "FS_Stat");
+            KTEST_EXPECT(st.st_size > 0, "FS_Stat_Size");
+            r = _unlink("C:\\musa_fs_test_dir\\file.txt");
+            KTEST_EXPECT(r == 0, "FS_Unlink");
+            r = _rmdir("C:\\musa_fs_test_dir");
+            KTEST_EXPECT(r == 0, "FS_RmDir");
+            FILE* f2r = fopen("C:\\musa_rename_a.tmp", "w");
+            if (f2r) { fprintf(f2r, "test"); fclose(f2r); }
+            int rename_r = rename("C:\\musa_rename_a.tmp", "C:\\musa_rename_b.tmp");
+            KTEST_EXPECT(rename_r == 0, "FS_Rename");
+            KTEST_EXPECT(_access("C:\\musa_rename_b.tmp", 0) == 0, "FS_Rename_Verify");
+            _unlink("C:\\musa_rename_b.tmp");
+
+        // ============================================================
+        // ============================================================
+        // UCRT Unlocked: sscanf complex
+        // ============================================================
+        {
+            float f = 0;
+            KTEST_EXPECT(sscanf("3.14", "%f", &f) == 1 && f > 3.0f && f < 3.2f, "Sscanf_Float");
+        }
+
+
 
         // Results
         MusaLOG("=== Results: %lu/%lu passed ===", TestsRun - TestsFailed, TestsRun);

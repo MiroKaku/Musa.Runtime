@@ -1,4 +1,4 @@
-//
+﻿//
 // _ctype.cpp
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.
@@ -220,3 +220,70 @@ extern "C" int __cdecl _chvalidator_l(_locale_t const locale, int const c, int c
     return _isctype_l(c, mask, locale);
 }
 #endif
+
+// ---- C locale character type table (_pctype) for strtox/strtod ----
+
+static const unsigned short _pctype_data[] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, _SPACE, _SPACE, _SPACE, _SPACE, _SPACE, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _SPACE|_BLANK, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT,
+    _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX,
+    _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _PUNCT, _PUNCT, _PUNCT, _PUNCT,
+    _PUNCT, _PUNCT, _PUNCT, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER,
+    _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER,
+    _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _LOWER|_HEX,
+    _LOWER|_HEX, _LOWER|_HEX, _LOWER|_HEX, _LOWER|_HEX, _LOWER|_HEX, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER,
+    _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER,
+    _LOWER, _PUNCT, _PUNCT, _PUNCT, _PUNCT, 0,
+};
+
+extern "C" const unsigned short* __cdecl __pctype_func()
+{
+    return _pctype_data + 1;
+}
+
+extern "C" int __cdecl iswctype(wint_t c, wctype_t type)
+{
+    if (c == WEOF) return 0;
+    if (c < 0 || c > 255) return 0;
+    return (_pctype_data[c + 1] & type) != 0;
+}
+
+// _ismbblead — from base SDK filesystem/splitpath.cpp
+extern "C" int __cdecl _ismbblead(unsigned int c)
+{
+    UNREFERENCED_PARAMETER(c);
+    return 0;
+}
+
+// _mbsdec — from base SDK filesystem/makepath.cpp
+extern "C" unsigned char* __cdecl _mbsdec(const unsigned char* start, const unsigned char* current)
+{
+    if (current > start)
+        return const_cast<unsigned char*>(current - 1);
+    return const_cast<unsigned char*>(start);
+}
+
+// _mbtowc_l — multibyte to wide char with locale (kernel mode: ignore locale)
+extern "C" int __cdecl _mbtowc_l(wchar_t* pwc, const char* s, size_t n, _locale_t locale)
+{
+    UNREFERENCED_PARAMETER(locale);
+    UNREFERENCED_PARAMETER(n);
+    if (!s || !*s) return 0;
+    if (pwc) *pwc = static_cast<wchar_t>(static_cast<unsigned char>(*s));
+    return 1;
+}
+
+// wctomb_s — wide char to multibyte (secure, kernel mode: simple ASCII)
+extern "C" errno_t __cdecl wctomb_s(int* pRetValue, char* mbchar, size_t sizeInBytes, wchar_t wchar)
+{
+    if (!pRetValue) return EINVAL;
+    if (!mbchar || sizeInBytes < 1)
+    {
+        *pRetValue = 0;
+        return !mbchar ? EINVAL : ERANGE;
+    }
+    mbchar[0] = static_cast<char>(wchar);
+    if (sizeInBytes > 1) mbchar[1] = '\0';
+    *pRetValue = 1;
+    return 0;
+}

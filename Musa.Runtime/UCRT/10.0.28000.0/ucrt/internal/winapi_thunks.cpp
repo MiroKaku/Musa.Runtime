@@ -1,4 +1,4 @@
-//
+﻿//
 // winapi_thunks.cpp
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.
@@ -65,4 +65,74 @@ extern "C" BOOLEAN WINAPI __acrt_RtlGenRandom(
 )
 {
     return RtlGenRandom(buffer, buffer_count);
+}
+
+// ---- UCRT delegates to kernel32 thunks (round 2) ----
+
+// __acrt_GetSystemTimePreciseAsFileTime — delegate to GetSystemTimeAsFileTime
+extern "C" void __cdecl __acrt_GetSystemTimePreciseAsFileTime(LPFILETIME const lpTime)
+{
+    GetSystemTimeAsFileTime(lpTime);
+}
+
+// __acrt_AreFileApisANSI — always FALSE in kernel mode
+extern "C" int __cdecl __acrt_AreFileApisANSI()
+{
+    return FALSE;
+}
+
+// __acrt_SetEnvironmentVariableA — ANSI→WideChar→SetEnvironmentVariableW
+extern "C" int __cdecl __acrt_SetEnvironmentVariableA(LPCSTR const lpName, LPCSTR const lpValue)
+{
+    if (!lpName) return 0;
+
+    int const cchName = MultiByteToWideChar(CP_ACP, 0, lpName, -1, nullptr, 0);
+    int const cchValue = lpValue ? MultiByteToWideChar(CP_ACP, 0, lpValue, -1, nullptr, 0) : 0;
+
+    auto const wName = static_cast<LPWSTR>(_malloca(cchName * sizeof(WCHAR)));
+    auto const wValue = lpValue ? static_cast<LPWSTR>(_malloca(cchValue * sizeof(WCHAR))) : nullptr;
+
+    if (!wName || (lpValue && !wValue))
+    {
+        _freea(wName);
+        _freea(wValue);
+        RtlSetLastWin32Error(ERROR_NOT_ENOUGH_MEMORY);
+        return 0;
+    }
+
+    MultiByteToWideChar(CP_ACP, 0, lpName, -1, wName, cchName);
+    if (wValue) MultiByteToWideChar(CP_ACP, 0, lpValue, -1, wValue, cchValue);
+
+    BOOL const result = SetEnvironmentVariableW(wName, wValue);
+
+    _freea(wName);
+    _freea(wValue);
+
+    return result;
+}
+
+// __acrt_GetDateFormatEx — delegate to GetDateFormatEx
+extern "C" int __cdecl __acrt_GetDateFormatEx(
+    LPCWSTR const lpLocaleName,
+    DWORD const dwFlags,
+    SYSTEMTIME const* lpDate,
+    LPCWSTR const lpFormat,
+    LPWSTR const lpDateStr,
+    int const cchDate,
+    LPCWSTR const lpCalendar)
+{
+    UNREFERENCED_PARAMETER(lpCalendar);
+    return GetDateFormatEx(lpLocaleName, dwFlags, lpDate, lpFormat, lpDateStr, cchDate, nullptr);
+}
+
+// __acrt_GetTimeFormatEx — delegate to GetTimeFormatEx
+extern "C" int __cdecl __acrt_GetTimeFormatEx(
+    LPCWSTR const lpLocaleName,
+    DWORD const dwFlags,
+    SYSTEMTIME const* lpTime,
+    LPCWSTR const lpFormat,
+    LPWSTR const lpTimeStr,
+    int const cchTime)
+{
+    return GetTimeFormatEx(lpLocaleName, dwFlags, lpTime, lpFormat, lpTimeStr, cchTime);
 }

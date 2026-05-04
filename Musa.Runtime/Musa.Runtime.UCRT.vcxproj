@@ -107,6 +107,8 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdlib\rotr.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\chsize.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\close.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtox.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtod.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\commit.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\creat.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\dup.cpp" />
@@ -227,6 +229,7 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\locks.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\OutputDebugStringA.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\per_thread_data.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\collation.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\winapi_thunks.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\locale_update.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\nlsdata.cpp" />
@@ -239,6 +242,8 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\signal.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\startup\thread.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\stdio\output.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\charconv.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\kernel_initializers.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <MusaCoreOnlyHeader>true</MusaCoreOnlyHeader>
