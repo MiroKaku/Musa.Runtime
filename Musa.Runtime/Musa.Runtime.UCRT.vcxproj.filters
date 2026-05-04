@@ -115,6 +115,24 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\i386\sse2_initializer.cpp">
       <Filter>ucrt\initializers</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cfout.cpp">
+      <Filter>ucrt\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\_fptostr.cpp">
+      <Filter>ucrt\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cvt.cpp">
+      <Filter>ucrt\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\locale\localeconv.cpp">
+      <Filter>ucrt\locale</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\output.cpp">
+      <Filter>ucrt\stdio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\timeset_initializer.cpp">
+      <Filter>ucrt\initializers</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\report_runtime_error.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>

@@ -1182,9 +1182,8 @@ namespace Main
         // UCRT Unlocked: lowio — isatty
         // ============================================================
         {
-            KTEST_EXPECT(_isatty(-1) == 0, "IsATTY_Invalid");
+            KTEST_EXPECT(_isatty(_fileno(stdout)) == 0, "IsATTY_Stdout");
         }
-
         // ============================================================
         // UCRT Unlocked: Memory functions
         // ============================================================
@@ -1368,6 +1367,211 @@ namespace Main
         {
             float f = 0;
             KTEST_EXPECT(sscanf("3.14", "%f", &f) == 1 && f > 3.0f && f < 3.2f, "Sscanf_Float");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: lowio
+        // ============================================================
+        {
+            int fd = _open("C:\\musa_lo.tmp", _O_CREAT | _O_RDWR | _O_BINARY, _S_IREAD | _S_IWRITE);
+            KTEST_EXPECT(fd >= 0, "LowIO_Open");
+            if (fd >= 0) {
+                const char msg[] = "Hello kernel I/O!";
+                int w = _write(fd, msg, sizeof(msg) - 1);
+                KTEST_EXPECT(w == sizeof(msg) - 1, "LowIO_Write");
+                KTEST_EXPECT(_lseek(fd, 0, SEEK_SET) == 0, "LowIO_LSeek");
+                char buf[64] = {};
+                int n = _read(fd, buf, sizeof(buf) - 1);
+                KTEST_EXPECT(n == sizeof(msg) - 1, "LowIO_Read");
+                KTEST_EXPECT(strcmp(buf, msg) == 0, "LowIO_ReadContent");
+                KTEST_EXPECT(_close(fd) == 0, "LowIO_Close");
+            }
+            _unlink("C:\\musa_lo.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: stdio
+        // ============================================================
+        {
+            FILE* f1 = fopen("C:\\musa_sio.tmp", "w+b");
+            KTEST_EXPECT(f1 != nullptr, "StdIO_FOpen");
+            if (f1) {
+                const char data[] = "kernel stdio test";
+                KTEST_EXPECT(fwrite(data, 1, sizeof(data) - 1, f1) == sizeof(data) - 1, "StdIO_FWrite");
+                fflush(f1);
+                rewind(f1);
+                char buf[64] = {};
+                KTEST_EXPECT(fread(buf, 1, sizeof(buf) - 1, f1) == sizeof(data) - 1, "StdIO_FRead");
+                KTEST_EXPECT(strcmp(buf, data) == 0, "StdIO_FReadContent");
+                KTEST_EXPECT(fclose(f1) == 0, "StdIO_FClose");
+            }
+            _unlink("C:\\musa_sio.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: formatted file I/O via sprintf+fwrite / fread+sscanf
+        // ============================================================
+        {
+            FILE* f2 = fopen("C:\\musa_fmt.tmp", "w+b");
+            KTEST_EXPECT(f2 != nullptr, "FmtIO_Open");
+            if (f2) {
+                char buf[128];
+                int len = sprintf(buf, "answer=%d\n", 42);
+                KTEST_EXPECT(fwrite(buf, 1, len, f2) == (size_t)len, "FmtIO_SprintfWrite");
+                rewind(f2);
+                char rbuf[128] = {};
+                fread(rbuf, 1, sizeof(rbuf) - 1, f2);
+                int val = 0;
+                KTEST_EXPECT(sscanf(rbuf, "answer=%d", &val) == 1 && val == 42, "FmtIO_Sscanf");
+                fclose(f2);
+            }
+            _unlink("C:\\musa_fmt.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: lowio tell / eof / filelength
+        // ============================================================
+        {
+            int fd = _open("C:\\musa_te.tmp", _O_CREAT | _O_RDWR | _O_BINARY, _S_IREAD | _S_IWRITE);
+            if (fd >= 0) {
+                _write(fd, "1234567890", 10);
+                KTEST_EXPECT(_tell(fd) == 10, "LowIO_Tell");
+                KTEST_EXPECT(_lseek(fd, 0, SEEK_SET) == 0, "LowIO_LSeek");
+                KTEST_EXPECT(_filelength(fd) == 10, "LowIO_FileLength");
+                KTEST_EXPECT(_eof(fd) == 0, "LowIO_EOF_BeforeRead");
+                char c;
+                while (_read(fd, &c, 1) == 1) { }
+                KTEST_EXPECT(_eof(fd) != 0, "LowIO_EOF_AfterRead");
+                _close(fd);
+            }
+            _unlink("C:\\musa_te.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: filesystem — _stat / _fullpath
+        // ============================================================
+        {
+            KTEST_EXPECT(_mkdir("C:\\musa_fsd") == 0, "FS_MkDir");
+            FILE* fd = fopen("C:\\musa_fsd\\f.txt", "w");
+            if (fd) { fwrite("data", 1, 4, fd); fclose(fd); }
+            struct _stat64i32 st = {};
+            KTEST_EXPECT(_stat64i32("C:\\musa_fsd\\f.txt", &st) == 0, "FS_Stat");
+            KTEST_EXPECT(st.st_size == 4, "FS_StatSize");
+            KTEST_EXPECT(_unlink("C:\\musa_fsd\\f.txt") == 0, "FS_Unlink");
+            KTEST_EXPECT(_rmdir("C:\\musa_fsd") == 0, "FS_RmDir");
+        }
+        {
+            char full[256] = {};
+            char* r = _fullpath(full, "test.txt", sizeof(full));
+            KTEST_EXPECT(r != nullptr && strlen(r) > 0, "FS_FullPath");
+        }
+        {
+            FILE* fa = fopen("C:\\musa_rn.tmp", "w");
+            if (fa) { fwrite("x", 1, 1, fa); fclose(fa); }
+            KTEST_EXPECT(rename("C:\\musa_rn.tmp", "C:\\musa_rn2.tmp") == 0, "FS_Rename");
+            _unlink("C:\\musa_rn2.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: stdio — fseek/ftell, fopen append mode
+        // ============================================================
+        {
+            FILE* f = fopen("C:\\musa_seek.tmp", "w+b");
+            if (f) {
+                fwrite("0123456789", 1, 10, f);
+                KTEST_EXPECT(fseek(f, 5, SEEK_SET) == 0, "StdIO_FSeek_Set");
+                KTEST_EXPECT(ftell(f) == 5, "StdIO_FTell");
+                KTEST_EXPECT(fseek(f, -2, SEEK_CUR) == 0, "StdIO_FSeek_Cur");
+                KTEST_EXPECT(ftell(f) == 3, "StdIO_FSeek_CurTell");
+                KTEST_EXPECT(fseek(f, 0, SEEK_END) == 0, "StdIO_FSeek_End");
+                KTEST_EXPECT(ftell(f) == 10, "StdIO_FSeek_EndTell");
+                fclose(f);
+            }
+            _unlink("C:\\musa_seek.tmp");
+        }
+        {
+            FILE* f = fopen("C:\\musa_append.tmp", "a");
+            KTEST_EXPECT(f != nullptr, "StdIO_FOpenAppend");
+            if (f) {
+                KTEST_EXPECT(fwrite("abc", 1, 3, f) == 3, "StdIO_AppendWrite");
+                fclose(f);
+                f = fopen("C:\\musa_append.tmp", "rb");
+                char buf[16] = {};
+                size_t n = fread(buf, 1, sizeof(buf) - 1, f);
+                KTEST_EXPECT(n == 3 && strcmp(buf, "abc") == 0, "StdIO_AppendRead");
+                fclose(f);
+            }
+            _unlink("C:\\musa_append.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: lowio — dup/dup2
+        // ============================================================
+        {
+            int fd = _open("C:\\musa_dup.tmp", _O_CREAT | _O_RDWR | _O_BINARY, _S_IREAD | _S_IWRITE);
+            if (fd >= 0) {
+                _write(fd, "dup_test", 8);
+                int fd2 = _dup(fd);
+                KTEST_EXPECT(fd2 >= 0 && fd2 != fd, "LowIO_Dup");
+                if (fd2 >= 0) {
+                    _lseek(fd2, 0, SEEK_SET);
+                    char buf[16] = {};
+                    _read(fd2, buf, sizeof(buf) - 1);
+                    KTEST_EXPECT(strcmp(buf, "dup_test") == 0, "LowIO_DupRead");
+                    _close(fd2);
+                }
+                _close(fd);
+            }
+            _unlink("C:\\musa_dup.tmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: wide char string
+        // ============================================================
+        {
+            wchar_t wbuf[32] = L"kernel";
+            KTEST_EXPECT(wcslen(wbuf) == 6, "WcsLen");
+            wchar_t wdst[32] = {};
+            wcscpy(wdst, wbuf);
+            KTEST_EXPECT(wcscmp(wdst, wbuf) == 0, "WcsCpy_WcsCmp");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: strtok
+        // ============================================================
+        {
+            char s[] = "one,two,three";
+            char* t1 = strtok(s, ",");
+            char* t2 = strtok(nullptr, ",");
+            char* t3 = strtok(nullptr, ",");
+            KTEST_EXPECT(t1 && strcmp(t1, "one") == 0, "StrTok_1");
+            KTEST_EXPECT(t2 && strcmp(t2, "two") == 0, "StrTok_2");
+            KTEST_EXPECT(t3 && strcmp(t3, "three") == 0, "StrTok_3");
+        }
+
+
+
+        // ============================================================
+        // UCRT Unlocked: stdlib — srand/rand, lfind
+        // ============================================================
+        {
+            srand(42);
+            int v1 = rand();
+            srand(42);
+            int v2 = rand();
+            KTEST_EXPECT(v1 == v2, "SRand_Rand_Deterministic");
+        }
+        {
+            int arr[] = {1, 3, 5, 7, 9};
+            unsigned int n = 5;
+            int key = 5;
+            int* found = static_cast<int*>(_lfind(&key, arr, &n, sizeof(int),
+                [](const void* a, const void* b) { return *(const int*)a - *(const int*)b; }));
+            KTEST_EXPECT(found != nullptr && *found == 5, "LFind_Found");
+            key = 42;
+            found = static_cast<int*>(_lfind(&key, arr, &n, sizeof(int),
+                [](const void* a, const void* b) { return *(const int*)a - *(const int*)b; }));
+            KTEST_EXPECT(found == nullptr, "LFind_NotFound");
         }
 
 

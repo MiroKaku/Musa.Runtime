@@ -269,11 +269,8 @@ static __acrt_initializer const __acrt_initializers[] =
     { nullptr,                                 uninitialize_vcruntime                   },
 
     { __acrt_initialize_ptd,                   __acrt_uninitialize_ptd                  },
-    // Enclaves only require initializers for supported features.
-#ifndef _UCRT_ENCLAVE_BUILD
     { __acrt_initialize_lowio,                 __acrt_uninitialize_lowio                },
     { __acrt_initialize_command_line,          __acrt_uninitialize_command_line         },
-#endif
 #if !defined NTOS_KERNEL_RUNTIME
     { __acrt_initialize_multibyte,             nullptr                                  },
     { nullptr,                                 report_memory_leaks                      },

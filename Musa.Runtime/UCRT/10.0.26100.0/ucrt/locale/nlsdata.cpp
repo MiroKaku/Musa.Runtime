@@ -1,12 +1,18 @@
-﻿//
+// Kernel-mode minimal locale data -- C locale only.
+//
 // nlsdata.cpp
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Globals for the locale and code page implementation.  These are utilized by
 // almost all locale-dependent functions.
+// In kernel mode, only the C locale is provided.
+//
+// Self-contained kernel-mode implementation -- no ntoskrnl dependency.
+// Provides locale data globals and the C locale for kernel mode.
 //
 #include <corecrt_internal.h>
+#include <locale.h>
 
 
 #if !defined NTOS_KERNEL_RUNTIME
@@ -139,10 +145,17 @@ extern "C" __crt_locale_pointers __acrt_initial_locale_pointers
     &__acrt_initial_multibyte_data
 };
 #else
-// Global pointer to the current per-thread locale information structure.
+// ---- Kernel Mode ----
+// ---- Kernel Mode ----
+
+// Forward-declared from _ctype.cpp
+extern "C" const unsigned short _pctype_data[];
+
 __crt_state_management::dual_state_global<__crt_locale_data*> __acrt_current_locale_data;
 
-extern "C" __crt_locale_pointers __acrt_initial_locale_pointers{};
+extern "C" __crt_multibyte_data __acrt_initial_multibyte_data {};
+extern "C" wchar_t __acrt_wide_c_locale_string[] { L"C" };
+
 extern "C" __crt_lc_time_data const __lc_time_c
 {
     { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" },
@@ -164,6 +177,27 @@ extern "C" __crt_lc_time_data const __lc_time_c
     L"HH:mm:ss",
     L"en-US"
 };
+
+
+
+extern "C" __crt_locale_data __acrt_initial_locale_data
+{
+    { const_cast<unsigned short*>(_pctype_data + 1), 1, CP_UTF8 },
+    1, CP_UTF8, CP_UTF8, 1,
+    { {nullptr}, {nullptr}, {nullptr}, {nullptr}, {nullptr}, {nullptr} },
+    nullptr, nullptr, nullptr, &__acrt_lconv_c,
+    nullptr, nullptr,
+    nullptr, nullptr,
+    const_cast<__crt_lc_time_data*>(&__lc_time_c),
+    { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr }
+};
+
+extern "C" __crt_locale_pointers __acrt_initial_locale_pointers
+{
+    &__acrt_initial_locale_data,
+    &__acrt_initial_multibyte_data
+};
+
 extern "C" unsigned int __cdecl ___lc_codepage_func()
 {
     return CP_UTF8;

@@ -5,6 +5,10 @@
 //
 // Defines _errno, _doserrno, and related functions
 //
+//
+// Self-contained kernel-mode implementation -- no ntoskrnl dependency.
+// Provides errno/doserrno mapping and thread-local accessors.
+//
 #define _ALLOW_OLD_VALIDATE_MACROS
 #include <corecrt_internal.h>
 #include <corecrt_internal_ptd_propagation.h>

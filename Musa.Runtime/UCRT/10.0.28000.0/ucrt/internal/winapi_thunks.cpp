@@ -1,10 +1,14 @@
-﻿//
+//
 // winapi_thunks.cpp
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Definitions of wrappers for Windows API functions that cannot be called
 // directly because they are not available on all supported operating systems.
+//
+//
+// Self-contained kernel-mode implementation -- no ntoskrnl dependency.
+// Provides kernel32 API wrappers for the kernel-mode UCRT.
 //
 
 #include <nt.h>
@@ -69,19 +73,19 @@ extern "C" BOOLEAN WINAPI __acrt_RtlGenRandom(
 
 // ---- UCRT delegates to kernel32 thunks (round 2) ----
 
-// __acrt_GetSystemTimePreciseAsFileTime — delegate to GetSystemTimeAsFileTime
+// __acrt_GetSystemTimePreciseAsFileTime -- delegate to GetSystemTimeAsFileTime
 extern "C" void __cdecl __acrt_GetSystemTimePreciseAsFileTime(LPFILETIME const lpTime)
 {
     GetSystemTimeAsFileTime(lpTime);
 }
 
-// __acrt_AreFileApisANSI — always FALSE in kernel mode
+// __acrt_AreFileApisANSI -- always FALSE in kernel mode
 extern "C" int __cdecl __acrt_AreFileApisANSI()
 {
     return FALSE;
 }
 
-// __acrt_SetEnvironmentVariableA — ANSI→WideChar→SetEnvironmentVariableW
+// __acrt_SetEnvironmentVariableA -- ANSI→WideChar→SetEnvironmentVariableW
 extern "C" int __cdecl __acrt_SetEnvironmentVariableA(LPCSTR const lpName, LPCSTR const lpValue)
 {
     if (!lpName) return 0;
@@ -111,7 +115,7 @@ extern "C" int __cdecl __acrt_SetEnvironmentVariableA(LPCSTR const lpName, LPCST
     return result;
 }
 
-// __acrt_GetDateFormatEx — delegate to GetDateFormatEx
+// __acrt_GetDateFormatEx -- delegate to GetDateFormatEx
 extern "C" int __cdecl __acrt_GetDateFormatEx(
     LPCWSTR const lpLocaleName,
     DWORD const dwFlags,
@@ -125,7 +129,7 @@ extern "C" int __cdecl __acrt_GetDateFormatEx(
     return GetDateFormatEx(lpLocaleName, dwFlags, lpDate, lpFormat, lpDateStr, cchDate, nullptr);
 }
 
-// __acrt_GetTimeFormatEx — delegate to GetTimeFormatEx
+// __acrt_GetTimeFormatEx -- delegate to GetTimeFormatEx
 extern "C" int __cdecl __acrt_GetTimeFormatEx(
     LPCWSTR const lpLocaleName,
     DWORD const dwFlags,

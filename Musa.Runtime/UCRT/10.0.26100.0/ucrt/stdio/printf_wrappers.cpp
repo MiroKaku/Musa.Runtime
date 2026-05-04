@@ -1,9 +1,16 @@
-﻿//
-// output.cpp
+//
+// output.cpp -- Kernel-mode stdio output wrappers
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.
 //
-// The standard _output functions, which perform formatted output to a stream.
+// Symbol sourcing:
+//   base SDK output.cpp:  __stdio_common_vsprintf (printf engine), __stdio_common_vswprintf
+//   base SDK input.cpp:   __stdio_common_vsscanf (scanf engine)
+//   this overlay:         _vscprintf, _vscwprintf (→ _vsnprintf / _vsnwprintf)
+//                         _vsnprintf          (→ __stdio_common_vsprintf)
+//                         snprintf            (→ _vsnprintf)
+//                         sscanf              (→ __stdio_common_vsscanf)
+//   Self-contained -- no ntoskrnl dependency for printf/scanf.
 //
 
 #pragma warning(push)
@@ -34,24 +41,18 @@ _CRT_STDIO_INLINE int __CRTDECL _vscwprintf(
     return _vsnwprintf(0, 0, _Format, _ArgList);
 }
 
-_CRT_END_C_HEADER
-
-#pragma warning(pop)
-
-// ---- snprintf wrapper (needed when _NO_CRT_STDIO_INLINE is defined) ----
+// ---- _vsnprintf -- delegates to base SDK __stdio_common_vsprintf ----
 
 extern "C" int __cdecl _vsnprintf(char* buf, size_t n, const char* fmt, va_list args)
 {
     return __stdio_common_vsprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, buf, n, fmt, nullptr, args);
 }
 
-extern "C" int __cdecl snprintf(char* buf, size_t n, const char* fmt, ...)
+// ---- _vsnwprintf -- delegates to base SDK __stdio_common_vswprintf ----
+
+extern "C" int __cdecl _vsnwprintf(wchar_t* buf, size_t n, const wchar_t* fmt, va_list args)
 {
-    va_list args;
-    __crt_va_start(args, fmt);
-    int const r = _vsnprintf(buf, n, fmt, args);
-    __crt_va_end(args);
-    return r;
+    return __stdio_common_vswprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, buf, n, fmt, nullptr, args);
 }
 
 // ---- sscanf wrapper (needed when _NO_CRT_STDIO_INLINE is defined) ----
@@ -64,13 +65,16 @@ extern "C" int __cdecl sscanf(const char* buf, const char* fmt, ...)
     __crt_va_end(args);
     return r;
 }
-extern "C" int __cdecl __stdio_common_vsprintf(
-    unsigned __int64 options, char* buffer, size_t buffer_count,
-    const char* format, _locale_t locale, va_list arglist)
+
+extern "C" int __cdecl snprintf(char* buf, size_t n, const char* fmt, ...)
 {
-    UNREFERENCED_PARAMETER(options);
-    UNREFERENCED_PARAMETER(locale);
-    if (!buffer || buffer_count == 0) return -1;
-    int const r = _vsnprintf(buffer, buffer_count, format, arglist);
-    return r < 0 ? -1 : r;
+    va_list args;
+    __crt_va_start(args, fmt);
+    int const r = _vsnprintf(buf, n, fmt, args);
+    __crt_va_end(args);
+    return r;
 }
+
+_CRT_END_C_HEADER
+
+#pragma warning(pop)

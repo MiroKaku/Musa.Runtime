@@ -1,3 +1,4 @@
+// Kernel-mode locale update stubs -- only supports C locale.
 //
 // locale_update.cpp
 //
@@ -5,6 +6,10 @@
 //
 // Encapsulated implementation details of _LocaleUpdate that cannot be defined
 // in the header because they refer to data not exported from the AppCRT DLL.
+// In kernel mode, all update functions are no-op stubs since the C locale is static.
+//
+// Self-contained kernel-mode implementation -- no ntoskrnl dependency.
+// Provides no-op locale update stubs for kernel mode.
 //
 #include <corecrt_internal.h>
 

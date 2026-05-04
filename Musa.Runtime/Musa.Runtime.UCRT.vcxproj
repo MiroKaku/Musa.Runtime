@@ -69,6 +69,7 @@
       <ExcludedFromBuild Condition="'$(Platform)'=='ARM64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Platform)'=='x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\timeset_initializer.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\report_runtime_error.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\shared_initialization.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\dbgrpt.cpp">
@@ -107,9 +108,18 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdlib\rotr.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\chsize.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\close.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\drive.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\getcwd.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcspbrk.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strtok.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strtok_s.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtox.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtod.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cfout.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\locale\localeconv.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\_fptostr.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\commit.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cvt.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\creat.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\dup.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\dup2.cpp" />
@@ -163,6 +173,8 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\input.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\ncommode.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\openfile.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\output.cpp" />
+
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\printf_count_output.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\puts.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\putw.cpp" />
@@ -241,9 +253,11 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\exception_filter.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\signal.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\startup\thread.cpp" />
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\stdio\output.cpp" />
+
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\stdio\printf_wrappers.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\charconv.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\kernel_initializers.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\dbgstubs.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <MusaCoreOnlyHeader>true</MusaCoreOnlyHeader>

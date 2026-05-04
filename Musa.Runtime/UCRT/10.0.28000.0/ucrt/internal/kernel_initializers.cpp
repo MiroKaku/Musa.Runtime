@@ -8,15 +8,16 @@
 
 // ---- CRT Initializers ----
 
-// stdio initializer/terminator -- requested via _CRT_LINKER_FORCE_INCLUDE in base SDK _file.cpp
-extern "C" void __cdecl __acrt_stdio_initializer() { }
+// stdio initializer/terminator -- delegates to base SDK _file.cpp
+extern "C" int  __cdecl __acrt_initialize_stdio();
+extern "C" void __cdecl __acrt_stdio_initializer() { __acrt_initialize_stdio(); }
 extern "C" void __cdecl __acrt_stdio_terminator() { }
 
+// command_line initializer — kernel mode: no command line
+extern "C" bool __cdecl __acrt_initialize_command_line() { return true; }
+extern "C" bool __cdecl __acrt_uninitialize_command_line(bool) { return true; }
 // clock initializer -- from base SDK time/clock.cpp
 extern "C" void __cdecl __acrt_clock_initializer() { }
-
-// timeset initializer -- from base SDK time/timeset.cpp
-extern "C" void __cdecl __acrt_timeset_initializer() { }
 
 // ---- Application Type / Multibyte Init ----
 
@@ -30,3 +31,9 @@ extern "C" bool __cdecl __acrt_initialize_multibyte()
 {
     return true;
 }
+extern "C" void __cdecl __acrt_fmode_initializer() { }
+
+
+
+
+

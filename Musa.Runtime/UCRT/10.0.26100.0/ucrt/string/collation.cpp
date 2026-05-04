@@ -4,6 +4,10 @@
 // Provides kernel-mode implementations of locale-dependent string collation
 // functions using simple case-insensitive comparison.
 //
+//
+// Self-contained kernel-mode implementation — no ntoskrnl dependency.
+// Provides _strnicoll and _wcsnicoll for collation in kernel mode.
+//
 #include <corecrt_internal.h>
 #include <string.h>
 #include <wchar.h>

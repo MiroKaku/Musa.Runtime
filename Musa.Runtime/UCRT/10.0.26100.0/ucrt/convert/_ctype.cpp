@@ -1,19 +1,17 @@
-﻿//
-// _ctype.cpp
+//
+// _ctype.cpp — Kernel-mode character classification (C locale only)
 //
 //      Copyright (c) Microsoft Corporation. All rights reserved.
 //
-// Defines the function equivalents of the character classification macros in
-// <ctype.h>.  These function definitions make use of the macros.  The functions
-// return zero if the character does not meet the requirements, and nonzero if
-// the character does meet the requirements.
+// Self-contained ASCII implementation — no ntoskrnl dependency.
+// Supports only C locale (characters 0-255).
+// All _l-suffix functions ignore locale and delegate to base functions.
 //
+
 #include <corecrt_internal.h>
 #include <ctype.h>
 #include <locale.h>
 
-// The ctype functions (isalnum(), isupper(), etc) are very small and quick.
-// Optimizing for size has a measurable negative impact, so we optimize for speed here.
 #pragma optimize("t", on)
 
 
@@ -34,35 +32,72 @@ extern "C" int (__cdecl isalpha)(int const c)
 extern "C" int (__cdecl _isupper_l)(int const c, _locale_t const locale)
 {
     UNREFERENCED_PARAMETER(locale);
-    return isupper(c);
+    return (c >= 0x41 && c <= 0x5a);
+}
+
+extern "C" int (__cdecl isupper)(int const c)
+{
+    return (c >= 0x41 && c <= 0x5a);
 }
 
 
 extern "C" int (__cdecl _islower_l)(int const c, _locale_t const locale)
 {
     UNREFERENCED_PARAMETER(locale);
-    return islower(c);
+    return (c >= 0x61 && c <= 0x7a);
+}
+
+extern "C" int (__cdecl islower)(int const c)
+{
+    return (c >= 0x61 && c <= 0x7a);
 }
 
 
 extern "C" int (__cdecl _isdigit_l)(int const c, _locale_t const locale)
 {
     UNREFERENCED_PARAMETER(locale);
-    return isdigit(c);
+    return (c >= 0x30 && c <= 0x39);
+}
+
+extern "C" int (__cdecl isdigit)(int const c)
+{
+    return (c >= 0x30 && c <= 0x39);
 }
 
 
 extern "C" int (__cdecl _isxdigit_l)(int const c, _locale_t const locale)
 {
     UNREFERENCED_PARAMETER(locale);
-    return isxdigit(c);
+    return ((c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x46) || (c >= 0x61 && c <= 0x66));
+}
+
+extern "C" int (__cdecl isxdigit)(int const c)
+{
+    return ((c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x46) || (c >= 0x61 && c <= 0x66));
 }
 
 
 extern "C" int (__cdecl _isspace_l)(int const c, _locale_t const locale)
 {
     UNREFERENCED_PARAMETER(locale);
-    return isspace(c);
+    return (c == ' ' || (c >= 0x09 && c <= 0x0D));
+}
+
+extern "C" int (__cdecl isspace)(int const c)
+{
+    return (c == ' ' || (c >= 0x09 && c <= 0x0D));
+}
+
+
+extern "C" int (__cdecl _isprint_l)(int const c, _locale_t const locale)
+{
+    UNREFERENCED_PARAMETER(locale);
+    return (c >= 0x20 && c <= 0x7E);
+}
+
+extern "C" int (__cdecl isprint)(int const c)
+{
+    return (c >= 0x20 && c <= 0x7E);
 }
 
 
@@ -90,17 +125,8 @@ extern "C" int (__cdecl _isblank_l)(int const c, _locale_t const locale)
 
 extern "C" int (__cdecl isblank)(int const c)
 {
-    // \t is a blank character, but is not registered as _Blank on the table, because that will make it
-    //printable. Also Windows (via GetStringType()) considered all _BLANK characters to also be _PRINT characters,
-    //so does not have a way to specify blank, non-printable.
-    if (c == '\t') {
-        return _BLANK;
-    }
-
-    if (c == ' ') {
-        return _SPACE;
-    }
-
+    if (c == '\t') return _BLANK;
+    if (c == ' ')  return _SPACE;
     return 0;
 }
 
@@ -114,13 +140,6 @@ extern "C" int (__cdecl _isalnum_l)(int const c, _locale_t const locale)
 extern "C" int (__cdecl isalnum)(int const c)
 {
     return isdigit(c) || isalpha(c);
-}
-
-
-extern "C" int (__cdecl _isprint_l)(int const c, _locale_t const locale)
-{
-    UNREFERENCED_PARAMETER(locale);
-    return isprint(c);
 }
 
 
@@ -182,6 +201,32 @@ extern "C" int (__cdecl __iscsym)(int const c)
     return (isalnum(c) || ((c) == '_'));
 }
 
+
+extern "C" int (__cdecl toupper)(int const c)
+{
+    if (c >= 'a' && c <= 'z') return c - 0x20;
+    return c;
+}
+
+extern "C" int (__cdecl _toupper_l)(int const c, _locale_t const locale)
+{
+    UNREFERENCED_PARAMETER(locale);
+    return toupper(c);
+}
+
+extern "C" int (__cdecl tolower)(int const c)
+{
+    if (c >= 'A' && c <= 'Z') return c + 0x20;
+    return c;
+}
+
+extern "C" int (__cdecl _tolower_l)(int const c, _locale_t const locale)
+{
+    UNREFERENCED_PARAMETER(locale);
+    return tolower(c);
+}
+
+
 extern "C" int __cdecl _isctype(int const c, int const mask)
 {
     if (c >= -1 && c <= 255)
@@ -223,7 +268,7 @@ extern "C" int __cdecl _chvalidator_l(_locale_t const locale, int const c, int c
 
 // ---- C locale character type table (_pctype) for strtox/strtod ----
 
-static const unsigned short _pctype_data[] = {
+extern "C" const unsigned short _pctype_data[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, _SPACE, _SPACE, _SPACE, _SPACE, _SPACE, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _SPACE|_BLANK, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT,
     _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX,
