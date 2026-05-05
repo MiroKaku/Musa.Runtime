@@ -3,27 +3,24 @@
 //
 // Only supports CP_ACP, CP_UTF8. Other code pages delegate to Musa.Core.
 //
-// Summary of symbol sourcing:
-//   Musa.Core thunks:  MultiByteToWideChar, WideCharToMultiByte (kernel32 → kernel-mode safe)
-//   this overlay:      __acrt_MultiByteToWideChar (→ MultiByteToWideChar, CP_ACP/CP_UTF8 only)
-//                      __acrt_WideCharToMultiByte (→ WideCharToMultiByte, CP_ACP/CP_UTF8 only)
-//                      _mbtowc_internal (simple ASCII, no MBCS)
-//                      __mbsrtowcs_utf8 (ASCII-only in kernel mode)
-//                      _putwch_nolock (no-op stub)
-//   Code page scope:   CP_ACP (0) and CP_UTF8 (65001) only.
-//                      UTF-16 is implicit (native wchar_t encoding, no conversion needed).
-//                      All other code pages delegate to Musa.Core.
-//   ntoskrnl:          mbstowcs, wcstombs (used via base SDK, not this file)
+// Symbols provided by this overlay:
+//   __acrt_MultiByteToWideChar, __acrt_WideCharToMultiByte
+//   return_illegal_sequence, reset_and_return
+//   __mblen_utf8, __c16rtomb_utf8, __c32rtomb_utf8
+//   __mbsrtowcs_utf8, _putwch_nolock, c32rtomb
+//   _wctomb_internal, _mbtowc_internal (kernel-mode ASCII-only)
 //
-// Only handles CP_ACP and CP_UTF8. Other code pages return 0 and delegate to Musa.Core.
 
 #include <corecrt_internal.h>
+#include <corecrt_internal_mbstring.h>
+#include <corecrt_internal_ptd_propagation.h>
+#include <stdint.h>
 
 extern "C" int __cdecl __acrt_MultiByteToWideChar(
     UINT CodePage, DWORD dwFlags, LPCCH lpMultiByteStr,
     int cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar)
 {
-    if (CodePage != CP_ACP && CodePage != CP_UTF8) { return 0; /* delegate to Musa.Core for unsupported code pages */ }
+    if (CodePage != CP_ACP && CodePage != CP_UTF8) { return 0; }
     return MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
 }
 
@@ -35,56 +32,28 @@ extern "C" int __cdecl __acrt_WideCharToMultiByte(
     if (CodePage != CP_ACP && CodePage != CP_UTF8) { return 0; }
     return WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar, lpMultiByteStr, cbMultiByte, lpDefaultChar, lpUsedDefaultChar);
 }
-// _mbtowc_internal -- simple single-byte to wchar_t conversion (ASCII subset).
-// Code page scope: assumes C/POSIX locale semantics; no MBCS handling.
-// For non-ASCII multibyte sequences, use Musa.Core with explicit code page support.
-extern "C" int __cdecl _mbtowc_internal(wchar_t* pwc, char const* s, size_t n, struct _Mbstatet* pst)
-{
-    UNREFERENCED_PARAMETER(n); UNREFERENCED_PARAMETER(pst);
-    if (!s || !*s) return 0;
-    if (pwc) *pwc = static_cast<wchar_t>(static_cast<unsigned char>(*s));
-    return 1;
-}
 
 namespace __crt_mbstring
 {
-    // __mbsrtowcs_utf8 -- byte-to-wchar_t conversion treating input as raw bytes (ASCII-safe subset).
-    // Code page scope: does NOT perform full UTF-8 decoding; each byte maps directly to its wchar_t value.
-    // For proper UTF-8 multi-byte sequence handling, delegate to Musa.Core.
-    size_t __cdecl __mbsrtowcs_utf8(
-        wchar_t* dst, const char** src, size_t len, mbstate_t* ps, __crt_cached_ptd_host& ptd)
+    size_t return_illegal_sequence(mbstate_t* ps, __crt_cached_ptd_host& ptd)
     {
-        UNREFERENCED_PARAMETER(ps); UNREFERENCED_PARAMETER(ptd);
-        if (!src || !*src) return 0;
-        const char* s = *src;
-        size_t count = 0;
-        while (*s && count < len) { if (dst) dst[count] = static_cast<wchar_t>(static_cast<unsigned char>(*s)); ++s; ++count; }
-        *src = s;
-        return count;
+        *ps = {};
+        ptd.get_errno().set(EILSEQ);
+        return INVALID;
     }
-}
 
-extern "C" void __cdecl _putwch_nolock(wchar_t) { }
+    size_t reset_and_return(size_t retval, mbstate_t* ps)
+    {
+        *ps = {};
+        return retval;
+    }
 
-// ---- printf engine dependencies ----
-
-// _wctomb_internal — wchar_t to multibyte (printf %lc/%C support)
-extern "C" int __cdecl _wctomb_internal(char* s, wchar_t wchar, struct _Mbstatet* pst, __crt_cached_ptd_host const& ptd)
-{
-    UNREFERENCED_PARAMETER(pst); UNREFERENCED_PARAMETER(ptd);
-    if (!s) return 0;
-    *s = static_cast<char>(wchar & 0xFF);
-    return 1;
-}
-
-namespace __crt_mbstring
-{
     int __cdecl __mblen_utf8(char const* s)
     {
         if (!s || !*s) return 0;
         unsigned char c = static_cast<unsigned char>(*s);
         if (c < 0x80)       return 1;
-        if (c < 0xC2)       return 1; // invalid, treat as single byte
+        if (c < 0xC2)       return 1;
         if (c < 0xE0)       return 2;
         if (c < 0xF0)       return 3;
         return 4;
@@ -100,5 +69,109 @@ namespace __crt_mbstring
         dst[0] = static_cast<char>(0xE0 | (c16 >> 12)); dst[1] = static_cast<char>(0x80 | ((c16 >> 6) & 0x3F)); dst[2] = static_cast<char>(0x80 | (c16 & 0x3F));
         return 3;
     }
+
+    size_t __cdecl __c32rtomb_utf8(char* s, char32_t c32, mbstate_t* ps, __crt_cached_ptd_host& ptd)
+    {
+        if (!s) { *ps = {}; return 1; }
+        if (c32 == U'\0') { *s = '\0'; *ps = {}; return 1; }
+        if ((c32 & ~0x7f) == 0) { *s = static_cast<char>(c32); return 1; }
+        size_t trail_bytes;
+        uint8_t lead_byte;
+        if ((c32 & ~0x7ff) == 0) { trail_bytes = 1; lead_byte = 0xc0; }
+        else if ((c32 & ~0xffff) == 0) {
+            if (0xd800 <= c32 && c32 <= 0xdfff) return return_illegal_sequence(ps, ptd);
+            trail_bytes = 2; lead_byte = 0xe0;
+        }
+        else if ((c32 & ~0x001fffff) == 0) {
+            if (0x10ffff < c32) return return_illegal_sequence(ps, ptd);
+            trail_bytes = 3; lead_byte = 0xf0;
+        }
+        else { return return_illegal_sequence(ps, ptd); }
+        for (size_t i = trail_bytes; i > 0; --i) { s[i] = static_cast<char>((c32 & 0x3f) | 0x80); c32 >>= 6; }
+        s[0] = static_cast<char>(c32) | lead_byte;
+        return reset_and_return(trail_bytes + 1, ps);
+    }
+
+    size_t __cdecl __mbsrtowcs_utf8(
+        wchar_t* dst, const char** src, size_t len, mbstate_t* ps, __crt_cached_ptd_host& ptd)
+    {
+        UNREFERENCED_PARAMETER(ps); UNREFERENCED_PARAMETER(ptd);
+        if (!src || !*src) return 0;
+        const char* s = *src;
+        size_t count = 0;
+        while (*s && count < len) { if (dst) dst[count] = static_cast<wchar_t>(static_cast<unsigned char>(*s)); ++s; ++count; }
+        *src = s;
+        return count;
+    }
 }
 
+extern "C" void __cdecl _putwch_nolock(wchar_t) { }
+
+// Kernel-mode simplified implementations (ASCII-only)
+extern "C" errno_t __cdecl _wctomb_internal(
+    int* _SizeConverted, char* _MbCh, size_t _SizeInBytes,
+    wchar_t _WCh, __crt_cached_ptd_host& _Ptd)
+{
+    UNREFERENCED_PARAMETER(_Ptd);
+    if (!_MbCh || _SizeInBytes == 0) return EINVAL;
+    *_MbCh = static_cast<char>(_WCh & 0xFF);
+    if (_SizeConverted) *_SizeConverted = 1;
+    return 0;
+}
+
+extern "C" int __cdecl _mbtowc_internal(
+    wchar_t* _DstCh, char const* _SrcCh, size_t _SrcSizeInBytes,
+    __crt_cached_ptd_host& _Ptd)
+{
+    UNREFERENCED_PARAMETER(_SrcSizeInBytes); UNREFERENCED_PARAMETER(_Ptd);
+    if (!_SrcCh || !*_SrcCh) return 0;
+    if (_DstCh) *_DstCh = static_cast<wchar_t>(static_cast<unsigned char>(*_SrcCh));
+    return 1;
+}
+
+extern "C" size_t __cdecl c32rtomb(char* s, char32_t c32, mbstate_t* ps)
+{
+    __crt_cached_ptd_host ptd;
+    return __crt_mbstring::__c32rtomb_utf8(s, c32, ps, ptd);
+}
+
+// __mbrtowc_utf8 -- UTF-8 multibyte to wide char conversion
+namespace __crt_mbstring
+{
+    size_t __cdecl __mbrtowc_utf8(
+        wchar_t* dst, const char* src, size_t len, mbstate_t* ps, __crt_cached_ptd_host& ptd)
+    {
+        UNREFERENCED_PARAMETER(ps); UNREFERENCED_PARAMETER(ptd);
+        if (!src || !*src) { if (dst) *dst = 0; return 0; }
+        unsigned char c = static_cast<unsigned char>(*src);
+        if (c < 0x80) { if (dst) *dst = static_cast<wchar_t>(c); return 1; }
+        if (c < 0xC2 || c > 0xF4) return static_cast<size_t>(-1); // invalid
+        if (c < 0xE0) {
+            if (len < 2 || (src[1] & 0xC0) != 0x80) return static_cast<size_t>(-1);
+            if (dst) *dst = static_cast<wchar_t>(((c & 0x1F) << 6) | (src[1] & 0x3F));
+            return 2;
+        }
+        if (c < 0xF0) {
+            if (len < 3 || (src[1] & 0xC0) != 0x80 || (src[2] & 0xC0) != 0x80) return static_cast<size_t>(-1);
+            if (dst) *dst = static_cast<wchar_t>(((c & 0x0F) << 12) | ((src[1] & 0x3F) << 6) | (src[2] & 0x3F));
+            return 3;
+        }
+        // 4-byte sequence -> surrogate pair (not representable in single wchar_t)
+        if (len < 4) return static_cast<size_t>(-2); // incomplete
+        return static_cast<size_t>(-1);
+    }
+}
+
+// __ascii_wcsicmp -- ASCII-only case-insensitive wide string comparison
+extern "C" int __cdecl __ascii_wcsicmp(const wchar_t* s1, const wchar_t* s2)
+{
+    if (!s1 || !s2) return -1;
+    wchar_t c1, c2;
+    do {
+        c1 = *s1++;
+        c2 = *s2++;
+        if (c1 >= L'A' && c1 <= L'Z') c1 += L'a' - L'A';
+        if (c2 >= L'A' && c2 <= L'Z') c2 += L'a' - L'A';
+    } while (c1 && c1 == c2);
+    return c1 - c2;
+}

@@ -5,7 +5,7 @@
 // functions using simple case-insensitive comparison.
 //
 //
-// Self-contained kernel-mode implementation — no ntoskrnl dependency.
+// Self-contained kernel-mode implementation -- no ntoskrnl dependency.
 // Provides _strnicoll and _wcsnicoll for collation in kernel mode.
 //
 #include <corecrt_internal.h>

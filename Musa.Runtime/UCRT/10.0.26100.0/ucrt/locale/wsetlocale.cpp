@@ -1,4 +1,4 @@
-// Kernel-mode locale functions — C locale only.
+// Kernel-mode locale functions -- C locale only.
 //
 // wsetlocale.cpp - Contains the wsetlocale function
 //
@@ -9,7 +9,7 @@
 //       In kernel mode, only the C locale is supported. Attempts to set other locales will fail.
 //
 //
-// Self-contained kernel-mode implementation — no ntoskrnl dependency.
+// Self-contained kernel-mode implementation -- no ntoskrnl dependency.
 // Provides wsetlocale and locale management for kernel mode.
 //
 

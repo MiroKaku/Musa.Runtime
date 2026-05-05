@@ -70,6 +70,8 @@
       <ExcludedFromBuild Condition="'$(Platform)'=='x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\timeset_initializer.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\stdio_initializer.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\multibyte_initializer.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\report_runtime_error.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\shared_initialization.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\dbgrpt.cpp">
@@ -116,10 +118,9 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtox.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtod.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cfout.cpp" />
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\locale\localeconv.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\_fptostr.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\commit.cpp" />
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cvt.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\cvt.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\creat.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\dup.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\dup2.cpp" />
@@ -234,6 +235,17 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mbstowcs.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wcstombs.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\_ctype.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\atof.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\atoldbl.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\fcvt.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mblen.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mbrtoc16.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mbrtowc.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\towlower.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\towupper.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wcrtomb.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wctrans.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wctype.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\heap\debug_heap.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'=='Release'">true</ExcludedFromBuild>
     </ClCompile>
@@ -242,10 +254,26 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\OutputDebugStringA.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\per_thread_data.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\collation.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strcoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\stricoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strlwr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strncoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strnicmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strupr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strxfrm.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcscoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcsicoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcslwr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcsncoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcsnicmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcsupr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcsxfrm.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\winapi_thunks.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\locale_update.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\localeconv.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\nlsdata.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\wsetlocale.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\setlocale.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\dbgrptt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'=='Release'">true</ExcludedFromBuild>
     </ClCompile>
@@ -258,6 +286,90 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\charconv.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\kernel_initializers.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\dbgstubs.cpp" />
+
+    <!-- Mbstring overlay files -->
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbalnm.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbalph.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbdgt.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbgrph.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismblgl.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismblwr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbknj.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbprn.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbpunc.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbslead.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbspc.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbupr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbbtype.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbccpy.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbccpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbccpy_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbclen.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbclevel.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbctype.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsbtype.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscat_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscat_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbschr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscpy_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscspn.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsicmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsicoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsinc.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbslen.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbslen_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbslwr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcnt.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnccnt.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncat.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncat_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncat_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnextc.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnicmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnicol.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsninc.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnset.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnset_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnset_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbspbrk.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncpy.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsncpy_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsrchr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsrev.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsset.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsset_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsset_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsspn.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsspnp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsstr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbstok.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbstok_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbtohira.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbtokata.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbtolwr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbtoupr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsupr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcat.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcat_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcat_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcol.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcpy.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbcpy_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbicm.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbico.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbset.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbset_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsnbset_s_l.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\tojisjms.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\tombbmbc.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <MusaCoreOnlyHeader>true</MusaCoreOnlyHeader>

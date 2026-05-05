@@ -8,10 +8,6 @@
 
 // ---- CRT Initializers ----
 
-// stdio initializer/terminator -- delegates to base SDK _file.cpp
-extern "C" int  __cdecl __acrt_initialize_stdio();
-extern "C" void __cdecl __acrt_stdio_initializer() { __acrt_initialize_stdio(); }
-extern "C" void __cdecl __acrt_stdio_terminator() { }
 
 // command_line initializer — kernel mode: no command line
 extern "C" bool __cdecl __acrt_initialize_command_line() { return true; }

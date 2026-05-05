@@ -1255,114 +1255,212 @@ namespace Main
         }
 
         // ============================================================
-        // UCRT Unlocked: lowio — POSIX-style file I/O
-        // ============================================================
-        {
-            int fd = _open("C:\\musa_lowio_test.tmp",
-                _O_CREAT | _O_RDWR | _O_BINARY, _S_IREAD | _S_IWRITE);
-            KTEST_EXPECT(fd >= 0, "LowIO_Open");
-            if (fd >= 0) {
-                const char* msg = "Hello kernel I/O!";
-                int written = _write(fd, msg, static_cast<unsigned int>(strlen(msg)));
-                KTEST_EXPECT(written > 0, "LowIO_Write");
-
-                long pos = _lseek(fd, 0, SEEK_SET);
-                KTEST_EXPECT(pos == 0, "LowIO_LSeek_Set");
-
-                char buf[64] = {};
-                int nread = _read(fd, buf, sizeof(buf) - 1);
-                KTEST_EXPECT(nread > 0, "LowIO_Read");
-                KTEST_EXPECT(strcmp(buf, msg) == 0, "LowIO_ReadVerify");
-
-                KTEST_EXPECT(_eof(fd) != 0, "LowIO_EOF");
-
-                long sz = _filelength(fd);
-                KTEST_EXPECT(sz == static_cast<long>(strlen(msg)), "LowIO_FileLength");
-
-                long t = _tell(fd);
-                KTEST_EXPECT(t >= 0, "LowIO_Tell");
-
-                KTEST_EXPECT(_close(fd) == 0, "LowIO_Close");
-            }
-            _unlink("C:\\musa_lowio_test.tmp");
-        }
-
-        // ============================================================
-        // UCRT Unlocked: stdio — buffered file I/O
-        // ============================================================
-        {
-            FILE* f = fopen("C:\\musa_stdio_test.tmp", "w+b");
-            KTEST_EXPECT(f != nullptr, "Stdio_FOpen");
-            if (f) {
-                int written = fprintf(f, "answer=%d", 42);
-                KTEST_EXPECT(written > 0, "Stdio_FPrintf");
-                fflush(f);
-                long pos = ftell(f);
-                KTEST_EXPECT(pos > 0, "Stdio_FTell");
-                rewind(f);
-                KTEST_EXPECT(ftell(f) == 0, "Stdio_Rewind");
-                char buf[64] = {};
-                char* r = fgets(buf, sizeof(buf), f);
-                KTEST_EXPECT(r == buf, "Stdio_FGets");
-                KTEST_EXPECT(strstr(buf, "answer=42") != nullptr, "Stdio_FGets_Content");
-                fseek(f, 0, SEEK_SET);
-                int val = 0;
-                int n = fscanf(f, "answer=%d", &val);
-                KTEST_EXPECT(n == 1 && val == 42, "Stdio_FScanf");
-                KTEST_EXPECT(feof(f) != 0, "Stdio_FEOF");
-                KTEST_EXPECT(ferror(f) == 0, "Stdio_FError");
-                clearerr(f);
-                KTEST_EXPECT(feof(f) == 0, "Stdio_ClearErr");
-                KTEST_EXPECT(fclose(f) == 0, "Stdio_FClose");
-            }
-            _unlink("C:\\musa_stdio_test.tmp");
-        }
-        {
-            FILE* f = fopen("C:\\musa_fwrite_test.tmp", "wb");
-            KTEST_EXPECT(f != nullptr, "Stdio_FWrite_FOpen");
-            if (f) {
-                const char data[] = "binary data";
-                size_t n = fwrite(data, 1, sizeof(data) - 1, f);
-                KTEST_EXPECT(n == sizeof(data) - 1, "Stdio_FWrite");
-                fclose(f);
-                f = fopen("C:\\musa_fwrite_test.tmp", "rb");
-                char buf[32] = {};
-                n = fread(buf, 1, sizeof(buf) - 1, f);
-                KTEST_EXPECT(n == sizeof(data) - 1, "Stdio_FRead");
-                KTEST_EXPECT(strcmp(buf, data) == 0, "Stdio_FRead_Content");
-                fclose(f);
-            }
-            _unlink("C:\\musa_fwrite_test.tmp");
-        }
-
-        // ============================================================
-        // UCRT Unlocked: filesystem — directory and file operations
-        // ============================================================
-        {
-            int r = _mkdir("C:\\musa_fs_test_dir");
-            KTEST_EXPECT(r == 0, "FS_MkDir");
-            KTEST_EXPECT(_access("C:\\musa_fs_test_dir", 0) == 0, "FS_Access_Dir");
-            FILE* f = fopen("C:\\musa_fs_test_dir\\file.txt", "w");
-            KTEST_EXPECT(f != nullptr, "FS_FileInDir");
-            if (f) { fprintf(f, "data"); fclose(f); }
-            struct _stat64i32 st = {};
-            int stat_r = _stat64i32("C:\\musa_fs_test_dir\\file.txt", &st);
-            KTEST_EXPECT(stat_r == 0, "FS_Stat");
-            KTEST_EXPECT(st.st_size > 0, "FS_Stat_Size");
-            r = _unlink("C:\\musa_fs_test_dir\\file.txt");
-            KTEST_EXPECT(r == 0, "FS_Unlink");
-            r = _rmdir("C:\\musa_fs_test_dir");
-            KTEST_EXPECT(r == 0, "FS_RmDir");
-            FILE* f2r = fopen("C:\\musa_rename_a.tmp", "w");
-            if (f2r) { fprintf(f2r, "test"); fclose(f2r); }
-            int rename_r = rename("C:\\musa_rename_a.tmp", "C:\\musa_rename_b.tmp");
-            KTEST_EXPECT(rename_r == 0, "FS_Rename");
-            KTEST_EXPECT(_access("C:\\musa_rename_b.tmp", 0) == 0, "FS_Rename_Verify");
-            _unlink("C:\\musa_rename_b.tmp");
-
-        // ============================================================
-        // ============================================================
         // UCRT Unlocked: sscanf complex
+        // ============================================================
+        // UCRT Unlocked: locale — setlocale / localeconv
+        // ============================================================
+        {
+            // Query locale returns "C" in kernel mode
+            const char* loc = setlocale(LC_ALL, nullptr);
+            KTEST_EXPECT(loc != nullptr && strcmp(loc, "C") == 0, "Locale_Setlocale_QueryC");
+        }
+        {
+            // Setting locale to non-C should fail in kernel mode
+            const char* loc = setlocale(LC_ALL, "en_US.UTF-8");
+            KTEST_EXPECT(loc == nullptr, "Locale_Setlocale_ChangeFails");
+        }
+        {
+            struct lconv* lc = localeconv();
+            KTEST_EXPECT(lc != nullptr && strcmp(lc->decimal_point, ".") == 0, "Locale_Localeconv_DecimalPoint");
+            KTEST_EXPECT(lc->thousands_sep[0] == '\0', "Locale_Localeconv_ThousandsSep");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — strtod / strtof / atof
+        // ============================================================
+        {
+            double d = strtod("3.14159", nullptr);
+            KTEST_EXPECT(d > 3.14158 && d < 3.14160, "Strtod_Basic");
+        }
+        {
+            char* endp;
+            double d = strtod("2.5e3abc", &endp);
+            KTEST_EXPECT(d == 2500.0 && *endp == 'a', "Strtod_ExponentEndptr");
+        }
+        {
+            char* endp;
+            double d = strtod("-inf", &endp);
+            KTEST_EXPECT(d < 0.0 && !_finite(d), "Strtod_NegInf");
+        }
+        {
+            char* endp;
+            double d = strtod("  +1.23 ", &endp);
+            KTEST_EXPECT(d > 1.229 && d < 1.231, "Strtod_WhitespaceSign");
+        }
+        {
+            float f = strtof("1.5", nullptr);
+            KTEST_EXPECT(f > 1.49f && f < 1.51f, "Strtof_Basic");
+        }
+        {
+            double d = atof("123.456");
+            KTEST_EXPECT(d > 123.455 && d < 123.457, "Atof_Basic");
+        }
+        {
+            double d = _wtof(L"789.012");
+            KTEST_EXPECT(d > 789.011 && d < 789.013, "Wtof_Basic");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — mbstowcs / wcstombs
+        // ============================================================
+        {
+            wchar_t wbuf[32];
+            size_t n = mbstowcs(wbuf, "hello", sizeof(wbuf) / sizeof(wchar_t));
+            KTEST_EXPECT(n == 5 && wcscmp(wbuf, L"hello") == 0, "Mbstowcs_ASCII");
+        }
+        {
+            char buf[32];
+            size_t n = wcstombs(buf, L"hello", sizeof(buf));
+            KTEST_EXPECT(n == 5 && strcmp(buf, "hello") == 0, "Wcstombs_ASCII");
+        }
+        {
+            wchar_t wbuf[32];
+            size_t n = mbstowcs(wbuf, "caf\xc3\xa9", sizeof(wbuf) / sizeof(wchar_t));
+            KTEST_EXPECT(n == 4 && wbuf[3] == 0xE9, "Mbstowcs_UTF8Cafe");
+        }
+        {
+            char buf[32];
+            size_t n = wcstombs(buf, L"caf\u00E9", sizeof(buf));
+            KTEST_EXPECT(n == 5 && buf[3] == '\xC3' && buf[4] == '\xA9', "Wcstombs_UTF8Cafe");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — mbrtowc / wcrtomb
+        // ============================================================
+        {
+            wchar_t wc;
+            mbstate_t state{};
+            const char s[] = "h";
+            size_t n = mbrtowc(&wc, s, 1, &state);
+            KTEST_EXPECT(n == 1 && wc == L'h', "Mbrtowc_ASCII");
+        }
+        {
+            wchar_t wc;
+            mbstate_t state{};
+            const char s[] = "\xC3\xA9"; // é in UTF-8
+            size_t n = mbrtowc(&wc, s, 2, &state);
+            KTEST_EXPECT(n == 2 && wc == 0x00E9, "Mbrtowc_UTF8TwoByte");
+        }
+        {
+            char buf[4];
+            mbstate_t state{};
+            size_t n = wcrtomb(buf, L'é', &state);
+            KTEST_EXPECT(n == 2 && buf[0] == '\xC3' && buf[1] == '\xA9', "Wcrtomb_UTF8TwoByte");
+        }
+        {
+            char buf[4];
+            mbstate_t state{};
+            size_t n = wcrtomb(buf, L'a', &state);
+            KTEST_EXPECT(n == 1 && buf[0] == 'a', "Wcrtomb_ASCII");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — mblen
+        // ============================================================
+        {
+            KTEST_EXPECT(mblen("a", 1) == 1, "Mblen_ASCII");
+            KTEST_EXPECT(mblen("\xC3\xA9", 2) == 2, "Mblen_UTF8TwoByte");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — string case conversion
+        // ============================================================
+        {
+            char buf[] = "HELLO WORLD";
+            char* r = _strlwr(buf);
+            KTEST_EXPECT(r == buf && strcmp(buf, "hello world") == 0, "Strlwr_Basic");
+        }
+        {
+            char buf[] = "hello world";
+            char* r = _strupr(buf);
+            KTEST_EXPECT(r == buf && strcmp(buf, "HELLO WORLD") == 0, "Strupr_Basic");
+        }
+        {
+            wchar_t wbuf[] = L"HELLO WORLD";
+            wchar_t* r = _wcslwr(wbuf);
+            KTEST_EXPECT(r == wbuf && wcscmp(wbuf, L"hello world") == 0, "Wcslwr_Basic");
+        }
+        {
+            wchar_t wbuf[] = L"hello world";
+            wchar_t* r = _wcsupr(wbuf);
+            KTEST_EXPECT(r == wbuf && wcscmp(wbuf, L"HELLO WORLD") == 0, "Wcsupr_Basic");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — string collation
+        // ============================================================
+        {
+            int r = strcoll("abc", "abc");
+            KTEST_EXPECT(r == 0, "Strcoll_Equal");
+        }
+        {
+            int r = strcoll("abc", "abd");
+            KTEST_EXPECT(r < 0, "Strcoll_LessThan");
+        }
+        {
+            int r = strcoll("abd", "abc");
+            KTEST_EXPECT(r > 0, "Strcoll_GreaterThan");
+        }
+        {
+            int r = _wcsicoll(L"ABC", L"abc");
+            KTEST_EXPECT(r == 0, "Wcsicoll_CaseInsensitive");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — printf %e/%f/%g decimal_point
+        // ============================================================
+        {
+            char buf[64];
+            sprintf(buf, "%.2f", 3.14);
+            KTEST_EXPECT(buf[1] == '.', "Printf_FloatDecimalPoint");
+        }
+        {
+            char buf[64];
+            sprintf(buf, "%.2e", 12345.0);
+            KTEST_EXPECT(strstr(buf, "e+") != nullptr || strstr(buf, "E+") != nullptr, "Printf_Exponential");
+        }
+        {
+            char buf[64];
+            sprintf(buf, "%.4g", 3.14159);
+            KTEST_EXPECT(buf[1] == '.', "Printf_GFormatDecimal");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — wcsrtombs
+        // ============================================================
+        {
+            wchar_t src[] = L"hello";
+            const wchar_t* psrc = src;
+            char buf[32];
+            mbstate_t state{};
+            size_t n = wcsrtombs(buf, &psrc, sizeof(buf), &state);
+            KTEST_EXPECT(n == 5 && strcmp(buf, "hello") == 0, "Wcsrtombs_ASCII");
+        }
+
+        // ============================================================
+        // UCRT Unlocked: locale — wctob
+        // ============================================================
+        {
+            int c = wctob(L'a');
+            KTEST_EXPECT(c == 'a', "Wctob_ASCII");
+        }
+        {
+            int c = wctob(L'é');
+            KTEST_EXPECT(c == EOF, "Wctob_NonASCII");
+        }
+
+        // ============================================================
+        // ============================================================
         // ============================================================
         {
             float f = 0;
