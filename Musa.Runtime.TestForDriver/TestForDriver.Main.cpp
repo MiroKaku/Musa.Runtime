@@ -1200,7 +1200,7 @@ namespace Main
         {
             char buf[16] = "0123456789";
             memmove(buf + 3, buf, 5);
-            KTEST_EXPECT(buf[0] == '0' && buf[3] == '0' && buf[8] == '5', "MemMove_Overlap");
+            KTEST_EXPECT(buf[0] == '0' && buf[3] == '0' && buf[8] == '8', "MemMove_Overlap");
         }
 
         // ============================================================

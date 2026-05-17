@@ -22,6 +22,11 @@ extern _onexit_table_t __acrt_at_quick_exit_table;
 extern void*           __acrt_stdout_buffer;
 extern void*           __acrt_stderr_buffer;
 
+#if defined NTOS_KERNEL_RUNTIME
+bool __cdecl __acrt_kernel_fixup_stdio_handles();
+bool __cdecl __acrt_kernel_uninitialize_stdio_handles(bool);
+#endif
+
 
 
 #if !defined NTOS_KERNEL_RUNTIME
@@ -92,18 +97,45 @@ static bool __cdecl uninitialize_c(bool)
     return true;
 }
 
-#if !defined NTOS_KERNEL_RUNTIME
+#endif // CRTDLL
+
 // C4505: unreferenced local function
 #pragma warning( suppress: 4505 )
 static bool __cdecl initialize_environment()
 {
+#if defined NTOS_KERNEL_RUNTIME
+    // In kernel mode, GetEnvironmentStringsW may return null (no OS env).
+    // Try the standard path first; on failure, install an empty environment
+    // table so _putenv_s/getenv can operate on a CRT-managed env.
+    if (_initialize_narrow_environment() >= 0 && _get_initial_narrow_environment())
+    {
+        return true;
+    }
+
+    // Fallback: allocate a single null pointer as the empty environment array.
+    char** const empty_env = static_cast<char**>(_calloc_crt(1, sizeof(char*)));
+    if (empty_env == nullptr)
+    {
+        return true; // do not fail CRT init even on OOM here
+    }
+    empty_env[0] = nullptr;
+    *__p__environ() = empty_env;
     return true;
+#else
+    if (_initialize_narrow_environment() < 0)
+    {
+        return false;
+    }
+
+    if (!_get_initial_narrow_environment())
+    {
+        return false;
+    }
+
+    return true;
+#endif
 }
-#endif
 
-#endif
-
-#if !defined NTOS_KERNEL_RUNTIME
 // C4505: unreferenced local function
 #pragma warning( suppress: 4505 )
 static bool __cdecl uninitialize_environment(bool const terminating)
@@ -120,7 +152,6 @@ static bool __cdecl uninitialize_environment(bool const terminating)
     __dcrt_uninitialize_environments_nolock();
     return true;
 }
-#endif
 
 #ifdef _CRT_GLOBAL_STATE_ISOLATION
 
@@ -270,6 +301,11 @@ static __acrt_initializer const __acrt_initializers[] =
 
     { __acrt_initialize_ptd,                   __acrt_uninitialize_ptd                  },
     { __acrt_initialize_lowio,                 __acrt_uninitialize_lowio                },
+#if defined NTOS_KERNEL_RUNTIME
+    // Force stdin/stdout/stderr to "no console" so _isatty(stdout) returns 0
+    // and stdio init sets _iob[0..2]._file = _NO_CONSOLE_FILENO.
+    { __acrt_kernel_fixup_stdio_handles,       __acrt_kernel_uninitialize_stdio_handles },
+#endif
     { __acrt_initialize_command_line,          __acrt_uninitialize_command_line         },
 #if !defined NTOS_KERNEL_RUNTIME
     { __acrt_initialize_multibyte,             nullptr                                  },
@@ -283,7 +319,8 @@ static __acrt_initializer const __acrt_initializers[] =
     { nullptr,                                 uninitialize_allocated_memory            },
 #endif
     // Enclaves only require initializers for supported features.
-#ifndef _UCRT_ENCLAVE_BUILD
+// Enclaves require environment init; kernel mode also needs it
+#if !defined _UCRT_ENCLAVE_BUILD || defined NTOS_KERNEL_RUNTIME
     { initialize_environment,                  uninitialize_environment                 },
 #endif
     { initialize_c,                            uninitialize_c                           },

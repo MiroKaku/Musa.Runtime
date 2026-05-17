@@ -29,7 +29,7 @@ Musa.Runtime is a Microsoft MSVC runtime library adapted for Windows kernel-mode
 ```xml
 <ItemGroup>
   <PackageReference Include="Musa.Runtime">
-    <Version>0.5.1</Version>
+    <Version>0.6.0</Version>
   </PackageReference>
 </ItemGroup>
 ```

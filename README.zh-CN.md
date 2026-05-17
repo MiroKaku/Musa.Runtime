@@ -29,7 +29,7 @@ Musa.Runtime 是一个面向 Windows 内核模式开发的 MSVC 运行时库，�
 ```xml
 <ItemGroup>
   <PackageReference Include="Musa.Runtime">
-    <Version>0.5.1</Version>
+    <Version>0.6.0</Version>
   </PackageReference>
 </ItemGroup>
 ```

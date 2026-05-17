@@ -151,7 +151,7 @@ extern "C" int (__cdecl _isgraph_l)(int const c, _locale_t const locale)
 
 extern "C" int (__cdecl isgraph)(int const c)
 {
-    return !iscntrl(c);
+    return (c >= 0x21 && c <= 0x7E);
 }
 
 
@@ -267,18 +267,70 @@ extern "C" int __cdecl _chvalidator_l(_locale_t const locale, int const c, int c
 #endif
 
 // ---- C locale character type table (_pctype) for strtox/strtod ----
+//
+// Layout: _pctype_data[c + 1] gives the ctype mask for character c.
+// _pctype_data[0] is the EOF (-1) entry. __pctype_func() returns
+// _pctype_data + 1 so that _pctype[c] indexes correctly for c in [-1,255].
 
-extern "C" const unsigned short _pctype_data[] = {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, _SPACE, _SPACE, _SPACE, _SPACE, _SPACE, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _SPACE|_BLANK, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT,
-    _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX,
-    _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _DIGIT|_HEX, _PUNCT, _PUNCT, _PUNCT, _PUNCT,
-    _PUNCT, _PUNCT, _PUNCT, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER|_HEX, _UPPER,
-    _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _UPPER,
-    _UPPER, _UPPER, _UPPER, _UPPER, _UPPER, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _PUNCT, _LOWER|_HEX,
-    _LOWER|_HEX, _LOWER|_HEX, _LOWER|_HEX, _LOWER|_HEX, _LOWER|_HEX, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER,
-    _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER, _LOWER,
-    _LOWER, _PUNCT, _PUNCT, _PUNCT, _PUNCT, 0,
+extern "C" const unsigned short _pctype_data[257] = {
+    /* [0]  -1 EOF */ 0,
+    /* [1]  00 NUL */ _CONTROL,           /* [2]  01 SOH */ _CONTROL,
+    /* [3]  02 STX */ _CONTROL,           /* [4]  03 ETX */ _CONTROL,
+    /* [5]  04 EOT */ _CONTROL,           /* [6]  05 ENQ */ _CONTROL,
+    /* [7]  06 ACK */ _CONTROL,           /* [8]  07 BEL */ _CONTROL,
+    /* [9]  08 BS  */ _CONTROL,
+    /* [10] 09 HT  */ _SPACE | _CONTROL,  /* [11] 0A LF  */ _SPACE | _CONTROL,
+    /* [12] 0B VT  */ _SPACE | _CONTROL,  /* [13] 0C FF  */ _SPACE | _CONTROL,
+    /* [14] 0D CR  */ _SPACE | _CONTROL,
+    /* [15] 0E SI  */ _CONTROL,           /* [16] 0F SO  */ _CONTROL,
+    /* [17] 10 DLE */ _CONTROL,           /* [18] 11 DC1 */ _CONTROL,
+    /* [19] 12 DC2 */ _CONTROL,           /* [20] 13 DC3 */ _CONTROL,
+    /* [21] 14 DC4 */ _CONTROL,           /* [22] 15 NAK */ _CONTROL,
+    /* [23] 16 SYN */ _CONTROL,           /* [24] 17 ETB */ _CONTROL,
+    /* [25] 18 CAN */ _CONTROL,           /* [26] 19 EM  */ _CONTROL,
+    /* [27] 1A SUB */ _CONTROL,           /* [28] 1B ESC */ _CONTROL,
+    /* [29] 1C FS  */ _CONTROL,           /* [30] 1D GS  */ _CONTROL,
+    /* [31] 1E RS  */ _CONTROL,           /* [32] 1F US  */ _CONTROL,
+    /* [33] 20 ' ' */ _SPACE | _BLANK,
+    /* [34] 21 !   */ _PUNCT, /* [35] 22 "   */ _PUNCT, /* [36] 23 #   */ _PUNCT,
+    /* [37] 24 $   */ _PUNCT, /* [38] 25 %   */ _PUNCT, /* [39] 26 &   */ _PUNCT,
+    /* [40] 27 '   */ _PUNCT, /* [41] 28 (   */ _PUNCT, /* [42] 29 )   */ _PUNCT,
+    /* [43] 2A *   */ _PUNCT, /* [44] 2B +   */ _PUNCT, /* [45] 2C ,   */ _PUNCT,
+    /* [46] 2D -   */ _PUNCT, /* [47] 2E .   */ _PUNCT, /* [48] 2F /   */ _PUNCT,
+    /* [49] 30 0   */ _DIGIT | _HEX, /* [50] 31 1 */ _DIGIT | _HEX,
+    /* [51] 32 2   */ _DIGIT | _HEX, /* [52] 33 3 */ _DIGIT | _HEX,
+    /* [53] 34 4   */ _DIGIT | _HEX, /* [54] 35 5 */ _DIGIT | _HEX,
+    /* [55] 36 6   */ _DIGIT | _HEX, /* [56] 37 7 */ _DIGIT | _HEX,
+    /* [57] 38 8   */ _DIGIT | _HEX, /* [58] 39 9 */ _DIGIT | _HEX,
+    /* [59] 3A :   */ _PUNCT, /* [60] 3B ;   */ _PUNCT, /* [61] 3C <   */ _PUNCT,
+    /* [62] 3D =   */ _PUNCT, /* [63] 3E >   */ _PUNCT, /* [64] 3F ?   */ _PUNCT,
+    /* [65] 40 @   */ _PUNCT,
+    /* [66] 41 A   */ _UPPER | _HEX, /* [67] 42 B */ _UPPER | _HEX,
+    /* [68] 43 C   */ _UPPER | _HEX, /* [69] 44 D */ _UPPER | _HEX,
+    /* [70] 45 E   */ _UPPER | _HEX, /* [71] 46 F */ _UPPER | _HEX,
+    /* [72] 47 G   */ _UPPER, /* [73] 48 H */ _UPPER, /* [74] 49 I */ _UPPER,
+    /* [75] 4A J   */ _UPPER, /* [76] 4B K */ _UPPER, /* [77] 4C L */ _UPPER,
+    /* [78] 4D M   */ _UPPER, /* [79] 4E N */ _UPPER, /* [80] 4F O */ _UPPER,
+    /* [81] 50 P   */ _UPPER, /* [82] 51 Q */ _UPPER, /* [83] 52 R */ _UPPER,
+    /* [84] 53 S   */ _UPPER, /* [85] 54 T */ _UPPER, /* [86] 55 U */ _UPPER,
+    /* [87] 56 V   */ _UPPER, /* [88] 57 W */ _UPPER, /* [89] 58 X */ _UPPER,
+    /* [90] 59 Y   */ _UPPER, /* [91] 5A Z */ _UPPER,
+    /* [92] 5B [   */ _PUNCT, /* [93] 5C \ */ _PUNCT, /* [94] 5D ]   */ _PUNCT,
+    /* [95] 5E ^   */ _PUNCT, /* [96] 5F _ */ _PUNCT, /* [97] 60 `   */ _PUNCT,
+    /* [98] 61 a   */ _LOWER | _HEX, /* [99] 62 b */ _LOWER | _HEX,
+    /* [100]63 c   */ _LOWER | _HEX, /* [101]64 d */ _LOWER | _HEX,
+    /* [102]65 e   */ _LOWER | _HEX, /* [103]66 f */ _LOWER | _HEX,
+    /* [104]67 g   */ _LOWER, /* [105]68 h */ _LOWER, /* [106]69 i */ _LOWER,
+    /* [107]6A j   */ _LOWER, /* [108]6B k */ _LOWER, /* [109]6C l */ _LOWER,
+    /* [110]6D m   */ _LOWER, /* [111]6E n */ _LOWER, /* [112]6F o */ _LOWER,
+    /* [113]70 p   */ _LOWER, /* [114]71 q */ _LOWER, /* [115]72 r */ _LOWER,
+    /* [116]73 s   */ _LOWER, /* [117]74 t */ _LOWER, /* [118]75 u */ _LOWER,
+    /* [119]76 v   */ _LOWER, /* [120]77 w */ _LOWER, /* [121]78 x */ _LOWER,
+    /* [122]79 y   */ _LOWER, /* [123]7A z */ _LOWER,
+    /* [124]7B {   */ _PUNCT, /* [125]7C | */ _PUNCT,
+    /* [126]7D }   */ _PUNCT, /* [127]7E ~ */ _PUNCT,
+    /* [128]7F DEL */ _CONTROL,
+    /* [129..256] 80..FF: zero-initialized by aggregate init */
 };
 
 extern "C" const unsigned short* __cdecl __pctype_func()

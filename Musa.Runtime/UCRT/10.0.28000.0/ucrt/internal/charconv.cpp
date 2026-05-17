@@ -99,8 +99,48 @@ namespace __crt_mbstring
         if (!src || !*src) return 0;
         const char* s = *src;
         size_t count = 0;
-        while (*s && count < len) { if (dst) dst[count] = static_cast<wchar_t>(static_cast<unsigned char>(*s)); ++s; ++count; }
-        *src = s;
+        // Sizing pass when dst is null: count chars without writing
+        while (*s) {
+            if (dst && count >= len) break;
+            unsigned char c = static_cast<unsigned char>(*s);
+            wchar_t wc;
+            size_t consumed;
+            if (c < 0x80) {
+                wc = static_cast<wchar_t>(c);
+                consumed = 1;
+            } else if (c < 0xC2 || c > 0xF4) {
+                return static_cast<size_t>(-1); // invalid lead byte
+            } else if (c < 0xE0) {
+                if ((static_cast<unsigned char>(s[1]) & 0xC0) != 0x80)
+                    return static_cast<size_t>(-1);
+                wc = static_cast<wchar_t>(((c & 0x1F) << 6) |
+                                          (static_cast<unsigned char>(s[1]) & 0x3F));
+                consumed = 2;
+            } else if (c < 0xF0) {
+                if ((static_cast<unsigned char>(s[1]) & 0xC0) != 0x80 ||
+                    (static_cast<unsigned char>(s[2]) & 0xC0) != 0x80)
+                    return static_cast<size_t>(-1);
+                wc = static_cast<wchar_t>(((c & 0x0F) << 12) |
+                                          ((static_cast<unsigned char>(s[1]) & 0x3F) << 6) |
+                                          (static_cast<unsigned char>(s[2]) & 0x3F));
+                consumed = 3;
+            } else {
+                // 4-byte UTF-8 produces surrogate pair; not single wchar_t
+                return static_cast<size_t>(-1);
+            }
+            if (dst) dst[count] = wc;
+            ++count;
+            s += consumed;
+        }
+        if (*s == '\0') {
+            // Reached end of source: write null if dst has room, set src to nullptr
+            if (dst) {
+                if (count < len) dst[count] = L'\0';
+                *src = nullptr;
+            }
+        } else {
+            if (dst) *src = s;
+        }
         return count;
     }
 }

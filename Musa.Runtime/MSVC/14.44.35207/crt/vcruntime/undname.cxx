@@ -107,7 +107,7 @@ private:
 		Block *		next;
 		char memBlock[memBlockSize];
 
-		[[gsl::suppress(26495)]]
+        #pragma warning(suppress :26495)
 		Block() { next = 0; }
 
 	};

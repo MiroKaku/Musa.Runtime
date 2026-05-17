@@ -72,6 +72,53 @@ extern "C" int __cdecl snprintf(char* buf, size_t n, const char* fmt, ...)
     __crt_va_start(args, fmt);
     int const r = _vsnprintf(buf, n, fmt, args);
     __crt_va_end(args);
+    // C99: return count that *would* have been written, even on truncation
+    // _vsnprintf returns -1 on truncation; call _vscprintf for true count
+    if (r < 0)
+    {
+        va_list args2;
+        __crt_va_start(args2, fmt);
+        int const needed = _vscprintf(fmt, args2);
+        __crt_va_end(args2);
+        return needed;
+    }
+    return r;
+}
+
+// ---- sprintf / vsprintf -- override nt!sprintf which lacks %f/%e/%g support ----
+
+extern "C" int __cdecl vsprintf(char* buf, const char* fmt, va_list args)
+{
+    // Use unbounded buffer size; caller responsible for buf size
+    return __stdio_common_vsprintf(
+        _CRT_INTERNAL_LOCAL_PRINTF_OPTIONS | _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
+        buf, static_cast<size_t>(-1), fmt, nullptr, args);
+}
+
+extern "C" int __cdecl sprintf(char* buf, const char* fmt, ...)
+{
+    va_list args;
+    __crt_va_start(args, fmt);
+    int const r = vsprintf(buf, fmt, args);
+    __crt_va_end(args);
+    return r;
+}
+
+// ---- swprintf / vswprintf wide variants ----
+
+extern "C" int __cdecl vswprintf(wchar_t* buf, size_t n, const wchar_t* fmt, va_list args)
+{
+    return __stdio_common_vswprintf(
+        _CRT_INTERNAL_LOCAL_PRINTF_OPTIONS | _CRT_INTERNAL_PRINTF_STANDARD_SNPRINTF_BEHAVIOR,
+        buf, n, fmt, nullptr, args);
+}
+
+extern "C" int __cdecl swprintf(wchar_t* buf, size_t n, const wchar_t* fmt, ...)
+{
+    va_list args;
+    __crt_va_start(args, fmt);
+    int const r = vswprintf(buf, n, fmt, args);
+    __crt_va_end(args);
     return r;
 }
 

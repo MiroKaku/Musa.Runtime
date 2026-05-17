@@ -1047,4 +1047,5 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\heap\debug_heap.cpp">
       <Filter>ucrt\heap</Filter>
     </ClCompile>
+  </ItemGroup>
 </Project>
