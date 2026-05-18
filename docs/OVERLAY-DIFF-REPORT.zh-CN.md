@@ -2,7 +2,7 @@
 
 > 自动生成的调查报告。比较 `Musa.Runtime/MSVC/` 和 `Musa.Runtime/UCRT/` 覆盖层文件与 `Microsoft.VisualC.Runtime/` 基础 SDK。
 
-**基础 SDK 版本：** MSVC 14.44.35207 / UCRT 10.0.26100.0
+**基础 SDK 版本：** MSVC 14.51.36231 / UCRT 10.0.26100.0
 **调查日期：** 2026-04-25
 
 ---
@@ -23,7 +23,7 @@
 
 ### 1.1 `sys_main.cpp` — DriverEntry 入口点
 
-**路径：** `MSVC/14.44.35207/crt/vcruntime/sys_main.cpp`
+**路径：** `MSVC/14.51.36231/crt/vcruntime/sys_main.cpp`
 
 **用途：** 提供 `DriverEntry → DriverMain` 委托，使内核驱动程序能够使用用户空间风格的 C++ 入口点。
 
@@ -45,7 +45,7 @@ extern"C" NTSTATUS NTAPI DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRIN
 
 ### 1.2 `sys_dllmain.cpp` — DLL 初始化/卸载入口点
 
-**路径：** `MSVC/14.44.35207/crt/vcruntime/sys_dllmain.cpp`
+**路径：** `MSVC/14.51.36231/crt/vcruntime/sys_dllmain.cpp`
 
 **用途：** 为内核模式 DLL（实验性）提供 `DllInitialize` 和 `DllUnload`。
 
@@ -68,7 +68,7 @@ extern"C" NTSTATUS NTAPI DllUnload()
 
 ### 1.3 `sys_common.inl` — 公共初始化逻辑
 
-**路径：** `MSVC/14.44.35207/crt/vcruntime/sys_common.inl`
+**路径：** `MSVC/14.51.36231/crt/vcruntime/sys_common.inl`
 
 **用途：** `sys_main.cpp` 和 `sys_dllmain.cpp` 背后的共享实现。这是内核 CRT 启动的核心。
 
@@ -105,7 +105,7 @@ extern"C" NTSTATUS NTAPI DllUnload()
 
 ### 1.4 `chandler_noexcept.cpp` — Noexcept 异常处理程序
 
-**路径：** `MSVC/14.44.35207/crt/vcruntime/chandler_noexcept.cpp`
+**路径：** `MSVC/14.51.36231/crt/vcruntime/chandler_noexcept.cpp`
 
 **用途：** 包装标准 C++ 异常处理程序，当 C++ 异常从 `noexcept` 函数中传播时调用 `std::terminate()`。
 
@@ -131,7 +131,7 @@ EXCEPTION_DISPOSITION __C_specific_handler_noexcept(...) {
 
 ### 1.5 架构特定汇编覆盖
 
-**MSVC i386 覆盖层 (14.44.35207)：**
+**MSVC i386 覆盖层 (14.51.36231)：**
 
 | 文件 | 用途 |
 |---|---|
@@ -144,7 +144,7 @@ EXCEPTION_DISPOSITION __C_specific_handler_noexcept(...) {
 | `ftol3sat.asm` | 饱和 FTOL 变体 3 |
 | `exsup4.asm` | x86 异常支持 (SEH4) |
 
-**MSVC x64 覆盖层 (14.44.35207)：**
+**MSVC x64 覆盖层 (14.51.36231)：**
 
 | 文件 | 用途 |
 |---|---|
@@ -152,7 +152,7 @@ EXCEPTION_DISPOSITION __C_specific_handler_noexcept(...) {
 | `guard_xfg_dispatch.asm` | 扩展流Guard调度 |
 | `notify.asm` | 异常通知 |
 
-**MSVC ARM64 覆盖层 (14.44.35207)：**
+**MSVC ARM64 覆盖层 (14.51.36231)：**
 
 | 文件 | 用途 |
 |---|---|
@@ -575,7 +575,7 @@ _new_handler / _callnewh()              ← 失败时
 
 | 组件 | 旧版本 | 新版本 | 状态 |
 |---|---|---|---|
-| MSVC | 14.43.34808 | 14.44.35207 | 活跃覆盖在新版本上 |
+| MSVC | 14.43.34808 | 14.51.36231 | 活跃覆盖在新版本上 |
 | UCRT | 10.0.22621.0 | 10.0.26100.0 | 活跃覆盖在新版本上 |
 
 旧版本文件作为回滚参考和迁移辅助。

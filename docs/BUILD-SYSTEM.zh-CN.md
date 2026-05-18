@@ -15,7 +15,7 @@ Musa.Runtime/
 ├── Microsoft.VisualC.Runtime/       # 基础 SDK 层（未修改的副本）
 │   ├── MSVC/
 │   │   ├── 14.43.34808/            # 之前的 VC 运行时
-│   │   └── 14.44.35207/            # 当前的 VC 运行时
+│   │   └── 14.51.36231/            # 当前的 VC 运行时
 │   │       ├── crt/
 │   │       │   ├── i386/           # x86 汇编和 C
 │   │       │   ├── arm64/          # ARM64 汇编
@@ -49,7 +49,7 @@ Musa.Runtime/
 │   │   ├── delete_km.cpp            # 内核模式 delete
 │   │   └── thread_local.h           # 线程本地存储（未完成）
 │   ├── MSVC/                        # VC overlay 文件
-│   │   └── 14.44.35207/crt/         # 覆盖的 VC 源码
+│   │   └── 14.51.36231/crt/         # 覆盖的 VC 源码
 │   └── UCRT/                        # UCRT overlay 文件
 │       └── 10.0.26100.0/ucrt/       # 覆盖的 UCRT 源码
 │
@@ -146,7 +146,7 @@ ARM64 特定文件：
 
 | 组件 | 版本 | 位置 |
 |---|---|---|
-| VC 运行时 | 14.44.35207 | `MSVC/14.44.35207/` |
+| VC 运行时 | 14.51.36231 | `MSVC/14.51.36231/` |
 | UCRT | 10.0.26100.0 | `UCRT/10.0.26100.0/` |
 
 ### 版本属性
@@ -155,11 +155,11 @@ ARM64 特定文件：
 
 ```xml
 <!-- Overlay（顶层）版本 -->
-<Musa_Runtime_VC_Version_Overlay>14.44.35207</Musa_Runtime_VC_Version_Overlay>
+<Musa_Runtime_VC_Version_Overlay>14.51.36231</Musa_Runtime_VC_Version_Overlay>
 <Musa_Runtime_UCRT_Version_Overlay>10.0.26100.0</Musa_Runtime_UCRT_Version_Overlay>
 
 <!-- Base（底层）版本 -->
-<Musa_Runtime_VC_Version>14.44.35207</Musa_Runtime_VC_Version>
+<Musa_Runtime_VC_Version>14.51.36231</Musa_Runtime_VC_Version>
 <Musa_Runtime_UCRT_Version>10.0.26100.0</Musa_Runtime_UCRT_Version>
 ```
 
@@ -167,10 +167,10 @@ ARM64 特定文件：
 
 ```
 $(Musa_Runtime_VC_ToolsInstallDir_Overlay)
-  → Musa.Runtime/MSVC/14.44.35207/
+  → Musa.Runtime/MSVC/14.51.36231/
 
 $(Musa_Runtime_VC_ToolsInstallDir)
-  → Microsoft.VisualC.Runtime/MSVC/14.44.35207/
+  → Microsoft.VisualC.Runtime/MSVC/14.51.36231/
 
 $(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)
   → Musa.Runtime/UCRT/10.0.26100.0/

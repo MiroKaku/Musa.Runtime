@@ -7,7 +7,7 @@ Musa.Runtime is a Microsoft MSVC runtime library adapted for Windows kernel-mode
 The project is built on [Musa.Core](https://github.com/MiroKaku/Musa.Core) and implements the architecture originally explored in [ucxxrt](https://github.com/MiroKaku/ucxxrt).
 
 **Supported platforms:** x64 (stable), ARM64 (experimental), Win32 (limited)
-**Target SDK versions:** MSVC 14.44.35207 / UCRT 10.0.26100.0
+**Target SDK versions:** MSVC 14.51.36231 / UCRT 10.0.26100.0
 
 ---
 
@@ -34,7 +34,7 @@ Musa.Runtime adopts Docker's layered filesystem concept to achieve selective cod
 │          │                  │                       │
 │  ┌───────┴──────────────────┴───────┐              │
 │  │  Microsoft.VisualC.Runtime/      │              │
-│  │    MSVC/14.44.35207/crt/         │              │
+│  │    MSVC/14.51.36231/crt/         │              │
 │  │    UCRT/10.0.26100.0/ucrt/       │  ← BASE LAYER│
 │  └──────────────────────────────────┘              │
 └─────────────────────────────────────────────────────┘
@@ -44,7 +44,7 @@ Musa.Runtime adopts Docker's layered filesystem concept to achieve selective cod
 
 **Base Layer** (`Microsoft.VisualC.Runtime/`) — An unmodified copy of the original MSVC SDK source, organized by version:
 - `MSVC/14.43.34808/` — Previous VC runtime version
-- `MSVC/14.44.35207/` — Current VC runtime version
+- `MSVC/14.51.36231/` — Current VC runtime version
 - `UCRT/10.0.22621.0/` — Previous UCRT version
 - `UCRT/10.0.26100.0/` — Current UCRT version
 
@@ -256,7 +256,7 @@ Musa.Runtime.vcxproj
 ### SDK Version Configuration
 
 Current versions defined in `Musa.Runtime.props`:
-- `Musa_Runtime_VC_Version_Overlay` = `14.44.35207`
+- `Musa_Runtime_VC_Version_Overlay` = `14.51.36231`
 - `Musa_Runtime_UCRT_Version_Overlay` = `10.0.26100.0`
 
 Previous versions also available in the base SDK for comparison or rollback.

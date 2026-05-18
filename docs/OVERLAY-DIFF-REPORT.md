@@ -2,7 +2,7 @@
 
 > Auto-generated investigation report. Compares `Musa.Runtime/MSVC/` and `Musa.Runtime/UCRT/` overlay files against `Microsoft.VisualC.Runtime/` base SDK.
 
-**Base SDK versions:** MSVC 14.44.35207 / UCRT 10.0.26100.0
+**Base SDK versions:** MSVC 14.51.36231 / UCRT 10.0.26100.0
 **Investigation date:** 2026-04-25
 
 ---
@@ -23,7 +23,7 @@ These files are Musa.Runtime inventions — they have no counterpart in the orig
 
 ### 1.1 `sys_main.cpp` — DriverEntry Entry Point
 
-**Path:** `MSVC/14.44.35207/crt/vcruntime/sys_main.cpp`
+**Path:** `MSVC/14.51.36231/crt/vcruntime/sys_main.cpp`
 
 **Purpose:** Provides the `DriverEntry → DriverMain` delegation that enables user-space-style C++ entry points in kernel drivers.
 
@@ -45,7 +45,7 @@ extern"C" NTSTATUS NTAPI DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRIN
 
 ### 1.2 `sys_dllmain.cpp` — DLL Initialize/Unload Entry Points
 
-**Path:** `MSVC/14.44.35207/crt/vcruntime/sys_dllmain.cpp`
+**Path:** `MSVC/14.51.36231/crt/vcruntime/sys_dllmain.cpp`
 
 **Purpose:** Provides `DllInitialize` and `DllUnload` for kernel-mode DLLs (experimental).
 
@@ -68,7 +68,7 @@ extern"C" NTSTATUS NTAPI DllUnload()
 
 ### 1.3 `sys_common.inl` — Common Initialization Logic
 
-**Path:** `MSVC/14.44.35207/crt/vcruntime/sys_common.inl`
+**Path:** `MSVC/14.51.36231/crt/vcruntime/sys_common.inl`
 
 **Purpose:** The shared implementation behind both `sys_main.cpp` and `sys_dllmain.cpp`. This is the core of the kernel CRT bootstrap.
 
@@ -105,7 +105,7 @@ extern"C" NTSTATUS NTAPI DllUnload()
 
 ### 1.4 `chandler_noexcept.cpp` — Noexcept Exception Handler
 
-**Path:** `MSVC/14.44.35207/crt/vcruntime/chandler_noexcept.cpp`
+**Path:** `MSVC/14.51.36231/crt/vcruntime/chandler_noexcept.cpp`
 
 **Purpose:** Wraps the standard C++ exception handler to call `std::terminate()` when a C++ exception propagates out of a `noexcept` function.
 
@@ -131,7 +131,7 @@ EXCEPTION_DISPOSITION __C_specific_handler_noexcept(...) {
 
 ### 1.5 Architecture-specific Assembly Overrides
 
-**MSVC i386 overlay (14.44.35207):**
+**MSVC i386 overlay (14.51.36231):**
 | File | Purpose |
 |---|---|
 | `ftol.asm` | Float-to-integer conversion |
@@ -143,14 +143,14 @@ EXCEPTION_DISPOSITION __C_specific_handler_noexcept(...) {
 | `ftol3sat.asm` | Saturated FTOL variant 3 |
 | `exsup4.asm` | x86 exception support (SEH4) |
 
-**MSVC x64 overlay (14.44.35207):**
+**MSVC x64 overlay (14.51.36231):**
 | File | Purpose |
 |---|---|
 | `guard_dispatch.asm` | Control Flow Guard dispatch |
 | `guard_xfg_dispatch.asm` | eXtended Flow Guard dispatch |
 | `notify.asm` | Exception notification |
 
-**MSVC ARM64 overlay (14.44.35207):**
+**MSVC ARM64 overlay (14.51.36231):**
 | File | Purpose |
 |---|---|
 | `guard_dispatch.asm` | CFG dispatch |
@@ -571,7 +571,7 @@ The overlay contains files for **two SDK versions**, indicating a migration hist
 
 | Component | Old Version | New Version | Status |
 |---|---|---|---|
-| MSVC | 14.43.34808 | 14.44.35207 | Active overlay on new |
+| MSVC | 14.43.34808 | 14.51.36231 | Active overlay on new |
 | UCRT | 10.0.22621.0 | 10.0.26100.0 | Active overlay on new |
 
 The old version files serve as a rollback reference and migration aid.

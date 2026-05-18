@@ -15,7 +15,7 @@ Musa.Runtime/
 ├── Microsoft.VisualC.Runtime/       # Base SDK layer (unmodified copy)
 │   ├── MSVC/
 │   │   ├── 14.43.34808/            # Previous VC runtime
-│   │   └── 14.44.35207/            # Current VC runtime
+│   │   └── 14.51.36231/            # Current VC runtime
 │   │       ├── crt/
 │   │       │   ├── i386/           # x86 assembly & C
 │   │       │   ├── arm64/          # ARM64 assembly
@@ -49,7 +49,7 @@ Musa.Runtime/
 │   │   ├── delete_km.cpp            # Kernel-mode delete
 │   │   └── thread_local.h           # Thread-local (incomplete)
 │   ├── MSVC/                        # VC overlay files
-│   │   └── 14.44.35207/crt/         # Overridden VC sources
+│   │   └── 14.51.36231/crt/         # Overridden VC sources
 │   └── UCRT/                        # UCRT overlay files
 │       └── 10.0.26100.0/ucrt/       # Overridden UCRT sources
 │
@@ -144,7 +144,7 @@ This ensures mathematical consistency with the UCRT while allowing kernel-incomp
 
 | Component | Version | Location |
 |---|---|---|
-| VC Runtime | 14.44.35207 | `MSVC/14.44.35207/` |
+| VC Runtime | 14.51.36231 | `MSVC/14.51.36231/` |
 | UCRT | 10.0.26100.0 | `UCRT/10.0.26100.0/` |
 
 ### Version Properties
@@ -153,11 +153,11 @@ Defined in `Musa.Runtime/Musa.Runtime.props`:
 
 ```xml
 <!-- Overlay (top layer) versions -->
-<Musa_Runtime_VC_Version_Overlay>14.44.35207</Musa_Runtime_VC_Version_Overlay>
+<Musa_Runtime_VC_Version_Overlay>14.51.36231</Musa_Runtime_VC_Version_Overlay>
 <Musa_Runtime_UCRT_Version_Overlay>10.0.26100.0</Musa_Runtime_UCRT_Version_Overlay>
 
 <!-- Base (bottom layer) versions -->
-<Musa_Runtime_VC_Version>14.44.35207</Musa_Runtime_VC_Version>
+<Musa_Runtime_VC_Version>14.51.36231</Musa_Runtime_VC_Version>
 <Musa_Runtime_UCRT_Version>10.0.26100.0</Musa_Runtime_UCRT_Version>
 ```
 
@@ -165,10 +165,10 @@ Defined in `Musa.Runtime/Musa.Runtime.props`:
 
 ```
 $(Musa_Runtime_VC_ToolsInstallDir_Overlay)
-  → Musa.Runtime/MSVC/14.44.35207/
+  → Musa.Runtime/MSVC/14.51.36231/
 
 $(Musa_Runtime_VC_ToolsInstallDir)
-  → Microsoft.VisualC.Runtime/MSVC/14.44.35207/
+  → Microsoft.VisualC.Runtime/MSVC/14.51.36231/
 
 $(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)
   → Musa.Runtime/UCRT/10.0.26100.0/
