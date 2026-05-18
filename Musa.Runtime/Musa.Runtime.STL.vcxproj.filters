@@ -88,103 +88,16 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xcharconv_tables_float.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xcosh.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xdint.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xdnorm.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xdscale.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xdtento.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xdtest.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xdunscal.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xexp.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfcosh.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfdint.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfdnorm.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfdscale.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfdtento.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfdtest.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfdunsca.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xferaise.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfexp.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfprec.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfsinh.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xfvalues.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlcosh.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xldint.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xldscale.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xldtento.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xldtest.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xldunsca.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlexp.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlgamma.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlock.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlpoly.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlprec.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlsinh.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xlvalues.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xmtx.cpp">
