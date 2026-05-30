@@ -44,6 +44,91 @@
 
 namespace Main
 {
+    static void RunSehTests(ULONG& TestsRun, ULONG& TestsFailed)
+    {
+        // CRT: SEH (Structured Exception Handling)
+        {
+            // Test: __try/__except — catch access violation
+            bool filter_reached = false;
+            bool handler_reached = false;
+            __try
+            {
+                *(volatile int*)nullptr = 0;
+            }
+            __except(filter_reached = true, EXCEPTION_EXECUTE_HANDLER)
+            {
+                handler_reached = true;
+            }
+            KTEST_EXPECT(handler_reached, "SEH_AccessViolationCaught");
+        }
+        {
+            // Test: __try/__finally — finally executes
+            int finally_count = 0;
+            __try
+            {
+                ++finally_count;
+            }
+            __finally
+            {
+                ++finally_count;
+            }
+            KTEST_EXPECT(finally_count == 2, "SEH_FinallyExecutes");
+        }
+        {
+            // Test: __try/__except — filter can decline to handle
+            bool exception_occurred = false;
+            bool did_not_catch = false;
+            __try
+            {
+                __try
+                {
+                    exception_occurred = true;
+                    RaiseException(0xE0000001, 0, 0, nullptr);
+                }
+                __except(EXCEPTION_CONTINUE_SEARCH)
+                {
+                }
+            }
+            __except(EXCEPTION_EXECUTE_HANDLER)
+            {
+                did_not_catch = true;
+            }
+            KTEST_EXPECT(exception_occurred && did_not_catch, "SEH_ContinueSearch");
+        }
+        {
+            // Test: GetExceptionCode() returns the exception code
+            DWORD code = 0;
+            __try
+            {
+                RaiseException(0xE0000042, 0, 0, nullptr);
+            }
+            __except(code = GetExceptionCode(), EXCEPTION_EXECUTE_HANDLER)
+            {
+            }
+            KTEST_EXPECT(code == 0xE0000042, "SEH_GetExceptionCode");
+        }
+        {
+            // Test: __try/__finally — finally runs even on exception
+            int counter = 0;
+            __try
+            {
+                __try
+                {
+                    counter = 1;
+                    RaiseException(0xE0000002, 0, 0, nullptr);
+                }
+                __finally
+                {
+                    counter = 2;
+                }
+            }
+            __except(EXCEPTION_EXECUTE_HANDLER)
+            {
+            }
+            KTEST_EXPECT(counter == 2, "SEH_FinallyRunsOnException");
+        }
+    }
+
     static void RunTests()
     {
         ULONG TestsRun    = 0;
@@ -128,7 +213,10 @@ namespace Main
             KTEST_EXPECT(level == 3, "Exception_NestedCatchAll");
         }
 
+        RunSehTests(TestsRun, TestsFailed);
+
         // Vector
+
         {
             std::vector<int, std::kallocator<int>> vec;
             KTEST_EXPECT(vec.empty(), "Vector_InitiallyEmpty");
