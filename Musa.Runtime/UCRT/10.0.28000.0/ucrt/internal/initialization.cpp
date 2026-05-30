@@ -301,11 +301,6 @@ static __acrt_initializer const __acrt_initializers[] =
 
     { __acrt_initialize_ptd,                   __acrt_uninitialize_ptd                  },
     { __acrt_initialize_lowio,                 __acrt_uninitialize_lowio                },
-#if defined NTOS_KERNEL_RUNTIME
-    // Force stdin/stdout/stderr to "no console" so _isatty(stdout) returns 0
-    // and stdio init sets _iob[0..2]._file = _NO_CONSOLE_FILENO.
-    { __acrt_kernel_fixup_stdio_handles,       __acrt_kernel_uninitialize_stdio_handles },
-#endif
     { __acrt_initialize_command_line,          __acrt_uninitialize_command_line         },
 #if !defined NTOS_KERNEL_RUNTIME
     { __acrt_initialize_multibyte,             nullptr                                  },
