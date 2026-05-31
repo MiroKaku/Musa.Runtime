@@ -31,6 +31,7 @@
 #include <cstdio>
 #include <cstring>
 #include <ctime>
+#include <filesystem>
 #include <cctype>
 #include <cstdlib>
 #include <sys/stat.h>
@@ -2229,6 +2230,199 @@ namespace Main
             errno_t e = wcsncpy_s(buf, sizeof(buf)/sizeof(wchar_t), L"hello", 2);
             KTEST_EXPECT(e == 0, "Wcsncpy_s_OK");
             KTEST_EXPECT(wcscmp(buf, L"he") == 0, "Wcsncpy_s_Result");
+        }
+
+        // std::filesystem
+        {
+            namespace fs = std::filesystem;
+
+            // --- Path operations ---
+            KTEST_EXPECT(fs::path(L"C:\\Temp\\test.txt").wstring() == L"C:\\Temp\\test.txt", "FsPath_Construct");
+            KTEST_EXPECT((fs::path(L"C:\\Temp") / L"subdir").wstring() == L"C:\\Temp\\subdir", "FsPath_Concat");
+            {
+                fs::path p(L"C:\\Temp\\subdir\\file.txt");
+                KTEST_EXPECT(p.parent_path().wstring() == L"C:\\Temp\\subdir", "FsPath_Parent");
+                KTEST_EXPECT(p.filename().wstring() == L"file.txt", "FsPath_Filename");
+                KTEST_EXPECT(p.stem().wstring() == L"file", "FsPath_Stem");
+                KTEST_EXPECT(p.extension().wstring() == L".txt", "FsPath_Extension");
+            }
+            KTEST_EXPECT(fs::path(L"C:\\Temp").is_absolute(), "FsPath_IsAbsolute");
+            KTEST_EXPECT(fs::path(L"relative").is_relative(), "FsPath_IsRelative");
+            {
+                fs::path p(L"C:\\Temp\\file.txt");
+                p.replace_extension(L".log");
+                KTEST_EXPECT(p.extension().wstring() == L".log", "FsPath_ReplaceExt");
+            }
+            KTEST_EXPECT(fs::path(L"a") == fs::path(L"a"), "FsPath_Eq");
+            KTEST_EXPECT(fs::path(L"a") != fs::path(L"b"), "FsPath_Neq");
+            KTEST_EXPECT(fs::path().empty(), "FsPath_Empty");
+            {
+                fs::path p(L"a");
+                p.clear();
+                KTEST_EXPECT(p.empty(), "FsPath_Clear");
+            }
+            // root_name / root_path
+            {
+                fs::path p(L"C:\\Temp\\file.txt");
+                KTEST_EXPECT(p.root_name().wstring() == L"C:", "FsPath_RootName");
+                KTEST_EXPECT(p.root_path().wstring() == L"C:\\", "FsPath_RootPath");
+                KTEST_EXPECT(p.relative_path().wstring() == L"Temp\\file.txt", "FsPath_RelativePath");
+            }
+            // has_extension / has_filename / has_parent_path
+            {
+                fs::path p(L"C:\\Temp\\file.txt");
+                KTEST_EXPECT(p.has_extension(), "FsPath_HasExtension");
+                KTEST_EXPECT(p.has_filename(), "FsPath_HasFilename");
+                KTEST_EXPECT(p.has_parent_path(), "FsPath_HasParent");
+                fs::path nf(L"C:\\");
+                KTEST_EXPECT(!nf.has_filename(), "FsPath_NoFilename");
+            }
+            // concat with +=
+            {
+                fs::path p(L"C:\\Temp");
+                p += L"\\sub";
+                KTEST_EXPECT(p.wstring() == L"C:\\Temp\\sub", "FsPath_Append");
+            }
+            // remove_filename
+            {
+                fs::path p(L"C:\\Temp\\file.txt");
+                p.remove_filename();
+                KTEST_EXPECT(p.wstring() == L"C:\\Temp\\", "FsPath_RemoveFilename");
+            }
+
+            // --- Filesystem operations ---
+            fs::path tmpdir = fs::temp_directory_path() / L"MusaFsTest";
+
+            // Clean up from previous runs
+            fs::remove_all(tmpdir);
+
+            // create_directory / exists / is_directory
+            KTEST_EXPECT(fs::create_directory(tmpdir), "FsCreateDir");
+            KTEST_EXPECT(fs::exists(tmpdir), "FsExists_Dir");
+            KTEST_EXPECT(fs::is_directory(tmpdir), "FsIsDir");
+            KTEST_EXPECT(!fs::is_regular_file(tmpdir), "FsIsDir_NotFile");
+            // create_directory on existing dir succeeds
+            KTEST_EXPECT(fs::create_directory(tmpdir), "FsCreateDir_Existing");
+
+            // Create a test file via C fopen
+            fs::path testfile = tmpdir / L"test.txt";
+            {
+                FILE* f = _wfopen(testfile.c_str(), L"w");
+                KTEST_EXPECT(f != nullptr, "FsFopen");
+                if (f) {
+                    const char* msg = "Hello, filesystem!";
+                    size_t written = fwrite(msg, 1, 19, f);
+                    KTEST_EXPECT(written == 19, "FsFwrite");
+                    fclose(f);
+                }
+            }
+
+            // exists / is_regular_file
+            KTEST_EXPECT(fs::exists(testfile), "FsExists_File");
+            KTEST_EXPECT(fs::is_regular_file(testfile), "FsIsFile");
+            KTEST_EXPECT(!fs::is_directory(testfile), "FsIsFile_NotDir");
+
+            // file_size
+            KTEST_EXPECT(fs::file_size(testfile) == 19, "FsFileSize");
+
+            // status / permissions
+            {
+                std::error_code ec;
+                fs::file_status st = fs::status(testfile, ec);
+                KTEST_EXPECT(!ec, "FsStatus_NoError");
+                KTEST_EXPECT(fs::is_regular_file(st), "FsStatus_IsFile");
+            }
+
+            // last_write_time
+            {
+                std::error_code ec;
+                auto t = fs::last_write_time(testfile, ec);
+                KTEST_EXPECT(!ec, "FsLastWriteTime");
+                KTEST_EXPECT(t.time_since_epoch().count() > 0, "FsLastWriteTime_NonZero");
+            }
+
+            // copy_file
+            fs::path copyfile = tmpdir / L"copy.txt";
+            KTEST_EXPECT(fs::copy_file(testfile, copyfile), "FsCopyFile");
+            KTEST_EXPECT(fs::exists(copyfile), "FsCopyFile_Exists");
+            KTEST_EXPECT(fs::file_size(copyfile) == 19, "FsCopyFile_Size");
+
+            // equivalent
+            KTEST_EXPECT(fs::equivalent(testfile, copyfile), "FsEquivalent");
+            // non-equivalent
+            fs::path diff = tmpdir / L"different.txt";
+            {
+                FILE* f = _wfopen(diff.c_str(), L"w");
+                if (f) { fwrite("x", 1, 1, f); fclose(f); }
+            }
+            KTEST_EXPECT(!fs::equivalent(testfile, diff), "FsNotEquivalent");
+            fs::remove(diff);
+
+            // rename
+            fs::path renamed = tmpdir / L"renamed.txt";
+            fs::rename(testfile, renamed);
+            KTEST_EXPECT(!fs::exists(testfile), "FsRename_OldGone");
+            KTEST_EXPECT(fs::exists(renamed), "FsRename_NewExists");
+
+            // remove (single file)
+            KTEST_EXPECT(fs::remove(copyfile), "FsRemove_File");
+            KTEST_EXPECT(!fs::exists(copyfile), "FsRemove_FileGone");
+
+            // create subdirectory
+            fs::path subdir = tmpdir / L"sub";
+            KTEST_EXPECT(fs::create_directory(subdir), "FsCreateSubDir");
+            KTEST_EXPECT(fs::is_directory(subdir), "FsIsSubDir");
+
+            // directory_iterator
+            {
+                size_t count = 0;
+                bool found_sub = false, found_renamed = false;
+                for (auto& entry : fs::directory_iterator(tmpdir)) {
+                    KTEST_EXPECT(!entry.path().empty(), "FsDirIter_Path");
+                    if (entry.is_directory()) found_sub = true;
+                    if (entry.is_regular_file()) found_renamed = true;
+                    ++count;
+                }
+                KTEST_EXPECT(count >= 2, "FsDirIter_Count");
+                KTEST_EXPECT(found_sub, "FsDirIter_FoundDir");
+                KTEST_EXPECT(found_renamed, "FsDirIter_FoundFile");
+            }
+
+            // recursive_directory_iterator
+            {
+                size_t count = 0;
+                for (auto& entry : fs::recursive_directory_iterator(tmpdir)) {
+                    KTEST_EXPECT(!entry.path().empty(), "FsRecDirIter_Path");
+                    ++count;
+                }
+                KTEST_EXPECT(count >= 2, "FsRecDirIter_Count");
+            }
+
+            // space
+            {
+                std::error_code ec;
+                auto si = fs::space(tmpdir, ec);
+                KTEST_EXPECT(!ec, "FsSpace_NoError");
+                KTEST_EXPECT(si.capacity > 0, "FsSpace_Capacity");
+                KTEST_EXPECT(si.free <= si.capacity, "FsSpace_Free");
+            }
+
+            // current_path
+            {
+                std::error_code ec;
+                fs::path cp = fs::current_path(ec);
+                KTEST_EXPECT(!ec, "FsCurrentPath_NoError");
+                KTEST_EXPECT(cp.is_absolute(), "FsCurrentPath_Absolute");
+            }
+
+            // hard_link_count
+            {
+                KTEST_EXPECT(fs::hard_link_count(renamed) >= 1, "FsHardLinkCount");
+            }
+
+            // remove_all (recursive)
+            KTEST_EXPECT(fs::remove_all(tmpdir) >= 3, "FsRemoveAll");
+            KTEST_EXPECT(!fs::exists(tmpdir), "FsRemoveAll_Gone");
         }
         }
 

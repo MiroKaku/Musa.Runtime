@@ -84,6 +84,7 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoul.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoull.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\format.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\filesystem.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\regex.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\locale0.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstrxfrm.cpp" />

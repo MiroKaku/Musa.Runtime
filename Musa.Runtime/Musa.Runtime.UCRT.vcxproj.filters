@@ -115,6 +115,9 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\fma3_initializer.cpp">
       <Filter>ucrt\initializers</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\multibyte_initializer.cpp">
+      <Filter>ucrt\initializers</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\initializers\i386\sse2_initializer.cpp">
       <Filter>ucrt\initializers</Filter>
     </ClCompile>
@@ -124,10 +127,8 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\_fptostr.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cvt.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\locale\localeconv.cpp">
       <Filter>ucrt\locale</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\output.cpp">
@@ -148,10 +149,28 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\dbgrpt.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\_strerr.cpp">
+      <Filter>ucrt\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\chdir.cpp">
+      <Filter>ucrt\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\drive.cpp">
+      <Filter>ucrt\misc</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\debug_fill_threshold.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\getcwd.cpp">
+      <Filter>ucrt\misc</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\invalid_parameter.cpp">
+      <Filter>ucrt\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\syserr.cpp">
+      <Filter>ucrt\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\strerror.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\terminate.cpp">
@@ -259,7 +278,9 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\filelength.cpp">
       <Filter>ucrt\lowio</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\ioinit.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\lowio\ioinit.cpp">
       <Filter>ucrt\lowio</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\isatty.cpp">
@@ -277,10 +298,14 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\open.cpp">
       <Filter>ucrt\lowio</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\osfinfo.cpp">
       <Filter>ucrt\lowio</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\read.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\lowio\osfinfo.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\lowio\read.cpp">
       <Filter>ucrt\lowio</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\setmode.cpp">
@@ -298,7 +323,9 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\umask.cpp">
       <Filter>ucrt\lowio</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\lowio\write.cpp">
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\lowio\write.cpp">
+      <Filter>ucrt\lowio</Filter>
+    </ClCompile>
       <Filter>ucrt\lowio</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\stdio\_filbuf.cpp">
@@ -589,6 +616,9 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\per_thread_data.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\lcmap.cpp">
+      <Filter>ucrt\locale</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\locale_update.cpp">
       <Filter>ucrt\locale</Filter>
     </ClCompile>
@@ -613,7 +643,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\startup\thread.cpp">
       <Filter>ucrt\startup</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\stdio\output.cpp">
       <Filter>ucrt\stdio</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\_ctype.cpp">
@@ -633,7 +662,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\atoldbl.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\c16rtomb.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\cvt.cpp">
@@ -642,10 +670,8 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\fcvt.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\isctype.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\iswctype.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mblen.cpp">
@@ -654,19 +680,21 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mbrtoc16.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mbrtoc32.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mbrtowc.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\mbtowc.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\strtod.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\tolower_toupper.cpp">
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtod.cpp">
+      <Filter>ucrt\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtox.cpp">
+      <Filter>ucrt\convert</Filter>
+    </ClCompile>
       <Filter>ucrt\convert</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\towlower.cpp">
@@ -678,7 +706,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wcrtomb.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wctomb.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wctrans.cpp">
@@ -687,22 +714,18 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wctype.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\_ctype.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\locale_update.cpp">
       <Filter>ucrt\locale</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\localeconv.cpp">
       <Filter>ucrt\locale</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\nlsdata.cpp">
       <Filter>ucrt\locale</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\setlocale.cpp">
       <Filter>ucrt\locale</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\wsetlocale.cpp">
       <Filter>ucrt\locale</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcspbrk.cpp">
@@ -855,7 +878,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbalph.cpp">
       <Filter>ucrt\mbstring</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbbyte.cpp">
       <Filter>ucrt\mbstring</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbdgt.cpp">
@@ -879,7 +901,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbpunc.cpp">
       <Filter>ucrt\mbstring</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbsle.cpp">
       <Filter>ucrt\mbstring</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\ismbslead.cpp">
@@ -939,7 +960,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbscspn.cpp">
       <Filter>ucrt\mbstring</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsdec.cpp">
       <Filter>ucrt\mbstring</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\mbstring\mbsicmp.cpp">
@@ -1110,43 +1130,32 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\dbgstubs.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\initialization.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\kernel_initializers.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\locks.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\OutputDebugStringA.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\per_thread_data.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\internal\winapi_thunks.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\dbgrptt.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\errno.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\exception_filter.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\signal.cpp">
       <Filter>ucrt\misc</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\startup\thread.cpp">
       <Filter>ucrt\startup</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\stdio\printf_wrappers.cpp">
       <Filter>ucrt\stdio</Filter>
     </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\heap\debug_heap.cpp">
       <Filter>ucrt\heap</Filter>
     </ClCompile>
   </ItemGroup>

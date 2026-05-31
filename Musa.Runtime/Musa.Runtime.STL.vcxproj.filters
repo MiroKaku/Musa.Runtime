@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="crt">
@@ -32,6 +32,9 @@
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\excptptr.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\filesystem.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\future.cpp">
@@ -76,6 +79,66 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\vector_algorithms.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstol.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoll.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoul.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoull.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\format.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\regex.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\locale0.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstrxfrm.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\_tolower.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\_toupper.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstrcoll.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\locale.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xwctomb.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstod.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstof.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xtowlower.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xtowupper.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xmbtowc.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\locale_stubs.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xrngdev.cpp">
+      <Filter>crt\stl</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xalloc.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
@@ -110,18 +173,6 @@
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xonce2.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xpoly.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xprec.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xrngdev.cpp">
-      <Filter>crt\stl</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xsinh.cpp">
       <Filter>crt\stl</Filter>
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xthrow.cpp">
