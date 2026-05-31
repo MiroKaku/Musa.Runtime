@@ -1031,6 +1031,24 @@ namespace Main
             KTEST_EXPECT(std::stoull("18446744073709551615") == 18446744073709551615ULL, "Stoull_Basic");
         }
 
+        // string to float/double conversions
+        {
+            float f = std::stof("3.14");
+            KTEST_EXPECT(f > 3.13f && f < 3.15f, "Stof_Basic");
+        }
+        {
+            float f = std::stof("-2.5");
+            KTEST_EXPECT(f > -2.51f && f < -2.49f, "Stof_Negative");
+        }
+        {
+            double d = std::stod("3.14159265358979");
+            KTEST_EXPECT(d > 3.14159 && d < 3.14160, "Stod_Basic");
+        }
+        {
+            double d = std::stod("-1.5");
+            KTEST_EXPECT(d > -1.51 && d < -1.49, "Stod_Negative");
+        }
+
 
         // std::format (C++20)
         {
