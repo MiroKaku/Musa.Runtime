@@ -1008,6 +1008,26 @@ namespace Main
             KTEST_EXPECT(a1 == a2, "Allocator_Equality");
         }
 
+
+        // string to integer conversions
+        {
+            KTEST_EXPECT(std::stoi("42") == 42, "Stoi_Basic");
+            KTEST_EXPECT(std::stoi("-10") == -10, "Stoi_Negative");
+        }
+        {
+            KTEST_EXPECT(std::stol("100000") == 100000L, "Stol_Basic");
+            KTEST_EXPECT(std::stol("-500") == -500L, "Stol_Negative");
+        }
+        {
+            KTEST_EXPECT(std::stoul("99999") == 99999UL, "Stoul_Basic");
+        }
+        {
+            KTEST_EXPECT(std::stoll("1234567890123") == 1234567890123LL, "Stoll_Basic");
+            KTEST_EXPECT(std::stoll("-9876543210") == -9876543210LL, "Stoll_Negative");
+        }
+        {
+            KTEST_EXPECT(std::stoull("18446744073709551615") == 18446744073709551615ULL, "Stoull_Basic");
+        }
         // Exception safety
         {
             std::vector<int, std::kallocator<int>> vec = {1, 2, 3};
