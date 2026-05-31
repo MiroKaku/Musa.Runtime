@@ -1028,6 +1028,7 @@ namespace Main
         {
             KTEST_EXPECT(std::stoull("18446744073709551615") == 18446744073709551615ULL, "Stoull_Basic");
         }
+
         // Exception safety
         {
             std::vector<int, std::kallocator<int>> vec = {1, 2, 3};
