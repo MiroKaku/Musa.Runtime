@@ -26,6 +26,8 @@
 #include <iterator>
 #include <utility>
 #include <bit>
+#include <format>
+#include <regex>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
@@ -1029,6 +1031,43 @@ namespace Main
             KTEST_EXPECT(std::stoull("18446744073709551615") == 18446744073709551615ULL, "Stoull_Basic");
         }
 
+
+        // std::format (C++20)
+        {
+            auto s = std::format("hello {}", "world");
+            KTEST_EXPECT(s == "hello world", "Format_Basic");
+        }
+        {
+            auto s = std::format("{}+{}={}", 1, 2, 3);
+            KTEST_EXPECT(s == "1+2=3", "Format_Integers");
+        }
+        {
+            char buf[64];
+            auto r = std::format_to(buf, "x={}", 42);
+            *r = '\0';
+            KTEST_EXPECT(strcmp(buf, "x=42") == 0, "FormatTo_Basic");
+        }
+
+        // std::regex
+        {
+            std::regex re("hello");
+            KTEST_EXPECT(std::regex_match("hello", re), "Regex_Match");
+            KTEST_EXPECT(!std::regex_match("world", re), "Regex_NoMatch");
+        }
+        {
+            std::regex re("\\d+");
+            KTEST_EXPECT(std::regex_match("12345", re), "Regex_MatchDigits");
+            KTEST_EXPECT(!std::regex_match("abc", re), "Regex_NoMatchDigits");
+        }
+        {
+            std::regex re("world");
+            KTEST_EXPECT(std::regex_search("hello world", re), "Regex_Search");
+        }
+        {
+            std::regex re("\\s+");
+            auto s = std::regex_replace("a  b   c", re, " ");
+            KTEST_EXPECT(s == "a b c", "Regex_Replace");
+        }
         // Exception safety
         {
             std::vector<int, std::kallocator<int>> vec = {1, 2, 3};

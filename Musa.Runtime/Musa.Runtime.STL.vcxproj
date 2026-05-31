@@ -85,6 +85,14 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoull.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\format.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\regex.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\locale0.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstrxfrm.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\_tolower.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\_toupper.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstrcoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\locale.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xwctomb.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\locale_stubs.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\mutex.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\syserror_import_lib.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\xrngabort.cpp" />

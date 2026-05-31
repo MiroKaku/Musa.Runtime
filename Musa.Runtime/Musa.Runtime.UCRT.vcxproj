@@ -330,6 +330,7 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\nlsdata.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\wsetlocale.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\setlocale.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\lcmap.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\misc\dbgrptt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'=='Release'">true</ExcludedFromBuild>
     </ClCompile>
