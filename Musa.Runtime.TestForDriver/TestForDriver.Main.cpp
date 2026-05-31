@@ -1504,6 +1504,34 @@ namespace Main
             KTEST_EXPECT(r == 0, "Wcsicoll_CaseInsensitive");
         }
 
+        // _strnicoll — case-insensitive collation
+        {
+            int r = _strnicoll("ABC", "abc", 3);
+            KTEST_EXPECT(r == 0, "Strnicoll_CaseInsensitive");
+        }
+        {
+            int r = _strnicoll("abc", "abd", 3);
+            KTEST_EXPECT(r < 0, "Strnicoll_LessThan");
+        }
+        {
+            int r = _strnicoll("abd", "abc", 3);
+            KTEST_EXPECT(r > 0, "Strnicoll_GreaterThan");
+        }
+
+        // _wcsnicoll — wide case-insensitive collation
+        {
+            int r = _wcsnicoll(L"ABC", L"abc", 3);
+            KTEST_EXPECT(r == 0, "Wcsnicoll_CaseInsensitive");
+        }
+        {
+            int r = _wcsnicoll(L"abc", L"abd", 3);
+            KTEST_EXPECT(r < 0, "Wcsnicoll_LessThan");
+        }
+        {
+            int r = _wcsnicoll(L"abd", L"abc", 3);
+            KTEST_EXPECT(r > 0, "Wcsnicoll_GreaterThan");
+        }
+
         // ============================================================
         // UCRT Unlocked: locale — printf %e/%f/%g decimal_point
         // ============================================================
