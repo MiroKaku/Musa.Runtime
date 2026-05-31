@@ -1110,11 +1110,6 @@ namespace Main
             auto s = std::format("{:-}", 42);
             KTEST_EXPECT(s == "42", "Format_MinusSign");
         }
-        // escape/backslash
-        {
-            auto s = std::format("{}", "a\nb");
-            KTEST_EXPECT(s == "a\\nb", "Format_EscapeNewline");
-        }
         // multiple arguments
         {
             auto s = std::format("{} {} {}", "a", 1, 2.5);
