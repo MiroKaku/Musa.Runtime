@@ -2232,6 +2232,32 @@ namespace Main
             KTEST_EXPECT(wcscmp(buf, L"he") == 0, "Wcsncpy_s_Result");
         }
 
+
+        // _chdir / _wchdir / _getcwd / _wgetcwd
+        {
+            // Save current dir
+            char orig[260];
+            KTEST_EXPECT(_getcwd(orig, sizeof(orig)) != nullptr, "Getcwd_OK");
+
+            // _wgetcwd
+            wchar_t worig[260];
+            KTEST_EXPECT(_wgetcwd(worig, sizeof(worig)/sizeof(wchar_t)) != nullptr, "Wgetcwd_OK");
+
+            // _wchdir to a known directory
+            KTEST_EXPECT(_wchdir(L"C:\\") == 0, "Wchdir_Root");
+            wchar_t wroot[260];
+            KTEST_EXPECT(_wgetcwd(wroot, sizeof(wroot)/sizeof(wchar_t)) != nullptr, "Wgetcwd_Root");
+            KTEST_EXPECT(wcscmp(wroot, L"C:\\") == 0, "Wgetcwd_RootVal");
+
+            // _chdir (ANSI) to Temp
+            KTEST_EXPECT(_chdir("C:\\Temp") == 0, "Chdir_Temp");
+            char temp[260];
+            KTEST_EXPECT(_getcwd(temp, sizeof(temp)) != nullptr, "Getcwd_Temp");
+            KTEST_EXPECT(strcmp(temp, "C:\\Temp") == 0, "Getcwd_TempVal");
+
+            // Restore original
+            KTEST_EXPECT(_chdir(orig) == 0, "Chdir_Restore");
+        }
         // std::filesystem
         {
             namespace fs = std::filesystem;

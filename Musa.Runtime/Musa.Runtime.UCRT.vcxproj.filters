@@ -143,6 +143,9 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\report_runtime_error.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\SetCurrentDirectoryA.cpp">
+      <Filter>ucrt\internal</Filter>
+    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\internal\shared_initialization.cpp">
       <Filter>ucrt\internal</Filter>
     </ClCompile>
