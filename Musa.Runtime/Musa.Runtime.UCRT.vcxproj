@@ -118,6 +118,59 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcspbrk.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strtok.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strtok_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strspn.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <DisableSpecificWarnings>4133</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strspn.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <DisableSpecificWarnings>4133</DisableSpecificWarnings>
+      <PreprocessorDefinitions>SSTRCSPN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)strcspn.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strspn.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <DisableSpecificWarnings>4133</DisableSpecificWarnings>
+      <PreprocessorDefinitions>SSTRPBRK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)strpbrk.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strdup.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcsdup.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\memccpy.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\memicmp.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strncnt.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcsncnt.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strrev.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strset.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strnset.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcsrev.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcsset.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcsnset.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strnset_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strset_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcsnset_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcsset_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\memcpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcstok.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcstok_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strcat_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\strcpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcscat_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcscpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wmemcpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wmemmove_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strncat_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\strncpy_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcsncat_s.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\string\wcsncpy_s.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtox.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\strtod.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\convert\cfout.cpp" />

@@ -1784,6 +1784,266 @@ namespace Main
             errno_t err = strerror_s(buf, sizeof(buf), EINVAL);
             KTEST_EXPECT(err == 0, "Strerror_s_SmallBuf_Success");
         }
+
+        // CRT: string functions (strspn/strcspn/strpbrk/memccpy/memicmp/strdup)
+        {
+            size_t spn = strspn("hello world", "helo");
+            KTEST_EXPECT(spn == 5, "Strspn_Hello");
+        }
+        {
+            size_t spn = strspn("abc", "xyz");
+            KTEST_EXPECT(spn == 0, "Strspn_NoMatch");
+        }
+        {
+            size_t spn = strcspn("hello world", " ");
+            KTEST_EXPECT(spn == 5, "Strcspn_Space");
+        }
+        {
+            size_t spn = strcspn("abc", "xyz");
+            KTEST_EXPECT(spn == 3, "Strcspn_NoMatch");
+        }
+        {
+            char* p = strpbrk((char*)"hello world", " ");
+            KTEST_EXPECT(p != nullptr && *p == ' ', "Strpbrk_Space");
+        }
+        {
+            char* p = strpbrk((char*)"abc", "xyz");
+            KTEST_EXPECT(p == nullptr, "Strpbrk_NoMatch");
+        }
+        {
+            char buf[16] = {};
+            void* ret = _memccpy(buf, "hello", 'l', 5);
+            KTEST_EXPECT(ret == buf + 3, "Memccpy_RetPtr");
+            KTEST_EXPECT(buf[0]=='h' && buf[1]=='e' && buf[2]=='l', "Memccpy_Content");
+        }
+        {
+            int r = _memicmp("HELLO", "hello", 5);
+            KTEST_EXPECT(r == 0, "Memicmp_Equal");
+        }
+        {
+            int r = _memicmp("ABCD", "abCd", 4);
+            KTEST_EXPECT(r == 0, "Memicmp_MixedCase");
+        }
+        {
+            int r = _memicmp("abc", "abd", 3);
+            KTEST_EXPECT(r != 0, "Memicmp_Diff");
+        }
+        {
+            size_t cnt = __strncnt("hello", 3);
+            KTEST_EXPECT(cnt == 3, "Strncnt_Clamped");
+        }
+        {
+            size_t cnt = __strncnt("hi", 10);
+            KTEST_EXPECT(cnt == 2, "Strncnt_ShortStr");
+        }
+        {
+            char* dup = _strdup("test");
+            KTEST_EXPECT(dup != nullptr, "Strdup_NonNull");
+            KTEST_EXPECT(strcmp(dup, "test") == 0, "Strdup_Equal");
+            free(dup);
+        }
+        {
+            wchar_t* dup = _wcsdup(L"test");
+            KTEST_EXPECT(dup != nullptr, "Wcsdup_NonNull");
+            KTEST_EXPECT(wcscmp(dup, L"test") == 0, "Wcsdup_Equal");
+            free(dup);
+        }
+
+        // _strrev — reverse string in place
+        {
+            char buf[] = "hello";
+            char* r = _strrev(buf);
+            KTEST_EXPECT(r == buf, "Strrev_ReturnsInput");
+            KTEST_EXPECT(strcmp(buf, "olleh") == 0, "Strrev_Reverse");
+        }
+
+        // _strset — fill string with char
+        {
+            char buf[] = "hello";
+            char* r = _strset(buf, 'x');
+            KTEST_EXPECT(r == buf, "Strset_ReturnsInput");
+            KTEST_EXPECT(strcmp(buf, "xxxxx") == 0, "Strset_Fill");
+        }
+
+        // _strnset — fill n chars
+        {
+            char buf[] = "hello";
+            char* r = _strnset(buf, 'x', 2);
+            KTEST_EXPECT(r == buf, "Strnset_ReturnsInput");
+            KTEST_EXPECT(strcmp(buf, "xxllo") == 0, "Strnset_Fill2");
+        }
+
+        // _wcsrev — reverse wide string in place
+        {
+            wchar_t buf[] = L"hello";
+            wchar_t* r = _wcsrev(buf);
+            KTEST_EXPECT(r == buf, "Wcsrev_ReturnsInput");
+            KTEST_EXPECT(wcscmp(buf, L"olleh") == 0, "Wcsrev_Reverse");
+        }
+
+        // _wcsset — fill wide string with char
+        {
+            wchar_t buf[] = L"hello";
+            wchar_t* r = _wcsset(buf, L'x');
+            KTEST_EXPECT(r == buf, "Wcsset_ReturnsInput");
+            KTEST_EXPECT(wcscmp(buf, L"xxxxx") == 0, "Wcsset_Fill");
+        }
+
+        // _wcsnset — fill n wide chars
+        {
+            wchar_t buf[] = L"hello";
+            wchar_t* r = _wcsnset(buf, L'x', 2);
+            KTEST_EXPECT(r == buf, "Wcsnset_ReturnsInput");
+            KTEST_EXPECT(wcscmp(buf, L"xxllo") == 0, "Wcsnset_Fill2");
+        }
+
+        // _strnset_s — safe fill n chars
+        {
+            char buf[16] = "hello";
+            errno_t e = _strnset_s(buf, sizeof(buf), 'x', 2);
+            KTEST_EXPECT(e == 0, "Strnset_s_OK");
+            KTEST_EXPECT(strcmp(buf, "xxllo") == 0, "Strnset_s_Fill2");
+        }
+
+        // _strset_s — safe fill string
+        {
+            char buf[16] = "hello";
+            errno_t e = _strset_s(buf, sizeof(buf), 'x');
+            KTEST_EXPECT(e == 0, "Strset_s_OK");
+            KTEST_EXPECT(strcmp(buf, "xxxxx") == 0, "Strset_s_Fill");
+        }
+
+        // _wcsnset_s — safe wide fill n chars
+        {
+            wchar_t buf[16] = L"hello";
+            errno_t e = _wcsnset_s(buf, sizeof(buf)/sizeof(wchar_t), L'x', 2);
+            KTEST_EXPECT(e == 0, "Wcsnset_s_OK");
+            KTEST_EXPECT(wcscmp(buf, L"xxllo") == 0, "Wcsnset_s_Fill2");
+        }
+
+        // _wcsset_s — safe wide fill string
+        {
+            wchar_t buf[16] = L"hello";
+            errno_t e = _wcsset_s(buf, sizeof(buf)/sizeof(wchar_t), L'x');
+            KTEST_EXPECT(e == 0, "Wcsset_s_OK");
+            KTEST_EXPECT(wcscmp(buf, L"xxxxx") == 0, "Wcsset_s_Fill");
+        }
+
+        // memcpy_s — safe memcpy
+        {
+            char dst[16] = {};
+            const char src[] = "hello";
+            errno_t e = memcpy_s(dst, sizeof(dst), src, sizeof(src));
+            KTEST_EXPECT(e == 0, "Memcpy_s_OK");
+            KTEST_EXPECT(strcmp(dst, "hello") == 0, "Memcpy_s_Copy");
+        }
+
+        // wcstok_s — safe wide tokenize
+        {
+            wchar_t buf[] = L"a b c";
+            wchar_t* ctx = nullptr;
+            wchar_t* tok1 = wcstok_s(buf, L" ", &ctx);
+            KTEST_EXPECT(tok1 != nullptr && wcscmp(tok1, L"a") == 0, "Wcstok_s_Token1");
+            wchar_t* tok2 = wcstok_s(nullptr, L" ", &ctx);
+            KTEST_EXPECT(tok2 != nullptr && wcscmp(tok2, L"b") == 0, "Wcstok_s_Token2");
+            wchar_t* tok3 = wcstok_s(nullptr, L" ", &ctx);
+            KTEST_EXPECT(tok3 != nullptr && wcscmp(tok3, L"c") == 0, "Wcstok_s_Token3");
+            wchar_t* tok4 = wcstok_s(nullptr, L" ", &ctx);
+            KTEST_EXPECT(tok4 == nullptr, "Wcstok_s_End");
+        }
+
+        // wcstok — wide tokenize with thread-local context
+        {
+            wchar_t buf[] = L"a,b";
+            wchar_t* ctx = nullptr;
+            wchar_t* tok1 = wcstok(buf, L",", &ctx);
+            KTEST_EXPECT(tok1 != nullptr && wcscmp(tok1, L"a") == 0, "Wcstok_Token1");
+            wchar_t* tok2 = wcstok(nullptr, L",", &ctx);
+            KTEST_EXPECT(tok2 != nullptr && wcscmp(tok2, L"b") == 0, "Wcstok_Token2");
+            wchar_t* tok3 = wcstok(nullptr, L",", &ctx);
+            KTEST_EXPECT(tok3 == nullptr, "Wcstok_End");
+        }
+
+        // strcat_s — safe append
+        {
+            char buf[16] = "a";
+            errno_t e = strcat_s(buf, sizeof(buf), "bc");
+            KTEST_EXPECT(e == 0, "Strcat_s_OK");
+            KTEST_EXPECT(strcmp(buf, "abc") == 0, "Strcat_s_Result");
+        }
+
+        // strcpy_s — safe copy
+        {
+            char buf[16] = {};
+            errno_t e = strcpy_s(buf, sizeof(buf), "hello");
+            KTEST_EXPECT(e == 0, "Strcpy_s_OK");
+            KTEST_EXPECT(strcmp(buf, "hello") == 0, "Strcpy_s_Result");
+        }
+
+        // wcscat_s — safe wide append
+        {
+            wchar_t buf[16] = L"a";
+            errno_t e = wcscat_s(buf, sizeof(buf)/sizeof(wchar_t), L"bc");
+            KTEST_EXPECT(e == 0, "Wcscat_s_OK");
+            KTEST_EXPECT(wcscmp(buf, L"abc") == 0, "Wcscat_s_Result");
+        }
+
+        // wcscpy_s — safe wide copy
+        {
+            wchar_t buf[16] = {};
+            errno_t e = wcscpy_s(buf, sizeof(buf)/sizeof(wchar_t), L"hello");
+            KTEST_EXPECT(e == 0, "Wcscpy_s_OK");
+            KTEST_EXPECT(wcscmp(buf, L"hello") == 0, "Wcscpy_s_Result");
+        }
+
+        // wmemcpy_s — safe wide memcpy
+        {
+            wchar_t dst[16] = {};
+            const wchar_t src[] = L"hello";
+            errno_t e = wmemcpy_s(dst, sizeof(dst)/sizeof(wchar_t), src, sizeof(src)/sizeof(wchar_t));
+            KTEST_EXPECT(e == 0, "Wmemcpy_s_OK");
+            KTEST_EXPECT(wcscmp(dst, L"hello") == 0, "Wmemcpy_s_Result");
+        }
+
+        // wmemmove_s — safe wide memmove
+        {
+            wchar_t buf[16] = L"abc";
+            errno_t e = wmemmove_s(buf + 1, (sizeof(buf)/sizeof(wchar_t)) - 1, buf, 3);
+            KTEST_EXPECT(e == 0, "Wmemmove_s_OK");
+            KTEST_EXPECT(wcscmp(buf, L"aabc") == 0, "Wmemmove_s_Result");
+        }
+
+        // strncat_s — safe append n chars
+        {
+            char buf[16] = "a";
+            errno_t e = strncat_s(buf, sizeof(buf), "bcdef", 2);
+            KTEST_EXPECT(e == 0, "Strncat_s_OK");
+            KTEST_EXPECT(strcmp(buf, "abc") == 0, "Strncat_s_Result");
+        }
+
+        // strncpy_s — safe copy n chars
+        {
+            char buf[16] = {};
+            errno_t e = strncpy_s(buf, sizeof(buf), "hello", 2);
+            KTEST_EXPECT(e == 0, "Strncpy_s_OK");
+            KTEST_EXPECT(strcmp(buf, "he") == 0, "Strncpy_s_Result");
+        }
+
+        // wcsncat_s — safe wide append n chars
+        {
+            wchar_t buf[16] = L"a";
+            errno_t e = wcsncat_s(buf, sizeof(buf)/sizeof(wchar_t), L"bcdef", 2);
+            KTEST_EXPECT(e == 0, "Wcsncat_s_OK");
+            KTEST_EXPECT(wcscmp(buf, L"abc") == 0, "Wcsncat_s_Result");
+        }
+
+        // wcsncpy_s — safe wide copy n chars
+        {
+            wchar_t buf[16] = {};
+            errno_t e = wcsncpy_s(buf, sizeof(buf)/sizeof(wchar_t), L"hello", 2);
+            KTEST_EXPECT(e == 0, "Wcsncpy_s_OK");
+            KTEST_EXPECT(wcscmp(buf, L"he") == 0, "Wcsncpy_s_Result");
+        }
         }
 
 
