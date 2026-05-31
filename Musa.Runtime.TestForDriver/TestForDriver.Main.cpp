@@ -1049,13 +1049,6 @@ namespace Main
             KTEST_EXPECT(d > -1.51 && d < -1.49, "Stod_Negative");
         }
 
-        // std::print (C++23)
-        {
-            // std::print returns void, test compilation only
-            // We verify it doesn't crash via format-style usage
-            auto s = std::format("{}", 42);
-            KTEST_EXPECT(s == "42", "Print_CompileCheck");
-        }
 
         // wide string to int conversions
         {

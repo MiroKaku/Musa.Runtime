@@ -94,7 +94,6 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xwctomb.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstod.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstof.cpp" />
-    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\print.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xtowlower.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xtowupper.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xmbtowc.cpp" />
