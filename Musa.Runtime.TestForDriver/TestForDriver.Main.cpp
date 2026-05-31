@@ -1758,6 +1758,32 @@ namespace Main
             found = static_cast<int*>(_lfind(&key, arr, &n, sizeof(int),
                 [](const void* a, const void* b) { return *(const int*)a - *(const int*)b; }));
             KTEST_EXPECT(found == nullptr, "LFind_NotFound");
+
+        // CRT: strerror / strerror_s
+        {
+            const char* msg = strerror(0);
+            KTEST_EXPECT(msg != nullptr, "Strerror_Zero_NonNull");
+        }
+        {
+            const char* msg = strerror(EINVAL);
+            KTEST_EXPECT(msg != nullptr, "Strerror_EINVAL_NonNull");
+            KTEST_EXPECT(msg[0] != '\0', "Strerror_EINVAL_NotEmpty");
+        }
+        {
+            const char* msg = strerror(9999);
+            KTEST_EXPECT(msg != nullptr, "Strerror_Unknown_NonNull");
+        }
+        {
+            char buf[256] = {};
+            errno_t err = strerror_s(buf, sizeof(buf), 0);
+            KTEST_EXPECT(err == 0, "Strerror_s_Zero_Success");
+            KTEST_EXPECT(buf[0] != '\0', "Strerror_s_Zero_NotEmpty");
+        }
+        {
+            char buf[4] = {};
+            errno_t err = strerror_s(buf, sizeof(buf), EINVAL);
+            KTEST_EXPECT(err == 0, "Strerror_s_SmallBuf_Success");
+        }
         }
 
 

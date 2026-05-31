@@ -82,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\invalid_parameter.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\terminate.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\syserr.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\strerror.cpp" />
+    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\misc\_strerr.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\startup\abort.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\startup\assert.cpp" />
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\startup\exit.cpp" />
