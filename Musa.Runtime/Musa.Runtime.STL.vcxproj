@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <ProjectGuid>{412F6026-516B-4BE6-B77A-46BD39685D8C}</ProjectGuid>
@@ -79,6 +79,10 @@
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xthrow.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xtime.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xvalues.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstol.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoll.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoul.cpp" />
+    <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir)\crt\stl\xstoull.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\mutex.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\syserror_import_lib.cpp" />
     <ClCompile Include="$(Musa_Runtime_VC_ToolsInstallDir_Overlay)\crt\stl\xrngabort.cpp" />
