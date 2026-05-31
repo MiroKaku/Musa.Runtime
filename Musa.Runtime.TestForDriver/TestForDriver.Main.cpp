@@ -1041,11 +1041,89 @@ namespace Main
             auto s = std::format("{}+{}={}", 1, 2, 3);
             KTEST_EXPECT(s == "1+2=3", "Format_Integers");
         }
+        // format_to
         {
             char buf[64];
             auto r = std::format_to(buf, "x={}", 42);
             *r = '\0';
             KTEST_EXPECT(strcmp(buf, "x=42") == 0, "FormatTo_Basic");
+        }
+        // format_to_n
+        {
+            char buf[16] = {};
+            auto r = std::format_to_n(buf, 15, "{}", 12345);
+            *r.out = '\0';
+            KTEST_EXPECT(r.size == 5 && strcmp(buf, "12345") == 0, "FormatToN");
+        }
+        // width and alignment
+        {
+            auto s = std::format("{:>5}", 42);
+            KTEST_EXPECT(s == "   42", "Format_RightAlign");
+        }
+        {
+            auto s = std::format("{:<5}", 42);
+            KTEST_EXPECT(s == "42   ", "Format_LeftAlign");
+        }
+        {
+            auto s = std::format("{:^5}", 42);
+            KTEST_EXPECT(s == " 42  ", "Format_CenterAlign");
+        }
+        // fill
+        {
+            auto s = std::format("{:*>5}", 42);
+            KTEST_EXPECT(s == "***42", "Format_FillChar");
+        }
+        // hex
+        {
+            auto s = std::format("{:x}", 255);
+            KTEST_EXPECT(s == "ff", "Format_Hex");
+        }
+        {
+            auto s = std::format("{:#x}", 255);
+            KTEST_EXPECT(s == "0xff", "Format_HexPrefix");
+        }
+        {
+            auto s = std::format("{:#X}", 255);
+            KTEST_EXPECT(s == "0XFF", "Format_HexUpper");
+        }
+        // octal
+        {
+            auto s = std::format("{:o}", 64);
+            KTEST_EXPECT(s == "100", "Format_Octal");
+        }
+        // binary
+        {
+            auto s = std::format("{:b}", 5);
+            KTEST_EXPECT(s == "101", "Format_Binary");
+        }
+        // float
+        {
+            auto s = std::format("{:.2f}", 3.14159);
+            KTEST_EXPECT(s == "3.14", "Format_Float");
+        }
+        // sign
+        {
+            auto s = std::format("{:+}", 42);
+            KTEST_EXPECT(s == "+42", "Format_Sign");
+        }
+        {
+            auto s = std::format("{:-}", 42);
+            KTEST_EXPECT(s == "42", "Format_MinusSign");
+        }
+        // escape/backslash
+        {
+            auto s = std::format("{}", "a\nb");
+            KTEST_EXPECT(s == "a\\nb", "Format_EscapeNewline");
+        }
+        // multiple arguments
+        {
+            auto s = std::format("{} {} {}", "a", 1, 2.5);
+            KTEST_EXPECT(s == "a 1 2.5", "Format_MultiArgs");
+        }
+        // position specifiers
+        {
+            auto s = std::format("{1} {0}", "world", "hello");
+            KTEST_EXPECT(s == "hello world", "Format_PosArgs");
         }
 
         // std::regex
