@@ -714,20 +714,6 @@
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\convert\wctype.cpp">
       <Filter>ucrt\convert</Filter>
     </ClCompile>
-      <Filter>ucrt\convert</Filter>
-    </ClCompile>
-      <Filter>ucrt\locale</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\localeconv.cpp">
-      <Filter>ucrt\locale</Filter>
-    </ClCompile>
-      <Filter>ucrt\locale</Filter>
-    </ClCompile>
-    <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir_Overlay)\ucrt\locale\setlocale.cpp">
-      <Filter>ucrt\locale</Filter>
-    </ClCompile>
-      <Filter>ucrt\locale</Filter>
-    </ClCompile>
     <ClCompile Include="$(Musa_Runtime_UCRT_ToolsInstallDir)\ucrt\string\wcspbrk.cpp">
       <Filter>ucrt\string</Filter>
     </ClCompile>
