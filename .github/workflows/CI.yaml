@@ -50,25 +50,14 @@ jobs:
       - name: Setup Windows Driver Kit
         shell: pwsh
         run: |
-          # --- Diagnose current WDK state ---
-          Write-Host "=== WDK Diagnostic ===" -ForegroundColor Cyan
-
-          $KitsRoot = $null
-          try {
-            $KitsRoot = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots" -ErrorAction Stop).KitsRoot10
-          } catch {}
-          Write-Host "KitsRoot10: $KitsRoot"
-
-          # Detect installed SDK version from Include directory
-          $SdkVersions = @()
           $IncludeDir = "C:\Program Files (x86)\Windows Kits\10\Include"
-          if (Test-Path $IncludeDir) {
-            $SdkVersions = Get-ChildItem $IncludeDir -Directory |
-              Where-Object { $_.Name -match '^\d+\.\d+\.\d+\.\d+$' } |
-              Sort-Object { [Version]$_.Name } -Descending |
-              Select-Object -ExpandProperty Name
-          }
-          Write-Host "Installed SDK versions: $($SdkVersions -join ', ')"
+
+          # --- Detect installed SDK ---
+          Write-Host "=== SDK Detection ===" -ForegroundColor Cyan
+          $SdkVersions = Get-ChildItem $IncludeDir -Directory |
+            Where-Object { $_.Name -match '^\d+\.\d+\.\d+\.\d+$' } |
+            Sort-Object { [Version]$_.Name } -Descending |
+            Select-Object -ExpandProperty Name
 
           if ($SdkVersions.Count -eq 0) {
             Write-Error "No Windows SDK found under $IncludeDir"
@@ -76,48 +65,92 @@ jobs:
           }
 
           $SdkVersion = $SdkVersions[0]
-          $BuildNum = ([Version]$SdkVersion).Build
-          Write-Host "Selected SDK version: $SdkVersion (build $BuildNum)"
+          $SdkBuild = ([Version]$SdkVersion).Build
+          Write-Host "SDK: $SdkVersion (build $SdkBuild)"
 
-          # Check if WDK km headers already exist
-          $KmInclude = "C:\Program Files (x86)\Windows Kits\10\Include\$SdkVersion\km"
-          $BuildProps = "C:\Program Files (x86)\Windows Kits\10\build\$SdkVersion\WindowsDriver.KernelMode.props"
+          # --- Detect installed WDKs (any version with km subdirectory) ---
+          Write-Host "=== WDK Detection ===" -ForegroundColor Cyan
+          $InstalledWdkBuilds = @{}
+          Get-ChildItem $IncludeDir -Directory |
+            Where-Object { $_.Name -match '^\d+\.\d+\.\d+\.\d+$' -and (Test-Path (Join-Path $_.FullName "km")) } |
+            ForEach-Object {
+              $build = ([Version]$_.Name).Build
+              $InstalledWdkBuilds[$build] = $_.Name
+            }
 
-          Write-Host "KM include path: $KmInclude (exists: $(Test-Path $KmInclude))"
-          Write-Host "KernelMode props: $BuildProps (exists: $(Test-Path $BuildProps))"
+          $installedList = ($InstalledWdkBuilds.Values | Sort-Object) -join ', '
+          Write-Host "Installed WDKs: $installedList"
 
-          if ((Test-Path $KmInclude) -and (Test-Path $BuildProps)) {
-            Write-Host "WDK already installed, skipping installation." -ForegroundColor Green
-            exit 0
+          # --- Query latest WDK from winget ---
+          Write-Host "=== Querying Latest WDK ===" -ForegroundColor Cyan
+          $wdkSearch = & winget search --id Microsoft.WindowsWDK --source winget --accept-source-agreements 2>&1 | Out-String
+          $wdkBuilds = [regex]::Matches($wdkSearch, 'Microsoft\.WindowsWDK\.10\.0\.(\d+)') |
+            ForEach-Object { [int]$_.Groups[1].Value } |
+            Sort-Object -Unique -Descending
+
+          $LatestWdkBuild = if ($wdkBuilds.Count -gt 0) { $wdkBuilds[0] } else { $SdkBuild }
+          Write-Host "Latest available WDK build: $LatestWdkBuild"
+
+          # --- Install matching-SDK WDK ---
+          if ($InstalledWdkBuilds.ContainsKey($SdkBuild)) {
+            Write-Host "Matching-SDK WDK (build $SdkBuild) already installed." -ForegroundColor Green
+          } else {
+            $pkg = "Microsoft.WindowsWDK.10.0.$SdkBuild"
+            Write-Host "Installing matching-SDK WDK: $pkg ..." -ForegroundColor Yellow
+            $log = "$env:RUNNER_TEMP\wdk-install-matching.log"
+            & winget install --source winget --exact --id $pkg --accept-source-agreements --accept-package-agreements --silent --log $log
+            if ($LASTEXITCODE -ne 0) {
+              Write-Host "Matching-SDK WDK install failed (exit $LASTEXITCODE), log:" -ForegroundColor Red
+              if (Test-Path $log) { Get-Content $log }
+              exit 1
+            }
           }
 
-          # --- Install WDK matching the detected SDK build ---
-          $WdkPackageId = "Microsoft.WindowsWDK.10.0.$BuildNum"
-          Write-Host "Installing $WdkPackageId ..." -ForegroundColor Yellow
-
-          $logFile = "$env:RUNNER_TEMP\wdk-install.log"
-          & winget install --source winget --exact --id $WdkPackageId --accept-source-agreements --accept-package-agreements --silent --log $logFile
-
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "WDK installation failed (exit code $LASTEXITCODE), log:" -ForegroundColor Red
-            if (Test-Path $logFile) { Get-Content $logFile }
-            exit 1
+          # --- Install latest WDK (if different from matching-SDK) ---
+          if ($LatestWdkBuild -ne $SdkBuild) {
+            if ($InstalledWdkBuilds.ContainsKey($LatestWdkBuild)) {
+              Write-Host "Latest WDK (build $LatestWdkBuild) already installed." -ForegroundColor Green
+            } else {
+              $pkg = "Microsoft.WindowsWDK.10.0.$LatestWdkBuild"
+              Write-Host "Installing latest WDK: $pkg ..." -ForegroundColor Yellow
+              $log = "$env:RUNNER_TEMP\wdk-install-latest.log"
+              & winget install --source winget --exact --id $pkg --accept-source-agreements --accept-package-agreements --silent --log $log
+              if ($LASTEXITCODE -ne 0) {
+                Write-Host "Latest WDK install failed (exit $LASTEXITCODE), log:" -ForegroundColor Red
+                if (Test-Path $log) { Get-Content $log }
+                exit 1
+              }
+            }
+          } else {
+            Write-Host "Latest WDK equals matching-SDK WDK, no extra install needed." -ForegroundColor Green
           }
 
           # --- Post-install verification ---
           Write-Host "=== Post-install Verification ===" -ForegroundColor Cyan
-          $verified = $true
+          $KmInclude = "$IncludeDir\$SdkVersion\km"
+          $BuildProps = "C:\Program Files (x86)\Windows Kits\10\build\$SdkVersion\WindowsDriver.KernelMode.props"
+          $ok = $true
 
           if (-not (Test-Path $KmInclude)) {
-            Write-Warning "KM include path still missing: $KmInclude"
-            $verified = $false
+            Write-Warning "KM include missing: $KmInclude"
+            $ok = $false
           }
           if (-not (Test-Path $BuildProps)) {
-            Write-Warning "KernelMode props still missing: $BuildProps"
-            $verified = $false
+            Write-Warning "KernelMode props missing: $BuildProps"
+            $ok = $false
           }
 
-          if ($verified) {
+          # Verify latest WDK is also present
+          if ($LatestWdkBuild -ne $SdkBuild) {
+            $latestDir = Get-ChildItem $IncludeDir -Directory |
+              Where-Object { $_.Name -match '^\d+\.\d+\.\d+\.\d+$' -and (Test-Path (Join-Path $_.FullName "km")) -and ([Version]$_.Name).Build -eq $LatestWdkBuild }
+            if (-not $latestDir) {
+              Write-Warning "Latest WDK (build $LatestWdkBuild) not found after install."
+              $ok = $false
+            }
+          }
+
+          if ($ok) {
             Write-Host "WDK installation verified successfully." -ForegroundColor Green
           } else {
             Write-Error "WDK installation incomplete - critical files missing."
