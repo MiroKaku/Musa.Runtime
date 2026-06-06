@@ -134,7 +134,7 @@ extern "C" extern unsigned short const _wctype[]
     _UPPER | C1_ALPHA ,             // 59 Y
     _UPPER | C1_ALPHA ,             // 5A Z
     _PUNCT ,                        // 5B [
-    _PUNCT ,                        // 5C \ 
+    _PUNCT ,                        // 5C (backslash)
     _PUNCT ,                        // 5D ]
     _PUNCT ,                        // 5E ^
     _PUNCT ,                        // 5F _
@@ -546,7 +546,7 @@ extern "C" extern unsigned char const __newclmap[384]
     0x79,   // 59 Y
     0x7A,   // 5A Z
     0x5B,   // 5B [
-    0x5C,   // 5C \ 
+    0x5C,   // 5C (backslash)
     0x5D,   // 5D ]
     0x5E,   // 5E ^
     0x5F,   // 5F _
@@ -694,7 +694,7 @@ extern "C" extern unsigned char const __newcumap[384]
     0x59,   // 59 Y
     0x5A,   // 5A Z
     0x5B,   // 5B [
-    0x5C,   // 5C \ 
+    0x5C,   // 5C (backslash)
     0x5D,   // 5D ]
     0x5E,   // 5E ^
     0x5F,   // 5F _
