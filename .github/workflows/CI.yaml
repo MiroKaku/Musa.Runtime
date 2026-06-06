@@ -139,18 +139,28 @@ jobs:
             if (-not $LatestWdkFullVersion) {
               Write-Warning "Cannot resolve latest WDK full version for build $LatestWdkBuild, skipping DLL copy."
             } else {
-              $dllName = "Microsoft.DriverKit.Build.Tasks.18.0.dll"
-              $srcDll = "$BuildRoot\$LatestWdkFullVersion\bin\$dllName"
+              $dllNames = @(
+                "Microsoft.DriverKit.Build.Tasks.18.0.dll",
+                "Microsoft.DriverKit.Build.Tasks.PackageVerifier.18.0.dll"
+              )
               $dstDir = "$BuildRoot\$MatchingWdkVersion\bin"
+              if (-not (Test-Path $dstDir)) {
+                New-Item -ItemType Directory -Path $dstDir -Force | Out-Null
+              }
 
-              if (Test-Path $srcDll) {
-                if (-not (Test-Path $dstDir)) {
-                  New-Item -ItemType Directory -Path $dstDir -Force | Out-Null
+              $allCopied = $true
+              foreach ($dllName in $dllNames) {
+                $srcDll = "$BuildRoot\$LatestWdkFullVersion\bin\$dllName"
+                if (Test-Path $srcDll) {
+                  Copy-Item -Path $srcDll -Destination $dstDir -Force
+                  Write-Host "  Copied $dllName" -ForegroundColor Green
+                } else {
+                  Write-Warning "  $srcDll not found, skipping."
+                  $allCopied = $false
                 }
-                Copy-Item -Path $srcDll -Destination $dstDir -Force
-                Write-Host "Copied $dllName from $LatestWdkFullVersion to $MatchingWdkVersion" -ForegroundColor Green
-              } else {
-                Write-Warning "$srcDll not found, skipping DLL copy."
+              }
+              if ($allCopied) {
+                Write-Host "All build tasks DLLs copied from $LatestWdkFullVersion to $MatchingWdkVersion" -ForegroundColor Green
               }
             }
           }
