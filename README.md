@@ -29,7 +29,7 @@ Musa.Runtime is a Microsoft MSVC runtime library adapted for Windows kernel-mode
 ```xml
 <ItemGroup>
   <PackageReference Include="Musa.Runtime">
-    <Version>0.6.0</Version>
+    <Version>1451.28000.0</Version>
   </PackageReference>
 </ItemGroup>
 ```
@@ -86,7 +86,12 @@ void Example()
 | C++ Exception (`/EHa`, `/EHsc`) | ✅ | IRQL ≤ APC_LEVEL |
 | Static Object Construction | ✅ | Runs at driver load time |
 | SAFESEH / GS | ✅ | Buffer security check |
-| STL (OneCore / CoreCRT) | ✅ | Full container / algorithm support |
+| SEH (`__try`/`__except`) | ✅ | Access violation, finally, continue search |
+| STL Containers / Algorithms | ✅ | Full OneCore / CoreCRT support |
+| `std::format` / `std::print` | ✅ | C++23 formatted output |
+| `std::regex` | ✅ | Full regular expression support |
+| `std::filesystem` | ✅ | C++17 filesystem (Phase 1) |
+| String Conversions (`std::stoi`/`stod`/etc.) | ✅ | stoi, stol, stoul, stoll, stoull, stod, stof |
 | `thread_local` | ❌ | Compiler-level limitation (fs/gs register access) |
 
 ## Documentation
