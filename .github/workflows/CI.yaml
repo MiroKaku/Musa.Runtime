@@ -125,6 +125,35 @@ jobs:
             Write-Host "Latest WDK equals matching-SDK WDK, no extra install needed." -ForegroundColor Green
           }
 
+          # --- Copy VS2026 build tasks DLL from latest WDK to matching-SDK WDK ---
+          if ($LatestWdkBuild -ne $SdkBuild) {
+            Write-Host "=== Patching matching-SDK WDK with latest build tasks ===" -ForegroundColor Cyan
+            $BuildRoot = "C:\Program Files (x86)\Windows Kits\10\build"
+
+            # Resolve full version strings for both WDKs from Include directory
+            $MatchingWdkVersion = $SdkVersion
+            $LatestWdkFullVersion = (Get-ChildItem $IncludeDir -Directory |
+              Where-Object { $_.Name -match '^\d+\.\d+\.\d+\.\d+$' -and (Test-Path (Join-Path $_.FullName "km")) -and ([Version]$_.Name).Build -eq $LatestWdkBuild } |
+              Select-Object -First 1).Name
+
+            if (-not $LatestWdkFullVersion) {
+              Write-Warning "Cannot resolve latest WDK full version for build $LatestWdkBuild, skipping DLL copy."
+            } else {
+              $dllName = "Microsoft.DriverKit.Build.Tasks.18.0.dll"
+              $srcDll = "$BuildRoot\$LatestWdkFullVersion\bin\$dllName"
+              $dstDir = "$BuildRoot\$MatchingWdkVersion\bin"
+
+              if (Test-Path $srcDll) {
+                if (-not (Test-Path $dstDir)) {
+                  New-Item -ItemType Directory -Path $dstDir -Force | Out-Null
+                }
+                Copy-Item -Path $srcDll -Destination $dstDir -Force
+                Write-Host "Copied $dllName from $LatestWdkFullVersion to $MatchingWdkVersion" -ForegroundColor Green
+              } else {
+                Write-Warning "$srcDll not found, skipping DLL copy."
+              }
+            }
+          }
           # --- Post-install verification ---
           Write-Host "=== Post-install Verification ===" -ForegroundColor Cyan
           $KmInclude = "$IncludeDir\$SdkVersion\km"
