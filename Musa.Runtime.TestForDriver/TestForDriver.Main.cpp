@@ -2327,8 +2327,8 @@ namespace Main
             KTEST_EXPECT(fs::exists(tmpdir), "FsExists_Dir");
             KTEST_EXPECT(fs::is_directory(tmpdir), "FsIsDir");
             KTEST_EXPECT(!fs::is_regular_file(tmpdir), "FsIsDir_NotFile");
-            // create_directory on existing dir succeeds
-            KTEST_EXPECT(fs::create_directory(tmpdir), "FsCreateDir_Existing");
+            // create_directory on existing dir returns false (directory not created)
+            KTEST_EXPECT(!fs::create_directory(tmpdir), "FsCreateDir_Existing");
 
             // Create a test file via C fopen
             fs::path testfile = tmpdir / L"test.txt";
@@ -2373,8 +2373,8 @@ namespace Main
             KTEST_EXPECT(fs::exists(copyfile), "FsCopyFile_Exists");
             KTEST_EXPECT(fs::file_size(copyfile) == 19, "FsCopyFile_Size");
 
-            // equivalent
-            KTEST_EXPECT(fs::equivalent(testfile, copyfile), "FsEquivalent");
+            // equivalent (same file)
+            KTEST_EXPECT(fs::equivalent(testfile, testfile), "FsEquivalent");
             // non-equivalent
             fs::path diff = tmpdir / L"different.txt";
             {
